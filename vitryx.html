@@ -63,7 +63,8 @@
         .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(4px); z-index: 9999; align-items: center; justify-content: center; }
         .modal-overlay.active { display: flex; animation: fadeIn 0.2s ease-out; }
         #toast-container { position: fixed; bottom: 20px; right: 20px; z-index: 10000; display: flex; flex-direction: column; gap: 10px; }
-        .toast { padding: 12px 20px; border-radius: 8px; color: white; font-weight: 600; font-size: 14px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); animation: slideInRight 0.3s ease-out forwards; display: flex; align-items: center; gap: 8px; }
+        .toast { padding: 12px 20px; border-radius: 8px; color: white; font-weight: 600; font-size: 14px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); animation: slideInRight 0.3s ease-out forwards; display: flex; align-items: center; gap: 8px; max-width: min(420px, calc(100vw - 2rem)); }
+        .toast i, .toast svg { flex-shrink: 0; }
         @keyframes slideInRight { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
 
         .sidebar-overlay { display: none; position: fixed; inset: 0; background: rgba(15, 23, 42, 0.5); z-index: 40; }
@@ -210,6 +211,33 @@
                             </button>
                         </div>
                     </div>
+
+                    <footer class="mt-12 border-t border-slate-200 pt-8 pb-4">
+                        <div class="max-w-4xl mx-auto px-4">
+                            <div class="flex flex-col sm:flex-row sm:items-center gap-3 mb-4">
+                                <span class="text-sm font-extrabold text-slate-900 tracking-tight">VITRYX CONECTA</span>
+                                <span class="text-xs text-slate-500">Plataforma pública de inteligência econômica territorial — Município de Medianeira/PR.</span>
+                            </div>
+                            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-5">
+                                <div class="flex items-start gap-2">
+                                    <i data-lucide="activity" class="w-4 h-4 text-slate-400 flex-shrink-0 mt-0.5"></i>
+                                    <p class="text-[11px] text-slate-500 leading-relaxed">Operada com meta de disponibilidade de <strong class="text-slate-700">no mínimo 95%</strong>, com monitoramento e política de backup e restauração.</p>
+                                </div>
+                                <div class="flex items-start gap-2">
+                                    <i data-lucide="lock" class="w-4 h-4 text-slate-400 flex-shrink-0 mt-0.5"></i>
+                                    <p class="text-[11px] text-slate-500 leading-relaxed">Todo o tráfego é protegido por <strong class="text-slate-700">criptografia em trânsito (HTTPS/TLS)</strong>, com controle de acesso por perfil e registro de logs.</p>
+                                </div>
+                                <div class="flex items-start gap-2">
+                                    <i data-lucide="database" class="w-4 h-4 text-slate-400 flex-shrink-0 mt-0.5"></i>
+                                    <p class="text-[11px] text-slate-500 leading-relaxed">A base econômica é <strong class="text-slate-700">propriedade do Município</strong> e exportável a qualquer tempo em formato aberto, garantindo a reversibilidade dos dados.</p>
+                                </div>
+                            </div>
+                            <div class="border-t border-slate-100 pt-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+                                <p class="text-[11px] text-slate-400">O cidadão não se cadastra e não é identificado: os dados de uso são anônimos e agregados (LGPD).</p>
+                                <p class="text-[11px] text-slate-400">Sem ranqueamento pago, patrocínio ou destaque comercial. A plataforma não realiza contratações.</p>
+                            </div>
+                        </div>
+                    </footer>
                 </div>
             </section>
 
@@ -228,11 +256,11 @@
                                 </div>
                             </div>
                             <div class="flex items-center gap-2 overflow-x-auto hide-scroll pb-1">
-                                <button onclick="app.filterRadar('all')" class="flex items-center gap-1.5 px-3 py-1.5 bg-white border border-slate-200 text-slate-600 hover:border-slate-300 rounded-full text-xs font-medium whitespace-nowrap shadow-sm">Todos</button>
-                                <button onclick="app.filterRadar('open')" class="flex items-center gap-1.5 px-3 py-1.5 bg-white border border-slate-200 text-slate-600 hover:border-slate-300 rounded-full text-xs font-medium whitespace-nowrap shadow-sm"><div class="w-2 h-2 rounded-full bg-emerald-500"></div> Aberto Agora</button>
-                                <button onclick="app.filterRadar('urban')" class="flex items-center gap-1.5 px-3 py-1.5 bg-white border border-slate-200 text-slate-600 hover:border-slate-300 rounded-full text-xs font-medium whitespace-nowrap shadow-sm"><i data-lucide="building" class="w-3.5 h-3.5"></i> Urbano</button>
-                                <button onclick="app.filterRadar('rural')" class="flex items-center gap-1.5 px-3 py-1.5 bg-white border border-slate-200 text-slate-600 hover:border-slate-300 rounded-full text-xs font-medium whitespace-nowrap shadow-sm"><i data-lucide="tractor" class="w-3.5 h-3.5"></i> Rural</button>
-                                <button onclick="app.filterRadar('professional')" class="flex items-center gap-1.5 px-3 py-1.5 bg-white border border-slate-200 text-slate-600 hover:border-slate-300 rounded-full text-xs font-medium whitespace-nowrap shadow-sm"><i data-lucide="user" class="w-3.5 h-3.5"></i> Autônomo</button>
+                                <button id="chip-radar-all" onclick="app.filterRadar('all')" class="chip-radar flex items-center gap-1.5 px-3 py-1.5 bg-white border border-slate-200 text-slate-600 hover:border-slate-300 rounded-full text-xs font-medium whitespace-nowrap shadow-sm">Todos</button>
+                                <button id="chip-radar-open" onclick="app.filterRadar('open')" class="chip-radar flex items-center gap-1.5 px-3 py-1.5 bg-white border border-slate-200 text-slate-600 hover:border-slate-300 rounded-full text-xs font-medium whitespace-nowrap shadow-sm"><div class="w-2 h-2 rounded-full bg-emerald-500"></div> Aberto Agora</button>
+                                <button id="chip-radar-urban" onclick="app.filterRadar('urban')" class="chip-radar flex items-center gap-1.5 px-3 py-1.5 bg-white border border-slate-200 text-slate-600 hover:border-slate-300 rounded-full text-xs font-medium whitespace-nowrap shadow-sm"><i data-lucide="building" class="w-3.5 h-3.5"></i> Urbano</button>
+                                <button id="chip-radar-rural" onclick="app.filterRadar('rural')" class="chip-radar flex items-center gap-1.5 px-3 py-1.5 bg-white border border-slate-200 text-slate-600 hover:border-slate-300 rounded-full text-xs font-medium whitespace-nowrap shadow-sm"><i data-lucide="tractor" class="w-3.5 h-3.5"></i> Rural</button>
+                                <button id="chip-radar-professional" onclick="app.filterRadar('professional')" class="chip-radar flex items-center gap-1.5 px-3 py-1.5 bg-white border border-slate-200 text-slate-600 hover:border-slate-300 rounded-full text-xs font-medium whitespace-nowrap shadow-sm"><i data-lucide="user" class="w-3.5 h-3.5"></i> Autônomo</button>
                             </div>
                         </div>
                         <div class="flex-grow overflow-y-auto p-3 space-y-3 pb-24 md:pb-3" id="radar-results"></div>
@@ -477,10 +505,12 @@
                                         <div class="flex flex-wrap gap-2 p-2 bg-slate-50 border border-slate-200 rounded-lg focus-within:bg-white focus-within:border-brand-500 transition-all" id="edit-tags-container">
                                             <input type="text" id="edit-tag-input" onkeydown="app.handleTagInput(event, 'edit')" class="outline-none bg-transparent flex-grow text-sm min-w-[120px]" placeholder="Digite um termo e aperte Enter">
                                         </div>
+                                        <p class="text-xs text-slate-500 mt-1">Ex: manicure, unha em gel, alongamento. Digite um termo e aperte Enter.</p>
                                     </div>
                                     <div>
                                         <label class="block text-sm font-bold text-slate-900 mb-1">Descrição Comercial</label>
-                                        <textarea id="edit-description" class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-lg text-sm focus:bg-white focus:border-brand-500 outline-none transition-all h-24"></textarea>
+                                        <textarea id="edit-description" class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-lg text-sm focus:bg-white focus:border-brand-500 outline-none transition-all h-24" placeholder="Ex: Faço unhas em gel, alongamento e esmaltação. Atendo com hora marcada no Centro."></textarea>
+                                        <p class="text-xs text-slate-500 mt-1">É este texto que a busca usa para encontrar você. Descreva o que faz com as palavras que o cliente usaria.</p>
                                     </div>
                                     <div class="pt-4 border-t border-slate-100 flex justify-end">
                                         <button onclick="app.saveProfileEdits()" class="bg-brand-600 hover:bg-brand-700 text-white px-6 py-2.5 rounded-xl text-sm font-bold transition-all shadow-sm flex items-center gap-2"><i data-lucide="save" class="w-4 h-4"></i> Salvar Alterações</button>
@@ -565,14 +595,14 @@
                                 <div class="text-xs text-slate-400 mt-2">Negócios ativos na plataforma</div>
                             </div>
                             <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm border-b-4 border-b-brand-500">
-                                <div class="text-sm font-semibold text-slate-500 mb-1 uppercase tracking-wide">Empresas Urbanas</div>
-                                <div class="text-3xl font-extrabold text-brand-600" id="mgr-stat-urban">0</div>
-                                <div class="text-xs text-slate-400 mt-2">Comércio e Serviços</div>
+                                <div class="text-sm font-semibold text-slate-500 mb-1 uppercase tracking-wide">Com Vitrine Pública</div>
+                                <div class="text-3xl font-extrabold text-brand-600" id="mgr-stat-vitrine">0</div>
+                                <div class="text-xs text-slate-400 mt-2" id="mgr-stat-vitrine-sub">&nbsp;</div>
                             </div>
                             <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm border-b-4 border-b-emerald-500">
-                                <div class="text-sm font-semibold text-slate-500 mb-1 uppercase tracking-wide">Profissionais/Rurais</div>
-                                <div class="text-3xl font-extrabold text-emerald-600" id="mgr-stat-prof">0</div>
-                                <div class="text-xs text-slate-400 mt-2">Autônomos e Produtores</div>
+                                <div class="text-sm font-semibold text-slate-500 mb-1 uppercase tracking-wide">Cadastros Validados</div>
+                                <div class="text-3xl font-extrabold text-emerald-600" id="mgr-stat-validated">0</div>
+                                <div class="text-xs text-slate-400 mt-2" id="mgr-stat-validated-sub">&nbsp;</div>
                             </div>
                             <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm border-b-4 border-b-accent-500">
                                 <div class="text-sm font-semibold text-slate-500 mb-1 uppercase tracking-wide">Lacunas Mapeadas</div>
@@ -582,25 +612,31 @@
                         </div>
 
                         <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                            <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6">
-                                <h3 class="font-bold text-slate-900 mb-6">Distribuição por Segmento</h3>
-                                <div class="space-y-4" id="mgr-chart-segments"></div>
+                            <div class="flex flex-col gap-6">
+                                <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6">
+                                    <h3 class="font-bold text-slate-900 mb-6">Distribuição por Segmento</h3>
+                                    <div class="space-y-4" id="mgr-chart-segments"></div>
+                                </div>
+                                <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6">
+                                    <h3 class="font-bold text-slate-900 mb-6">Distribuição por Porte</h3>
+                                    <div class="space-y-4" id="mgr-chart-porte"></div>
+                                </div>
                             </div>
                             <div class="flex flex-col gap-6">
                                 <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6">
                                     <h3 class="font-bold text-slate-900 mb-4">Origem e Validação da Base</h3>
                                     <div class="space-y-3">
                                         <div class="flex items-center justify-between p-3 bg-emerald-50 border border-emerald-100 rounded-xl">
-                                            <div class="flex items-center gap-3"><i data-lucide="shield-check" class="w-5 h-5 text-emerald-600"></i><span class="text-sm font-semibold text-emerald-900">Validação da Gestão</span></div>
-                                            <span class="text-sm font-bold text-emerald-700" id="mgr-origin-validated">0%</span>
+                                            <div class="flex items-center gap-3"><i data-lucide="user-check" class="w-5 h-5 text-emerald-600"></i><span class="text-sm font-semibold text-emerald-900">Cadastro do Empreendedor</span></div>
+                                            <span class="text-sm font-bold text-emerald-700" id="mgr-origin-entrepreneur">0</span>
                                         </div>
                                         <div class="flex items-center justify-between p-3 bg-blue-50 border border-blue-100 rounded-xl">
-                                            <div class="flex items-center gap-3"><i data-lucide="database" class="w-5 h-5 text-blue-600"></i><span class="text-sm font-semibold text-blue-900">Base Municipal Importada</span></div>
-                                            <span class="text-sm font-bold text-blue-700" id="mgr-origin-imported">0%</span>
+                                            <div class="flex items-center gap-3"><i data-lucide="database" class="w-5 h-5 text-blue-600"></i><span class="text-sm font-semibold text-blue-900">Base Importada (Prefeitura)</span></div>
+                                            <span class="text-sm font-bold text-blue-700" id="mgr-origin-imported">0</span>
                                         </div>
                                         <div class="flex items-center justify-between p-3 bg-amber-50 border border-amber-100 rounded-xl">
-                                            <div class="flex items-center gap-3"><i data-lucide="user-check" class="w-5 h-5 text-amber-600"></i><span class="text-sm font-semibold text-amber-900">Cadastro do Empreendedor</span></div>
-                                            <span class="text-sm font-bold text-amber-700" id="mgr-origin-entrepreneur">0%</span>
+                                            <div class="flex items-center gap-3"><i data-lucide="refresh-cw" class="w-5 h-5 text-amber-600"></i><span class="text-sm font-semibold text-amber-900">Sincronizado (bases públicas)</span></div>
+                                            <span class="text-sm font-bold text-amber-700" id="mgr-origin-sync">0</span>
                                         </div>
                                     </div>
                                 </div>
@@ -643,7 +679,7 @@
                                     <input type="text" id="mgr-base-search" class="w-full pl-9 pr-4 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm focus:bg-white focus:border-brand-500 outline-none transition-all" placeholder="Buscar empresa, CNAE..." onkeyup="app.renderBaseTable()">
                                 </div>
                                 <select id="mgr-filter-category" onchange="app.renderBaseTable()" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm focus:bg-white focus:border-brand-500 outline-none transition-all">
-                                    <option value="">Todas as Categorias</option><option value="Beleza">Beleza</option><option value="Casa e Manutenção">Casa e Manutenção</option><option value="Serviços">Serviços</option><option value="Automotivo">Automotivo</option><option value="Alimentação">Alimentação</option><option value="Comércio">Comércio</option><option value="Rural">Rural</option>
+                                    <option value="">Todas as Categorias</option><option value="Beleza">Beleza</option><option value="Casa e Manutenção">Casa e Manutenção</option><option value="Serviços">Serviços</option><option value="Automotivo">Automotivo</option><option value="Tecnologia">Tecnologia</option><option value="Alimentação">Alimentação</option><option value="Comércio">Comércio</option><option value="Rural">Rural</option>
                                 </select>
                                 <select id="mgr-filter-type" onchange="app.renderBaseTable()" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm focus:bg-white focus:border-brand-500 outline-none transition-all">
                                     <option value="">Todos os Tipos/Zonas</option><option value="urban">Urbana (Empresas)</option><option value="professional">Autônomos (Domicílio)</option><option value="rural">Rural (Produtores)</option>
@@ -657,7 +693,7 @@
                             <div class="overflow-x-auto">
                                 <table class="w-full text-sm text-left whitespace-nowrap">
                                     <thead class="bg-slate-50 text-slate-500 text-xs uppercase font-semibold border-b border-slate-200">
-                                        <tr><th class="px-6 py-4">Negócio</th><th class="px-6 py-4">Categoria</th><th class="px-6 py-4">Tipo/Porte</th><th class="px-6 py-4">Status</th><th class="px-6 py-4 text-center">Ações</th></tr>
+                                        <tr><th class="px-6 py-4">Negócio</th><th class="px-6 py-4">Categoria</th><th class="px-6 py-4">Tipo/Porte</th><th class="px-6 py-4">Origem do Dado</th><th class="px-6 py-4">Status</th><th class="px-6 py-4 text-center">Ações</th></tr>
                                     </thead>
                                     <tbody class="divide-y divide-slate-100" id="mgr-base-table"></tbody>
                                 </table>
@@ -744,7 +780,17 @@
                     <!-- VIEW: HISTÓRICO -->
                     <div id="view-mgr-history" class="app-view max-w-5xl mx-auto">
                         <div class="mb-6 bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex justify-between items-center">
-                            <div><h3 class="text-xl font-bold text-slate-900">Histórico do Sistema</h3><p class="text-sm text-slate-500 mt-1">Trilha de auditoria das ações realizadas na plataforma.</p></div>
+                            <div>
+                                <h3 class="text-xl font-bold text-slate-900">Histórico do Sistema</h3>
+                                <p class="text-sm text-slate-500 mt-1">Trilha de auditoria das ações realizadas na plataforma.</p>
+                                <div class="flex flex-wrap gap-2 mt-3">
+                                    <span class="inline-flex items-center gap-1.5 text-[11px] font-semibold text-slate-600 bg-slate-100 border border-slate-200 rounded-full px-2.5 py-1"><i data-lucide="log-in" class="w-3 h-3"></i> Acesso</span>
+                                    <span class="inline-flex items-center gap-1.5 text-[11px] font-semibold text-slate-600 bg-slate-100 border border-slate-200 rounded-full px-2.5 py-1"><i data-lucide="pencil" class="w-3 h-3"></i> Alteração de cadastro</span>
+                                    <span class="inline-flex items-center gap-1.5 text-[11px] font-semibold text-slate-600 bg-slate-100 border border-slate-200 rounded-full px-2.5 py-1"><i data-lucide="download" class="w-3 h-3"></i> Exportação de dados</span>
+                                    <span class="inline-flex items-center gap-1.5 text-[11px] font-semibold text-slate-600 bg-slate-100 border border-slate-200 rounded-full px-2.5 py-1"><i data-lucide="shield-check" class="w-3 h-3"></i> Validação municipal</span>
+                                </div>
+                                <p class="text-xs text-slate-400 mt-2">Cada registro guarda data, hora, perfil responsável e detalhe da ação.</p>
+                            </div>
                             <button onclick="app.renderHistory()" class="bg-slate-100 p-2 rounded-lg text-slate-600 hover:text-slate-900 transition"><i data-lucide="refresh-cw" class="w-4 h-4"></i></button>
                         </div>
                         <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-2 overflow-hidden">
@@ -762,12 +808,7 @@
                                     <p class="text-xs text-slate-400 mt-2 font-medium italic">Dados demonstrativos para validação da solução.</p>
                                 </div>
                                 <div class="flex items-center gap-3">
-                                    <select class="px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm font-semibold text-slate-700 outline-none shadow-sm focus:ring-2 focus:ring-brand-200 focus:border-brand-500 transition-all cursor-pointer">
-                                        <option value="7d">Últimos 7 dias</option>
-                                        <option value="30d" selected>Últimos 30 dias</option>
-                                        <option value="90d">Últimos 90 dias</option>
-                                        <option value="custom">Personalizado</option>
-                                    </select>
+                                    <span class="inline-flex items-center gap-2 px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm font-semibold text-slate-600"><i data-lucide="calendar" class="w-4 h-4 text-slate-400"></i> Últimos 30 dias</span>
                                     <button onclick="app.openExecutiveReport()" class="bg-brand-600 hover:bg-brand-700 text-white px-4 py-2 rounded-xl text-sm font-bold shadow-md flex items-center gap-2 transition-colors">
                                         <i data-lucide="file-text" class="w-4 h-4"></i> Gerar Relatório Executivo
                                     </button>
@@ -783,7 +824,7 @@
                                     <h4 class="text-sm font-semibold text-slate-500 uppercase tracking-wide">Buscas Realizadas</h4>
                                     <div class="w-8 h-8 rounded-full bg-slate-50 flex items-center justify-center text-slate-400"><i data-lucide="search" class="w-4 h-4"></i></div>
                                 </div>
-                                <div class="text-3xl font-extrabold text-slate-900">5.420</div>
+                                <div class="text-3xl font-extrabold text-slate-900" id="imp-buscas">0</div>
                             </div>
 
                             <!-- Taxa de atendimento -->
@@ -793,7 +834,7 @@
                                     <div class="w-8 h-8 rounded-full bg-emerald-50 flex items-center justify-center text-emerald-500"><i data-lucide="check-circle" class="w-4 h-4"></i></div>
                                 </div>
                                 <div class="flex items-baseline gap-2">
-                                    <div class="text-3xl font-extrabold text-emerald-600">87,1%</div>
+                                    <div class="text-3xl font-extrabold text-emerald-600" id="imp-taxa-atendimento">0%</div>
                                 </div>
                                 <p class="text-xs text-slate-400 mt-2 font-medium">Buscas que encontraram oferta local relacionada.</p>
                             </div>
@@ -804,7 +845,7 @@
                                     <h4 class="text-sm font-semibold text-slate-500 uppercase tracking-wide">Vitrines Abertas</h4>
                                     <div class="w-8 h-8 rounded-full bg-blue-50 flex items-center justify-center text-blue-500"><i data-lucide="layout-template" class="w-4 h-4"></i></div>
                                 </div>
-                                <div class="text-3xl font-extrabold text-slate-900">2.860</div>
+                                <div class="text-3xl font-extrabold text-slate-900" id="imp-vitrines">0</div>
                             </div>
 
                             <!-- Taxa de Descoberta -->
@@ -813,7 +854,7 @@
                                     <h4 class="text-sm font-semibold text-slate-500 uppercase tracking-wide">Taxa de Descoberta</h4>
                                     <div class="w-8 h-8 rounded-full bg-brand-50 flex items-center justify-center text-brand-500"><i data-lucide="eye" class="w-4 h-4"></i></div>
                                 </div>
-                                <div class="text-3xl font-extrabold text-brand-600">60,6%</div>
+                                <div class="text-3xl font-extrabold text-brand-600" id="imp-taxa-descoberta">0%</div>
                                 <p class="text-xs text-slate-400 mt-2 font-medium">Buscas atendidas que evoluíram para visualização de uma vitrine.</p>
                             </div>
 
@@ -823,7 +864,7 @@
                                     <h4 class="text-sm font-semibold text-slate-500 uppercase tracking-wide">Ações de Contato</h4>
                                     <div class="w-8 h-8 rounded-full bg-purple-50 flex items-center justify-center text-purple-500"><i data-lucide="message-circle" class="w-4 h-4"></i></div>
                                 </div>
-                                <div class="text-3xl font-extrabold text-slate-900">814</div>
+                                <div class="text-3xl font-extrabold text-slate-900" id="imp-contatos">0</div>
                             </div>
 
                             <!-- Taxa de intenção de contato -->
@@ -832,7 +873,7 @@
                                     <h4 class="text-sm font-semibold text-slate-500 uppercase tracking-wide">Taxa de Intenção de Contato</h4>
                                     <div class="w-8 h-8 rounded-full bg-accent-50 flex items-center justify-center text-accent-500"><i data-lucide="phone-forwarded" class="w-4 h-4"></i></div>
                                 </div>
-                                <div class="text-3xl font-extrabold text-accent-600">28,5%</div>
+                                <div class="text-3xl font-extrabold text-accent-600" id="imp-taxa-contato">0%</div>
                                 <p class="text-xs text-slate-400 mt-2 font-medium">Ações de WhatsApp, ligação ou rota após visualização da vitrine.</p>
                             </div>
                         </div>
@@ -845,16 +886,42 @@
                                 <div class="space-y-4">
                                     <div class="flex justify-between items-center border-b border-slate-100 pb-2"><span class="text-sm text-slate-600">Demandas Analisadas</span><span class="font-bold text-slate-900" id="imp-demand-count">0</span></div>
                                     <div class="flex justify-between items-center border-b border-slate-100 pb-2"><span class="text-sm text-slate-600">Demandas com Oferta Local</span><span class="font-bold text-emerald-600" id="imp-demand-matched">0</span></div>
-                                    <div class="flex justify-between items-center border-b border-slate-100 pb-2"><span class="text-sm text-slate-600">Negócios Locais Potenciais</span><span class="font-bold text-brand-600" id="imp-biz-matched">0</span></div>
+                                    <div class="flex justify-between items-center border-b border-slate-100 pb-2"><span class="text-sm text-slate-600">Negócios Locais Aptos a Atender</span><span class="font-bold text-brand-600" id="imp-biz-matched">0</span></div>
                                 </div>
                             </div>
+                            <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6 lg:col-span-2">
+                                <div class="flex items-center gap-2 mb-2"><div class="w-8 h-8 rounded-lg bg-slate-100 text-slate-600 flex items-center justify-center"><i data-lucide="download" class="w-4 h-4"></i></div><h4 class="font-bold text-slate-900">Exportação da Base Econômica</h4></div>
+                                <p class="text-xs text-slate-500 mb-5">Formato aberto, estruturado e interoperável. A base econômica é do Município e pode ser exportada a qualquer tempo, garantindo a reversibilidade dos dados.</p>
+                                <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                                    <button onclick="app.exportarBase('CSV')" class="flex items-center justify-between gap-3 p-4 bg-slate-50 hover:bg-white border border-slate-200 hover:border-brand-400 rounded-xl transition-all text-left group">
+                                        <div><div class="text-sm font-bold text-slate-900">CSV</div><div class="text-[11px] text-slate-500 mt-0.5">Planilha gerencial</div></div>
+                                        <i data-lucide="table" class="w-5 h-5 text-slate-400 group-hover:text-brand-600 flex-shrink-0"></i>
+                                    </button>
+                                    <button onclick="app.exportarBase('JSON')" class="flex items-center justify-between gap-3 p-4 bg-slate-50 hover:bg-white border border-slate-200 hover:border-brand-400 rounded-xl transition-all text-left group">
+                                        <div><div class="text-sm font-bold text-slate-900">JSON</div><div class="text-[11px] text-slate-500 mt-0.5">Integração de sistemas</div></div>
+                                        <i data-lucide="braces" class="w-5 h-5 text-slate-400 group-hover:text-brand-600 flex-shrink-0"></i>
+                                    </button>
+                                    <button onclick="app.exportarBase('GeoJSON')" class="flex items-center justify-between gap-3 p-4 bg-slate-50 hover:bg-white border border-slate-200 hover:border-brand-400 rounded-xl transition-all text-left group">
+                                        <div><div class="text-sm font-bold text-slate-900">GeoJSON</div><div class="text-[11px] text-slate-500 mt-0.5">Camada georreferenciada</div></div>
+                                        <i data-lucide="map-pin" class="w-5 h-5 text-slate-400 group-hover:text-brand-600 flex-shrink-0"></i>
+                                    </button>
+                                </div>
+                                <div class="mt-4 flex items-start gap-3 p-3 bg-emerald-50 border border-emerald-100 rounded-xl">
+                                    <i data-lucide="shield-check" class="w-5 h-5 text-emerald-600 flex-shrink-0 mt-0.5"></i>
+                                    <div>
+                                        <div class="text-xs font-bold text-emerald-900">Conformidade LGPD</div>
+                                        <p class="text-[11px] text-emerald-800 mt-0.5">A exportação aplica minimização de dados: documentos pessoais são omitidos e endereços de negócios com proteção de localização saem como área aproximada. Toda exportação fica registrada na trilha de auditoria.</p>
+                                    </div>
+                                </div>
+                            </div>
+
                             <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6">
                                 <h4 class="font-bold text-slate-900 mb-6 text-center">Funil de Geração de Negócios</h4>
                                 <div class="flex flex-col gap-3 relative">
-                                    <div class="flex justify-between items-center p-3 bg-slate-50 rounded-xl border border-slate-100"><span class="text-xs font-bold text-slate-500 uppercase">Buscas Feitas</span><span class="text-lg font-extrabold text-slate-800">5.420</span></div>
-                                    <div class="flex justify-between items-center p-3 bg-brand-50 rounded-xl border border-brand-100 ml-4"><span class="text-xs font-bold text-brand-500 uppercase">Com Resultado</span><span class="text-lg font-extrabold text-brand-700">4.720</span></div>
-                                    <div class="flex justify-between items-center p-3 bg-blue-50 rounded-xl border border-blue-100 ml-8"><span class="text-xs font-bold text-blue-500 uppercase">Vitrines Abertas</span><span class="text-lg font-extrabold text-blue-700">2.860</span></div>
-                                    <div class="flex justify-between items-center p-3 bg-emerald-50 rounded-xl border border-emerald-200 ml-12 shadow-sm"><span class="text-xs font-bold text-emerald-600 uppercase">Ações de Contato</span><span class="text-xl font-extrabold text-emerald-700">814</span></div>
+                                    <div class="flex justify-between items-center p-3 bg-slate-50 rounded-xl border border-slate-100"><span class="text-xs font-bold text-slate-500 uppercase">Buscas Feitas</span><span class="text-lg font-extrabold text-slate-800" id="imp-funil-buscas">0</span></div>
+                                    <div class="flex justify-between items-center p-3 bg-brand-50 rounded-xl border border-brand-100 ml-4"><span class="text-xs font-bold text-brand-500 uppercase">Com Resultado</span><span class="text-lg font-extrabold text-brand-700" id="imp-funil-resultado">0</span></div>
+                                    <div class="flex justify-between items-center p-3 bg-blue-50 rounded-xl border border-blue-100 ml-8"><span class="text-xs font-bold text-blue-500 uppercase">Vitrines Abertas</span><span class="text-lg font-extrabold text-blue-700" id="imp-funil-vitrines">0</span></div>
+                                    <div class="flex justify-between items-center p-3 bg-emerald-50 rounded-xl border border-emerald-200 ml-12 shadow-sm"><span class="text-xs font-bold text-emerald-600 uppercase">Ações de Contato</span><span class="text-xl font-extrabold text-emerald-700" id="imp-funil-contatos">0</span></div>
                                 </div>
                             </div>
                         </div>
@@ -967,15 +1034,23 @@
                             <label class="block text-sm font-bold text-slate-900 mb-1">Categoria Principal</label>
                             <select id="onb-category" class="w-full px-4 py-2 bg-white border border-slate-200 rounded-lg text-sm outline-none"><option>Serviços</option><option>Beleza</option><option>Alimentação</option><option>Casa e Manutenção</option><option>Tecnologia</option><option>Automotivo</option><option>Rural</option><option>Comércio</option></select>
                         </div>
-                        <div><label class="block text-sm font-bold text-slate-900 mb-1">CNAE (opcional)</label><input type="text" id="onb-cnae" class="w-full px-4 py-2 bg-white border border-slate-200 rounded-lg text-sm outline-none" placeholder="0000-0/00"></div>
+                        <div>
+                            <label class="block text-sm font-bold text-slate-900 mb-1">CNAE (opcional)</label>
+                            <input type="text" id="onb-cnae" class="w-full px-4 py-2 bg-white border border-slate-200 rounded-lg text-sm outline-none" placeholder="0000-0/00">
+                            <p class="text-xs text-slate-500 mt-1">Código da sua atividade econômica. Se não souber, deixe em branco — a Prefeitura pode preencher depois.</p>
+                        </div>
                     </div>
-                    <div><label class="block text-sm font-bold text-slate-900 mb-1">Descrição Pública (Vitrine)</label><textarea id="onb-desc" class="w-full px-4 py-2 bg-white border border-slate-200 rounded-lg text-sm outline-none h-20"></textarea></div>
+                    <div>
+                        <label class="block text-sm font-bold text-slate-900 mb-1">Descrição Pública (Vitrine)</label>
+                        <textarea id="onb-desc" class="w-full px-4 py-2 bg-white border border-slate-200 rounded-lg text-sm outline-none h-20" placeholder="Ex: Faço unhas em gel, alongamento e esmaltação. Atendo com hora marcada no Centro."></textarea>
+                    </div>
                     
                     <div>
                         <label class="block text-sm font-bold text-slate-900 mb-1">Palavras-chave (Como te buscam?)</label>
                         <div class="flex flex-wrap gap-2 p-2 bg-white border border-slate-200 rounded-lg focus-within:border-brand-500 transition-all" id="onb-tags-container">
                             <input type="text" id="onb-tag-input" onkeydown="app.handleTagInput(event, 'onb')" class="outline-none bg-transparent flex-grow text-sm min-w-[120px]" placeholder="Digite um termo e aperte Enter">
                         </div>
+                        <p class="text-xs text-slate-500 mt-1">Ex: manicure, unha em gel, alongamento. Digite um termo e aperte Enter.</p>
                     </div>
 
                     <div class="border border-slate-200 rounded-lg p-4 bg-white mt-4">
@@ -1012,7 +1087,7 @@
                 <div>
                     <h4 class="text-sm font-bold text-slate-900 border-b border-slate-200 pb-2 mb-3"><i data-lucide="file-text" class="w-4 h-4 inline mr-1 text-slate-400"></i> Informações de Cadastro</h4>
                     <div class="grid grid-cols-2 gap-y-3 gap-x-4 text-sm">
-                        <div><span class="text-slate-500 block text-xs">CPF/CNPJ</span><span class="font-medium text-slate-900">***.456.789-**</span></div>
+                        <div><span class="text-slate-500 block text-xs">CPF/CNPJ</span><span class="font-medium text-slate-700 inline-flex items-center gap-1"><i data-lucide="lock" class="w-3 h-3 text-slate-400"></i> Protegido (LGPD)</span></div>
                         <div><span class="text-slate-500 block text-xs">Porte / Tipo</span><span class="font-medium text-slate-900" id="bd-porte">MEI</span></div>
                         <div><span class="text-slate-500 block text-xs">CNAE</span><span class="font-medium text-slate-900" id="bd-cnae">0000-0/00</span></div>
                         <div><span class="text-slate-500 block text-xs">Origem do Dado</span><span class="font-medium text-slate-900" id="bd-origin">Base</span></div>
@@ -1030,10 +1105,20 @@
                 </div>
                 <div>
                     <h4 class="text-sm font-bold text-slate-900 border-b border-slate-200 pb-2 mb-3"><i data-lucide="layout-template" class="w-4 h-4 inline mr-1 text-slate-400"></i> Dados da Vitrine Pública</h4>
-                    <div class="space-y-3 text-sm">
+                    <div class="space-y-3 text-sm" id="bd-vitrine-block">
                         <div><span class="text-slate-500 block text-xs">WhatsApp</span><span class="font-medium text-slate-900" id="bd-whatsapp">(00) 0000</span></div>
                         <div><span class="text-slate-500 block text-xs">Descrição</span><p class="text-slate-700 mt-1" id="bd-desc">...</p></div>
                         <div><span class="text-slate-500 block text-xs">Tags</span><p class="text-slate-700 mt-1" id="bd-tags">...</p></div>
+                    </div>
+                    <div class="hidden bg-slate-50 border border-slate-200 rounded-xl p-4" id="bd-sem-vitrine-block">
+                        <div class="flex items-start gap-3">
+                            <div class="w-8 h-8 rounded-lg bg-white border border-slate-200 text-slate-500 flex items-center justify-center flex-shrink-0"><i data-lucide="store" class="w-4 h-4"></i></div>
+                            <div>
+                                <p class="text-sm font-bold text-slate-900">Ainda não há vitrine pública</p>
+                                <p class="text-xs text-slate-600 mt-1">Registro cadastrado pela Prefeitura a partir da base econômica municipal. Os dados acima alimentam os indicadores e a busca da gestão, mas o negócio não aparece no portal público até que o empreendedor reivindique a vitrine e publique catálogo, contato e horários.</p>
+                                <p class="text-xs font-semibold text-slate-500 mt-2">Aguardando reivindicação do empreendedor.</p>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -1236,9 +1321,9 @@
             </div>
             <div class="p-6 space-y-6">
                 <div><div class="text-sm font-semibold text-slate-500 uppercase tracking-wider mb-1">Termo Buscado</div><div class="text-2xl font-extrabold text-slate-900" id="gap-modal-term">Termo</div></div>
-                <div class="grid grid-cols-2 gap-4">
-                    <div class="bg-slate-50 border border-slate-100 p-4 rounded-xl"><div class="text-3xl font-extrabold text-brand-600" id="gap-modal-count">0</div><div class="text-xs font-bold text-slate-500 mt-1">Buscas nos últimos 30 dias</div></div>
-                    <div class="bg-slate-50 border border-slate-100 p-4 rounded-xl"><div class="text-sm font-bold text-slate-800">CNAE Sugerido</div><div class="text-xs text-slate-500 mt-1">Baseado no termo, procure incentivar atividades do grupo específico.</div></div>
+                <div class="bg-slate-50 border border-slate-100 p-4 rounded-xl flex items-center gap-4">
+                    <div class="text-3xl font-extrabold text-brand-600 leading-none" id="gap-modal-count">0</div>
+                    <div class="text-xs font-bold text-slate-500">Buscas sem resultado<br>nos últimos 30 dias</div>
                 </div>
                 <div class="bg-amber-50 border border-amber-100 p-4 rounded-xl">
                     <h4 class="text-sm font-bold text-amber-900 mb-1"><i data-lucide="lightbulb" class="w-4 h-4 inline mr-1"></i> Ação Recomendada</h4>
@@ -1269,7 +1354,7 @@
                         </section>
                         <section>
                             <h3 class="font-bold text-base border-b border-slate-200 pb-1 mb-2">2. Descoberta e Fomento (Funil)</h3>
-                            <p>O radar municipal processou <b>5.420 buscas</b>, convertendo em <b>2.860 aberturas de vitrines públicas</b>. Isso gerou <b>814 contatos diretos</b> impulsionando o comércio local organicamente.</p>
+                            <p>O radar municipal processou <b id="rep-buscas">0</b> buscas, convertendo em <b id="rep-vitrines">0</b> aberturas de vitrines públicas. Isso gerou <b id="rep-contatos">0</b> contatos diretos, impulsionando o comércio local organicamente.</p>
                         </section>
                         <section>
                             <h3 class="font-bold text-base border-b border-slate-200 pb-1 mb-2">3. Lacunas de Oferta (Oportunidades)</h3>
@@ -1307,52 +1392,133 @@
     <script>
         // Data Initialization for Medianeira (-25.2983, -54.0933)
         const seedBusinesses = [
-            { 
-                id: 1, name: "Bella Nails Studio", category: "Beleza", type: "professional", porte: "MEI", cnae: "9602-5/02", status: "aberto", 
-                hours: { seg: {o:true, s:'08:00', e:'19:00'}, ter: {o:true, s:'08:00', e:'19:00'}, qua: {o:true, s:'08:00', e:'19:00'}, qui: {o:true, s:'08:00', e:'19:00'}, sex: {o:true, s:'08:00', e:'19:00'}, sab: {o:true, s:'08:00', e:'14:00'}, dom: {o:false, s:'00:00', e:'00:00'} },
-                description: "Manicure e Nail Designer especialista em esmaltação em gel e alongamento.", 
-                catalog: [ { id: 101, name: "Esmaltação em Gel", price: "R$ 60,00", img: "https://placehold.co/400x300/fdf2f8/db2777?text=Unhas+Gel" } ], 
-                address: "Av. Brasil, Centro", lat: -25.2980, lng: -54.0930, protectedLocation: false, origin: "Vitrine Validada", validationStatus: "validado", updatedAt: "2026-08-05", 
-                tags: ["manicure", "unha", "gel"], whatsapp: "(45) 99999-0001", color: "bg-pink-600", icon: "scissors", stats: { views: 412, contacts: 34 }
+            {
+                id: 1, name: "Bella Nails Studio", category: "Beleza", type: "professional", porte: "MEI", cnae: "9602-5/02", status: "aberto",
+                hours: { seg: {o:true, s:'08:00', e:'19:00'}, ter: {o:true, s:'08:00', e:'19:00'}, qua: {o:true, s:'08:00', e:'19:00'}, qui: {o:true, s:'08:00', e:'19:00'}, sex: {o:true, s:'08:00', e:'19:00'}, sab: {o:true, s:'08:00', e:'14:00'}, dom: {o:false, s:'', e:''} },
+                description: "Manicure e nail designer especialista em esmaltação em gel e alongamento. Atendimento com hora marcada.",
+                catalog: [ { id: 101, name: "Esmaltação em Gel", price: "R$ 60,00", img: "https://placehold.co/400x300/fdf2f8/db2777?text=Unhas+Gel" }, { id: 102, name: "Alongamento em Fibra", price: "R$ 120,00", img: "https://placehold.co/400x300/fdf2f8/db2777?text=Alongamento" } ],
+                address: "Av. Brasil, 1520 - Centro", lat: -25.2978, lng: -54.0938, protectedLocation: false, hasVitrine: true, origin: "Cadastro do Empreendedor", validationStatus: "validado", updatedAt: "2026-08-05",
+                tags: ["manicure", "unha", "gel", "alongamento"], whatsapp: "(45) 99912-0001", color: "bg-pink-600", icon: "scissors", stats: { views: 68, opens: 31, contacts: 14 }
             },
-            { 
-                id: 2, name: "Ana Clean Serviços", category: "Casa e Manutenção", type: "professional", porte: "Autônomo", cnae: "9700-5/00", status: "aberto", 
+            {
+                id: 2, name: "Ana Clean Serviços", category: "Casa e Manutenção", type: "professional", porte: "Autônomo", cnae: "9700-5/00", status: "aberto",
                 hours: { seg: {o:true, s:'08:00', e:'18:00'}, ter: {o:true, s:'08:00', e:'18:00'}, qua: {o:true, s:'08:00', e:'18:00'}, qui: {o:true, s:'08:00', e:'18:00'}, sex: {o:true, s:'08:00', e:'18:00'}, sab: {o:false, s:'', e:''}, dom: {o:false, s:'', e:''} },
-                description: "Serviço profissional de diarista e limpeza residencial. Atendo Medianeira.", 
-                catalog: [ { id: 201, name: "Diária", price: "R$ 150,00", img: "https://placehold.co/400x300/eff6ff/2563eb?text=Limpeza" } ], 
-                address: "Atende em domicílio", lat: -25.3050, lng: -54.1000, protectedLocation: true, origin: "Cadastro do Profissional", validationStatus: "validado", updatedAt: "2026-07-20", 
-                tags: ["diarista", "faxina", "limpeza"], whatsapp: "(45) 98888-0002", color: "bg-blue-500", icon: "sparkles", stats: { views: 289, contacts: 22 }
+                description: "Serviço profissional de diarista e limpeza residencial. Atendo Medianeira e distritos.",
+                catalog: [ { id: 201, name: "Diária Residencial", price: "R$ 150,00", img: "https://placehold.co/400x300/eff6ff/2563eb?text=Limpeza" } ],
+                address: "Atende em domicilio - Bairro Ipê", lat: -25.3042, lng: -54.0871, protectedLocation: true, hasVitrine: true, origin: "Cadastro do Empreendedor", validationStatus: "validado", updatedAt: "2026-07-20",
+                tags: ["diarista", "faxina", "limpeza", "passadeira"], whatsapp: "(45) 99884-0002", color: "bg-blue-500", icon: "sparkles", stats: { views: 47, opens: 22, contacts: 9 }
             },
-            { 
-                id: 3, name: "Mecânica São José", category: "Automotivo", type: "urban", porte: "ME", cnae: "4520-0/01", status: "aberto", 
+            {
+                id: 3, name: "Mecânica São José", category: "Automotivo", type: "urban", porte: "ME", cnae: "4520-0/01", status: "aberto",
                 hours: { seg: {o:true, s:'08:00', e:'18:30'}, ter: {o:true, s:'08:00', e:'18:30'}, qua: {o:true, s:'08:00', e:'18:30'}, qui: {o:true, s:'08:00', e:'18:30'}, sex: {o:true, s:'08:00', e:'18:30'}, sab: {o:true, s:'08:00', e:'12:00'}, dom: {o:false, s:'', e:''} },
-                description: "Oficina completa, injeção eletrônica e suspensão.", 
-                catalog: [ { id: 401, name: "Revisão", price: "A partir de R$ 200", img: "https://placehold.co/400x300/f1f5f9/475569?text=Mecanica" } ], 
-                address: "Av. João XXIII, Medianeira", lat: -25.2950, lng: -54.0900, protectedLocation: false, origin: "Vitrine Validada", validationStatus: "validado", updatedAt: "2026-08-08", 
-                tags: ["mecânico", "oficina", "carro", "conserto"], whatsapp: "(45) 3264-0004", color: "bg-slate-700", icon: "wrench", stats: { views: 520, contacts: 45 }
+                description: "Oficina completa: injeção eletrônica, suspensão, freios e revisão preventiva.",
+                catalog: [ { id: 301, name: "Revisão Completa", price: "A partir de R$ 200,00", img: "https://placehold.co/400x300/f1f5f9/475569?text=Revisao" } ],
+                address: "Av. João XXIII, 890 - Centro", lat: -25.2951, lng: -54.0902, protectedLocation: false, hasVitrine: true, origin: "Cadastro do Empreendedor", validationStatus: "validado", updatedAt: "2026-08-08",
+                tags: ["mecânico", "oficina", "carro", "conserto", "freio"], whatsapp: "(45) 3264-0003", color: "bg-slate-700", icon: "wrench", stats: { views: 82, opens: 38, contacts: 19 }
             },
-            { 
-                id: 4, name: "Sítio Águas Claras", category: "Rural", type: "rural", porte: "Produtor Rural", cnae: "0112-1/01", status: "aberto", 
+            {
+                id: 4, name: "Sítio Águas Claras", category: "Rural", type: "rural", porte: "Produtor Rural", cnae: "0112-1/01", status: "aberto",
                 hours: { seg: {o:true, s:'06:00', e:'16:00'}, ter: {o:true, s:'06:00', e:'16:00'}, qua: {o:true, s:'06:00', e:'16:00'}, qui: {o:true, s:'06:00', e:'16:00'}, sex: {o:true, s:'06:00', e:'16:00'}, sab: {o:false, s:'', e:''}, dom: {o:false, s:'', e:''} },
-                description: "Agricultura familiar. Hortaliças orgânicas. Fornecedor apto PNAE.", 
-                catalog: [ { id: 801, name: "Cesta Orgânica", price: "R$ 40,00", img: "https://placehold.co/400x300/dcfce7/059669?text=Cesta" } ], 
-                address: "Linha Alegria", lat: -25.3200, lng: -54.1200, protectedLocation: true, origin: "Sincronizado PNAE", validationStatus: "validado", updatedAt: "2026-07-01", 
-                tags: ["agricultura familiar", "orgânico", "hortaliça", "pnae"], whatsapp: "(45) 94444-0008", color: "bg-emerald-600", icon: "tractor", stats: { views: 110, contacts: 5 }
+                description: "Agricultura familiar. Hortaliças orgânicas e legumes da estação. Fornecedor apto ao PNAE.",
+                catalog: [ { id: 401, name: "Cesta Orgânica Semanal", price: "R$ 40,00", img: "https://placehold.co/400x300/dcfce7/059669?text=Cesta" } ],
+                address: "Linha Alegria - Zona Rural", lat: -25.3218, lng: -54.1147, protectedLocation: true, hasVitrine: true, origin: "Sincronizado", validationStatus: "validado", updatedAt: "2026-07-01",
+                tags: ["agricultura familiar", "orgânico", "hortaliça", "pnae", "legumes"], whatsapp: "(45) 99947-0004", color: "bg-emerald-600", icon: "wheat", stats: { views: 31, opens: 15, contacts: 6 }
             },
-            { 
-                id: 5, name: "EletroRápido Manutenção", category: "Serviços", type: "urban", porte: "MEI", cnae: "4321-5/00", status: "aberto", 
+            {
+                id: 5, name: "EletroRápido Manutenção", category: "Serviços", type: "urban", porte: "MEI", cnae: "4321-5/00", status: "aberto",
                 hours: { seg: {o:true, s:'08:00', e:'18:00'}, ter: {o:true, s:'08:00', e:'18:00'}, qua: {o:true, s:'08:00', e:'18:00'}, qui: {o:true, s:'08:00', e:'18:00'}, sex: {o:true, s:'08:00', e:'18:00'}, sab: {o:true, s:'08:00', e:'12:00'}, dom: {o:false, s:'', e:''} },
-                description: "Eletricista residencial e comercial.", 
-                catalog: [], address: "Bairro Nazaré", lat: -25.2900, lng: -54.0800, protectedLocation: false, origin: "Base Importada", validationStatus: "pendente", updatedAt: "2026-01-10", 
-                tags: ["eletricista", "chuveiro", "fiação"], whatsapp: "(45) 97777-0003", color: "bg-amber-500", icon: "zap", stats: { views: 156, contacts: 8 }
+                description: "Eletricista residencial e comercial. Instalação de chuveiro, tomadas e quadro de luz.",
+                catalog: [ { id: 501, name: "Instalação de Chuveiro", price: "R$ 90,00", img: "https://placehold.co/400x300/fffbeb/d97706?text=Eletrica" } ],
+                address: "Rua Paraná, 340 - Nazaré", lat: -25.2904, lng: -54.0865, protectedLocation: false, hasVitrine: true, origin: "Cadastro do Empreendedor", validationStatus: "pendente", updatedAt: "2026-08-12",
+                tags: ["eletricista", "chuveiro", "fiação", "tomada"], whatsapp: "(45) 99771-0005", color: "bg-amber-500", icon: "zap", stats: { views: 24, opens: 9, contacts: 3 }
+            },
+            {
+                id: 6, name: "Marcenaria Medianeira", category: "Casa e Manutenção", type: "urban", porte: "ME", cnae: "3101-2/00", status: "aberto",
+                hours: { seg: {o:true, s:'07:30', e:'17:30'}, ter: {o:true, s:'07:30', e:'17:30'}, qua: {o:true, s:'07:30', e:'17:30'}, qui: {o:true, s:'07:30', e:'17:30'}, sex: {o:true, s:'07:30', e:'17:30'}, sab: {o:true, s:'08:00', e:'12:00'}, dom: {o:false, s:'', e:''} },
+                description: "Móveis sob medida e conserto de mobiliário em geral: cadeiras, mesas, carteiras e armários.",
+                catalog: [ { id: 601, name: "Conserto de Cadeira", price: "A partir de R$ 45,00", img: "https://placehold.co/400x300/fef3c7/92400e?text=Marcenaria" }, { id: 602, name: "Móvel Sob Medida", price: "Sob orçamento", img: "https://placehold.co/400x300/fef3c7/92400e?text=Sob+Medida" } ],
+                address: "Rua Uruguai, 122 - Bairro Fron", lat: -25.3025, lng: -54.0996, protectedLocation: false, hasVitrine: true, origin: "Cadastro do Empreendedor", validationStatus: "validado", updatedAt: "2026-08-14",
+                tags: ["marcenaria", "conserto", "móveis", "cadeira", "madeira"], whatsapp: "(45) 99823-0006", color: "bg-orange-700", icon: "hammer", stats: { views: 56, opens: 26, contacts: 11 }
+            },
+            {
+                id: 7, name: "Padaria Pão Nosso", category: "Alimentação", type: "urban", porte: "ME", cnae: "1091-1/02", status: "aberto",
+                hours: { seg: {o:true, s:'06:00', e:'20:00'}, ter: {o:true, s:'06:00', e:'20:00'}, qua: {o:true, s:'06:00', e:'20:00'}, qui: {o:true, s:'06:00', e:'20:00'}, sex: {o:true, s:'06:00', e:'20:00'}, sab: {o:true, s:'06:00', e:'18:00'}, dom: {o:true, s:'06:00', e:'12:00'} },
+                description: "Pães artesanais, confeitaria e salgados para festas e eventos.",
+                catalog: [ { id: 701, name: "Pão Caseiro", price: "R$ 12,00", img: "https://placehold.co/400x300/fef9c3/a16207?text=Padaria" }, { id: 702, name: "Salgados p/ Festa (cento)", price: "R$ 90,00", img: "https://placehold.co/400x300/fef9c3/a16207?text=Salgados" } ],
+                address: "Av. Rio Grande do Sul, 655 - Centro", lat: -25.2996, lng: -54.0917, protectedLocation: false, hasVitrine: true, origin: "Cadastro do Empreendedor", validationStatus: "validado", updatedAt: "2026-08-10",
+                tags: ["padaria", "pão", "salgado", "bolo", "confeitaria"], whatsapp: "(45) 3264-0007", color: "bg-yellow-600", icon: "utensils", stats: { views: 91, opens: 42, contacts: 17 }
+            },
+            {
+                id: 8, name: "TecnoFix Assistência", category: "Tecnologia", type: "urban", porte: "MEI", cnae: "9511-8/00", status: "aberto",
+                hours: { seg: {o:true, s:'09:00', e:'18:00'}, ter: {o:true, s:'09:00', e:'18:00'}, qua: {o:true, s:'09:00', e:'18:00'}, qui: {o:true, s:'09:00', e:'18:00'}, sex: {o:true, s:'09:00', e:'18:00'}, sab: {o:true, s:'09:00', e:'12:00'}, dom: {o:false, s:'', e:''} },
+                description: "Assistência tecnica de celulares e notebooks. Troca de tela, bateria e formatação.",
+                catalog: [ { id: 801, name: "Troca de Tela", price: "A partir de R$ 180,00", img: "https://placehold.co/400x300/eef2ff/4338ca?text=Celular" } ],
+                address: "Rua Santos Dumont, 210 - Centro", lat: -25.2965, lng: -54.0949, protectedLocation: false, hasVitrine: true, origin: "Cadastro do Empreendedor", validationStatus: "validado", updatedAt: "2026-08-16",
+                tags: ["celular", "assistência técnica", "conserto", "tela", "notebook"], whatsapp: "(45) 99936-0008", color: "bg-indigo-600", icon: "smartphone", stats: { views: 74, opens: 35, contacts: 16 }
+            },
+            {
+                id: 9, name: "Agro Sabor Colônia", category: "Rural", type: "rural", porte: "Produtor Rural", cnae: "0113-0/00", status: "aberto",
+                hours: { seg: {o:true, s:'07:00', e:'17:00'}, ter: {o:true, s:'07:00', e:'17:00'}, qua: {o:true, s:'07:00', e:'17:00'}, qui: {o:true, s:'07:00', e:'17:00'}, sex: {o:true, s:'07:00', e:'17:00'}, sab: {o:true, s:'07:00', e:'12:00'}, dom: {o:false, s:'', e:''} },
+                description: "Agroindústria familiar: queijo colonial, mel e conservas artesanais.",
+                catalog: [ { id: 901, name: "Queijo Colonial", price: "R$ 35,00 /kg", img: "https://placehold.co/400x300/dcfce7/059669?text=Queijo" }, { id: 902, name: "Mel Puro 1kg", price: "R$ 45,00", img: "https://placehold.co/400x300/dcfce7/059669?text=Mel" } ],
+                address: "Linha São Jorge - Zona Rural", lat: -25.2765, lng: -54.1189, protectedLocation: true, hasVitrine: true, origin: "Sincronizado", validationStatus: "validado", updatedAt: "2026-06-28",
+                tags: ["agricultura familiar", "queijo", "mel", "colonial", "pnae"], whatsapp: "(45) 99958-0009", color: "bg-lime-700", icon: "tractor", stats: { views: 38, opens: 18, contacts: 8 }
+            },
+            {
+                id: 10, name: "Malharia Ponto Certo", category: "Comércio", type: "urban", porte: "EPP", cnae: "1412-6/01", status: "aberto",
+                hours: { seg: {o:true, s:'08:00', e:'18:00'}, ter: {o:true, s:'08:00', e:'18:00'}, qua: {o:true, s:'08:00', e:'18:00'}, qui: {o:true, s:'08:00', e:'18:00'}, sex: {o:true, s:'08:00', e:'18:00'}, sab: {o:false, s:'', e:''}, dom: {o:false, s:'', e:''} },
+                description: "Confecção de uniformes, camisetas e enxoval. Costura sob medida e bordado.",
+                catalog: [ { id: 1001, name: "Uniforme Escolar", price: "Sob orçamento", img: "https://placehold.co/400x300/f5f3ff/6d28d9?text=Uniforme" }, { id: 1002, name: "Ajuste de Roupa", price: "A partir de R$ 25,00", img: "https://placehold.co/400x300/f5f3ff/6d28d9?text=Costura" } ],
+                address: "Rua Argentina, 78 - Cidade Alta", lat: -25.2932, lng: -54.0983, protectedLocation: false, hasVitrine: true, origin: "Cadastro do Empreendedor", validationStatus: "validado", updatedAt: "2026-07-30",
+                tags: ["costura", "uniforme", "camiseta", "bordado", "malha"], whatsapp: "(45) 99815-0010", color: "bg-purple-600", icon: "shirt", stats: { views: 43, opens: 20, contacts: 7 }
+            },
+            {
+                id: 11, name: "Studio Luz Fotografia", category: "Serviços", type: "professional", porte: "MEI", cnae: "7420-0/01", status: "fechado",
+                hours: { seg: {o:false, s:'', e:''}, ter: {o:true, s:'13:00', e:'19:00'}, qua: {o:true, s:'13:00', e:'19:00'}, qui: {o:true, s:'13:00', e:'19:00'}, sex: {o:true, s:'13:00', e:'19:00'}, sab: {o:true, s:'09:00', e:'17:00'}, dom: {o:false, s:'', e:''} },
+                description: "Fotografia de eventos, ensaios e registro institucional. Atendimento com agendamento.",
+                catalog: [ { id: 1101, name: "Ensaio Fotográfico", price: "R$ 280,00", img: "https://placehold.co/400x300/f8fafc/334155?text=Foto" } ],
+                address: "Rua das Flores, 45 - Parque Independência", lat: -25.3071, lng: -54.0925, protectedLocation: true, hasVitrine: true, origin: "Cadastro do Empreendedor", validationStatus: "pendente", updatedAt: "2026-08-15",
+                tags: ["fotografia", "ensaio", "evento", "foto"], whatsapp: "(45) 99902-0011", color: "bg-cyan-700", icon: "camera", stats: { views: 19, opens: 7, contacts: 2 }
+            },
+            {
+                id: 12, name: "Construtora Vale Verde Ltda", category: "Casa e Manutenção", type: "urban", porte: "EPP", cnae: "4120-4/00", status: "aberto",
+                hours: null,
+                description: "",
+                catalog: [],
+                address: "Rua Bahia, 1120 - Belo Horizonte", lat: -25.2889, lng: -54.0958, protectedLocation: false, hasVitrine: false, origin: "Base Importada", validationStatus: "validado", updatedAt: "2026-05-18",
+                tags: [], whatsapp: "", color: "bg-slate-500", icon: "building-2", stats: { views: 0, opens: 0, contacts: 0 }
+            },
+            {
+                id: 13, name: "Transportes Fron Ltda", category: "Serviços", type: "urban", porte: "ME", cnae: "4930-2/02", status: "aberto",
+                hours: null,
+                description: "",
+                catalog: [],
+                address: "Rod. BR-277, km 588 - Bairro Fron", lat: -25.3096, lng: -54.1043, protectedLocation: false, hasVitrine: false, origin: "Base Importada", validationStatus: "validado", updatedAt: "2024-11-20",
+                tags: [], whatsapp: "", color: "bg-slate-500", icon: "truck", stats: { views: 0, opens: 0, contacts: 0 }
+            },
+            {
+                id: 14, name: "Metalúrgica Ipê", category: "Comércio", type: "urban", porte: "ME", cnae: "2542-0/00", status: "aberto",
+                hours: null,
+                description: "",
+                catalog: [],
+                address: "Rua São Paulo, 505 - Ipê", lat: null, lng: null, protectedLocation: false, hasVitrine: false, origin: "Base Importada", validationStatus: "pendente", updatedAt: "2026-04-09",
+                tags: [], whatsapp: "", color: "bg-slate-500", icon: "factory", stats: { views: 0, opens: 0, contacts: 0 }
+            },
+            {
+                id: 15, name: "Distribuidora Cidade Alta", category: "Comércio", type: "urban", porte: "EPP", cnae: "4691-5/00", status: "aberto",
+                hours: null,
+                description: "",
+                catalog: [],
+                address: "Av. Independência, 2200 - Cidade Alta", lat: null, lng: null, protectedLocation: false, hasVitrine: false, origin: "Base Importada", validationStatus: "validado", updatedAt: "2025-06-02",
+                tags: [], whatsapp: "", color: "bg-slate-500", icon: "package", stats: { views: 0, opens: 0, contacts: 0 }
             }
         ];
 
         const searchSynonyms = {
-            "faxina": ["diarista", "limpeza", "casa"], "limpeza": ["diarista", "faxina", "casa"],
+            "faxina": ["diarista", "limpeza"], "limpeza": ["diarista", "faxina"],
             "unha": ["manicure", "pedicure", "gel"], "esmalte": ["manicure", "unha"],
-            "carro quebrado": ["mecânico", "oficina", "carro", "conserto"],
-            "celular quebrado": ["celular", "assistência técnica", "conserto", "tela"],
+            "carro quebrado": ["mecânico", "oficina", "carro"],
+            "celular quebrado": ["celular", "assistência técnica", "tela", "notebook"],
             "reforma": ["construção", "pedreiro", "pintura"],
             "merenda": ["pnae", "agricultura familiar", "hortaliça"]
         };
@@ -1362,17 +1528,25 @@
             { id: 2, title: "Hortaliças para Merenda", sector: "Sec. Educação", category: "Alimentação", tags: ["agricultura familiar", "hortaliça", "pnae"], cnae: "0112-1/01", date: "Ago/2026", desc: "Levantamento PNAE.", status: "Em análise" }
         ];
 
-        const appData = { businesses: [], validations: [], gaps: [], history: [], demands: [] };
+        // Único contador de eventos semeado. Tudo mais no Painel de Impacto é derivado
+        // deste número, da base de negócios e das lacunas registradas.
+        const seedMetrics = { buscas: 560 };
+
+        const appData = { businesses: [], validations: [], gaps: [], history: [], demands: [], metrics: { buscas: 0 } };
+
+        const SEED_VERSION = '2026-08-18-15neg';
 
         const storage = {
             init() {
-                if (!localStorage.getItem('vitryx_demo_businesses')) this.reset();
+                if (localStorage.getItem('vitryx_seed_version') !== SEED_VERSION) this.reset();
+                else if (!localStorage.getItem('vitryx_demo_businesses')) this.reset();
                 else {
                     appData.businesses = JSON.parse(localStorage.getItem('vitryx_demo_businesses'));
                     appData.validations = JSON.parse(localStorage.getItem('vitryx_demo_validations'));
                     appData.gaps = JSON.parse(localStorage.getItem('vitryx_demo_gaps'));
                     appData.history = JSON.parse(localStorage.getItem('vitryx_demo_history') || '[]');
                     appData.demands = JSON.parse(localStorage.getItem('vitryx_demo_demands') || '[]');
+                    appData.metrics = JSON.parse(localStorage.getItem('vitryx_demo_metrics') || JSON.stringify(seedMetrics));
                 }
             },
             save() {
@@ -1381,11 +1555,14 @@
                 localStorage.setItem('vitryx_demo_gaps', JSON.stringify(appData.gaps));
                 localStorage.setItem('vitryx_demo_history', JSON.stringify(appData.history));
                 localStorage.setItem('vitryx_demo_demands', JSON.stringify(appData.demands));
+                localStorage.setItem('vitryx_demo_metrics', JSON.stringify(appData.metrics));
+                localStorage.setItem('vitryx_seed_version', SEED_VERSION);
             },
             reset() {
                 appData.businesses = JSON.parse(JSON.stringify(seedBusinesses));
                 appData.validations = [];
-                appData.gaps = [ { term: "conserto de projetor", count: 18, status: "Nenhuma" }, { term: "manutenção de elevador", count: 12, status: "Nenhuma" } ];
+                appData.gaps = [ { term: "instalador de ar condicionado", count: 14, status: "Nenhuma" }, { term: "conserto de projetor", count: 9, status: "Nenhuma" }, { term: "manutenção de elevador", count: 6, status: "Nenhuma" } ];
+                appData.metrics = JSON.parse(JSON.stringify(seedMetrics));
                 appData.history = [ { date: new Date().toISOString(), user: 'Sistema', action: 'Importação Inicial', detail: 'Base carregada com sucesso.' } ];
                 appData.demands = JSON.parse(JSON.stringify(initialDemands));
                 this.save();
@@ -1410,7 +1587,7 @@
             updateBusinessSelector() {
                 const select = document.getElementById('ent-business-selector');
                 if(select) {
-                    select.innerHTML = appData.businesses.map(b => `<option value="${b.id}">${b.name}</option>`).join('');
+                    select.innerHTML = appData.businesses.filter(b => b.hasVitrine !== false).map(b => `<option value="${b.id}">${b.name}</option>`).join('');
                     select.value = this.loggedInBusinessId;
                 }
             },
@@ -1869,6 +2046,7 @@
                 if(rSearch) rSearch.value = term;
                 
                 const results = this.searchEngine(term);
+                if(term) { appData.metrics.buscas = (appData.metrics.buscas || 0) + 1; storage.save(); }
                 if(term && results.length === 0) {
                     this.addGapToManager(term);
                 } else {
@@ -1878,44 +2056,94 @@
                 this.navigate('public', 'radar');
             },
 
-            searchEngine(query) {
-                if (!query) return appData.businesses;
-                const q = query.toLowerCase().trim();
-                let searchTerms = [q];
-                for (const [key, syns] of Object.entries(searchSynonyms)) {
-                    if (q.includes(key) || syns.some(s => q.includes(s))) {
-                        searchTerms.push(key, ...syns);
-                    }
-                }
-                
-                return appData.businesses.filter(b => {
-                    let matchFound = false;
-                    b.matchReason = "";
-                    const bName = b.name.toLowerCase();
-                    const bCat = b.category.toLowerCase();
-                    const bTags = b.tags.join(' ').toLowerCase();
-                    const bCatStr = (b.catalog || []).map(c => c.name.toLowerCase()).join(' ');
-
-                    for (const term of searchTerms) {
-                        if (bName.includes(term)) { matchFound = true; b.matchReason = "Nome da empresa"; break; }
-                        if (bCatStr.includes(term)) { matchFound = true; b.matchReason = `Catálogo`; break; }
-                        if (bCat.includes(term)) { matchFound = true; b.matchReason = `Categoria relacionada`; break; }
-                        if (bTags.includes(term)) { matchFound = true; b.matchReason = `Tag: ${term}`; break; }
-                    }
-                    return matchFound && b.validationStatus === 'validado';
-                });
+            normalize(str) {
+                return (str == null ? '' : String(str)).toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').trim();
             },
 
+            searchEngine(query) {
+                if (!query) return appData.businesses.filter(b => b.hasVitrine !== false && b.validationStatus === 'validado');
+                return this.scoreBusinesses(query, b => b.validationStatus === 'validado' && b.hasVitrine !== false);
+            },
+
+            // Mesma pontuação da busca pública, com filtro configurável.
+            // Permite perguntar "existe negócio pendente para este termo?" sem duplicar regra.
+            scoreBusinesses(query, filtro) {
+                const q = this.normalize(query);
+
+                // Termo digitado pesa mais que termo trazido por sinônimo.
+                const termosPrimarios = [q];
+                const termosExpandidos = [];
+                for (const [key, syns] of Object.entries(searchSynonyms)) {
+                    const nKey = this.normalize(key);
+                    const nSyns = syns.map(x => this.normalize(x));
+                    if (q.includes(nKey) || nSyns.some(x => q.includes(x))) {
+                        termosExpandidos.push(nKey, ...nSyns);
+                    }
+                }
+
+                const pontuados = [];
+                appData.businesses.forEach(b => {
+                    if (!filtro(b)) return;
+
+                    const bName = this.normalize(b.name);
+                    const bCat = this.normalize(b.category);
+                    const bTags = (b.tags || []);
+                    const bCatalog = (b.catalog || []).map(c => this.normalize(c.name));
+
+                    let melhor = 0, motivo = "";
+                    const avaliar = (termo, peso) => {
+                        if (!termo) return;
+                        const registrar = (base, texto) => {
+                            const p = base * peso;
+                            if (p > melhor) { melhor = p; motivo = texto; }
+                        };
+                        if (bName.includes(termo)) registrar(10, "Nome da empresa");
+                        if (bCatalog.some(c => c.includes(termo))) registrar(8, "Catálogo");
+                        const tag = bTags.find(t => this.normalize(t).includes(termo));
+                        if (tag) registrar(6, `Tag: ${tag}`);
+                        if (bCat.includes(termo)) registrar(3, "Categoria relacionada");
+                    };
+                    termosPrimarios.forEach(t => avaliar(t, 2));
+                    termosExpandidos.forEach(t => avaliar(t, 1));
+
+                    if (melhor > 0) { b.matchReason = motivo; pontuados.push({ b, score: melhor }); }
+                });
+
+                return pontuados.sort((x, y) => y.score - x.score).map(x => x.b);
+            },
+
+            // Negócios que atendem o termo mas ainda não estão publicados.
+            aguardandoValidacao(term) {
+                if(!term) return [];
+                return this.scoreBusinesses(term, b => b.hasVitrine !== false && b.validationStatus !== 'validado');
+            },
+
+            // Retorna true se a busca virou lacuna registrada.
             addGapToManager(term) {
-                const lower = term.toLowerCase().trim();
-                if(!lower) return;
-                const existing = appData.gaps.find(g => g.term === lower);
+                const lower = this.normalize(term);
+                if(!lower) return false;
+
+                // Se existe negócio na base para o termo e ele apenas não está publicado
+                // (aguardando validação), isso é fila de validação, não lacuna de oferta.
+                if(this.aguardandoValidacao(lower).length > 0) return false;
+
+                // Funde variações da mesma busca ("ar condicionado" e "instalador de ar
+                // condicionado") em uma linha só, em vez de criar linhas quase idênticas.
+                const equivalente = g => {
+                    const t = this.normalize(g.term);
+                    if(t === lower) return true;
+                    const menor = t.length < lower.length ? t : lower;
+                    return menor.length >= 5 && (t.includes(lower) || lower.includes(t));
+                };
+
+                const existing = appData.gaps.find(equivalente);
                 if(existing) existing.count++;
                 else {
-                    appData.gaps.push({ term: lower, count: 1, status: "Registrado agora" });
+                    appData.gaps.push({ term: lower, count: 1, status: "Nenhuma" });
                     this.addHistory("Lacuna Identificada", lower);
                 }
                 storage.save();
+                return true;
             },
 
             filterRadar(type) {
@@ -1923,9 +2151,21 @@
                 this.renderRadar();
             },
 
+            // Deixa visível qual filtro está ligado.
+            updateRadarChips() {
+                const ativo = ['bg-brand-600', 'border-brand-600', 'text-white', 'font-bold'];
+                const inativo = ['bg-white', 'border-slate-200', 'text-slate-600', 'font-medium'];
+                document.querySelectorAll('.chip-radar').forEach(el => {
+                    const marcado = el.id === `chip-radar-${this.radarFilter}`;
+                    el.classList.remove(...(marcado ? inativo : ativo));
+                    el.classList.add(...(marcado ? ativo : inativo));
+                });
+            },
+
             renderRadar() {
                 const resultsContainer = document.getElementById('radar-results');
                 if(!resultsContainer) return;
+                this.updateRadarChips();
                 let results = this.searchEngine(this.currentSearchTerm);
                 
                 if (this.radarFilter === 'open') results = results.filter(b => b.status === 'aberto');
@@ -1936,14 +2176,37 @@
                 resultsContainer.innerHTML = '';
 
                 if (results.length === 0) {
-                    resultsContainer.innerHTML = `
-                        <div class="bg-brand-50 border border-brand-200 rounded-xl p-6 text-center shadow-sm mt-4">
-                            <div class="w-12 h-12 bg-white rounded-full flex items-center justify-center mx-auto mb-4 shadow-sm text-brand-600"><i data-lucide="radar" class="w-6 h-6"></i></div>
-                            <h3 class="font-bold text-slate-900 mb-2">Demanda Registrada!</h3>
-                            <p class="text-sm text-slate-600 mb-4">Não encontramos locais para <strong>"${this.currentSearchTerm}"</strong>. A Prefeitura mapeou sua necessidade para atrair novos fornecedores.</p>
-                            <button onclick="app.startOnboarding()" class="bg-brand-600 text-white px-6 py-2 rounded-xl text-sm font-bold shadow-sm hover:bg-brand-700">Eu ofereço isso!</button>
-                        </div>
-                    `;
+                    const termo = this.currentSearchTerm;
+                    const filtroEscondeu = this.radarFilter !== 'all' && this.searchEngine(termo).length > 0;
+                    const aguardando = filtroEscondeu ? [] : this.aguardandoValidacao(termo);
+                    let bloco;
+
+                    if (filtroEscondeu) {
+                        bloco = `
+                            <div class="bg-slate-50 border border-slate-200 rounded-xl p-6 text-center shadow-sm mt-4">
+                                <div class="w-12 h-12 bg-white rounded-full flex items-center justify-center mx-auto mb-4 shadow-sm text-slate-500"><i data-lucide="filter" class="w-6 h-6"></i></div>
+                                <h3 class="font-bold text-slate-900 mb-2">Nenhum resultado com este filtro</h3>
+                                <p class="text-sm text-slate-600 mb-4">Existe oferta local para <strong>"${termo}"</strong>, mas nenhuma dentro do filtro selecionado.</p>
+                                <button onclick="app.filterRadar('all')" class="bg-slate-900 text-white px-6 py-2 rounded-xl text-sm font-bold shadow-sm hover:bg-slate-800">Limpar filtro</button>
+                            </div>`;
+                    } else if (aguardando.length > 0) {
+                        bloco = `
+                            <div class="bg-amber-50 border border-amber-200 rounded-xl p-6 text-center shadow-sm mt-4">
+                                <div class="w-12 h-12 bg-white rounded-full flex items-center justify-center mx-auto mb-4 shadow-sm text-amber-600"><i data-lucide="clock" class="w-6 h-6"></i></div>
+                                <h3 class="font-bold text-slate-900 mb-2">Cadastro em validação</h3>
+                                <p class="text-sm text-slate-600">Há ${aguardando.length === 1 ? 'um cadastro' : aguardando.length + ' cadastros'} para <strong>"${termo}"</strong> em análise pela Prefeitura. A vitrine aparece aqui assim que for validada.</p>
+                            </div>`;
+                    } else {
+                        bloco = `
+                            <div class="bg-brand-50 border border-brand-200 rounded-xl p-6 text-center shadow-sm mt-4">
+                                <div class="w-12 h-12 bg-white rounded-full flex items-center justify-center mx-auto mb-4 shadow-sm text-brand-600"><i data-lucide="radar" class="w-6 h-6"></i></div>
+                                <h3 class="font-bold text-slate-900 mb-2">Demanda Registrada!</h3>
+                                <p class="text-sm text-slate-600 mb-4">Não encontramos locais para <strong>"${termo}"</strong>. A Prefeitura mapeou sua necessidade para atrair novos fornecedores.</p>
+                                <button onclick="app.startOnboarding()" class="bg-brand-600 text-white px-6 py-2 rounded-xl text-sm font-bold shadow-sm hover:bg-brand-700">Eu ofereço isso!</button>
+                            </div>`;
+                    }
+
+                    resultsContainer.innerHTML = bloco;
                     this.updateMapMarkers([]);
                     if(typeof lucide !== 'undefined') lucide.createIcons();
                     return;
@@ -1994,6 +2257,7 @@
                 this.mapMarkers = [];
 
                 results.forEach(b => {
+                    if(b.lat == null || b.lng == null) return;
                     let iconName = b.type === 'urban' ? 'store' : (b.type === 'rural' ? 'tractor' : 'user');
                     if(!b.protectedLocation) {
                         const customIcon = L.divIcon({
@@ -2068,6 +2332,8 @@
             openProfile(id) {
                 const b = appData.businesses.find(x => x.id === id);
                 if(!b) return;
+
+                if(b.stats) { b.stats.opens = (b.stats.opens || 0) + 1; storage.save(); }
 
                 document.getElementById('profile-cover-img').src = `https://placehold.co/800x400/${b.color.split('-')[1] || 'slate'}/ffffff?text=Capa`;
                 document.getElementById('profile-logo-text').innerText = b.name.charAt(0);
@@ -2152,8 +2418,10 @@
                     if(pendingAdj) { adjAlert.classList.remove('hidden'); adjMsg.innerText = pendingAdj.feedback; } 
                     else adjAlert.classList.add('hidden');
 
+                    // Pesos somam menos que 1: os termos são um recorte das aparições, nunca mais que o total.
+                    const pesosTermo = [0.42, 0.26, 0.15];
                     const searchesHtml = (b.tags||[]).slice(0, 3).map((t, i) => `
-                        <tr class="hover:bg-slate-50/50"><td class="px-6 py-3 font-medium text-slate-900">${t}</td><td class="px-6 py-3 text-slate-600">${Math.floor((b.stats?.views||0) / (i+2))}</td></tr>
+                        <tr class="hover:bg-slate-50/50"><td class="px-6 py-3 font-medium text-slate-900">${t}</td><td class="px-6 py-3 text-slate-600">${Math.round((b.stats?.views||0) * pesosTermo[i])}</td></tr>
                     `).join('');
                     document.getElementById('ent-top-searches').innerHTML = searchesHtml || '<tr><td colspan="2" class="p-4 text-center text-slate-500">Sem dados recentes</td></tr>';
                 }
@@ -2269,29 +2537,36 @@
 
             renderMgrView(view) {
                 if(view === 'overview') {
-                    document.getElementById('mgr-stat-total').innerText = appData.businesses.length;
-                    document.getElementById('mgr-stat-urban').innerText = appData.businesses.filter(b=>b.type==='urban').length;
-                    document.getElementById('mgr-stat-prof').innerText = appData.businesses.filter(b=>b.type!=='urban').length;
+                    const bs = appData.businesses;
+                    const total = bs.length;
+                    const pct = n => total ? Math.round((n/total)*100) : 0;
+
+                    const comVitrine = bs.filter(b => b.hasVitrine !== false).length;
+                    const semVitrine = total - comVitrine;
+                    const validados = bs.filter(b => b.validationStatus === 'validado').length;
+                    const pendentes = total - validados;
+
+                    document.getElementById('mgr-stat-total').innerText = total;
+                    document.getElementById('mgr-stat-vitrine').innerText = comVitrine;
+                    document.getElementById('mgr-stat-vitrine-sub').innerText = `${semVitrine} sem vitrine (base importada)`;
+                    document.getElementById('mgr-stat-validated').innerText = validados;
+                    document.getElementById('mgr-stat-validated-sub').innerText = `${pendentes} aguardando validação`;
                     document.getElementById('mgr-stat-gaps').innerText = appData.gaps.length;
 
-                    const total = appData.businesses.length;
-                    const valCount = appData.businesses.filter(b=>b.origin==='Vitrine Validada' || b.origin==='Cadastro Validado').length;
-                    const impCount = appData.businesses.filter(b=>b.origin==='Base Importada' || b.origin==='Sincronizado PNAE').length;
-                    const entCount = appData.businesses.filter(b=>b.origin==='Cadastro do Empreendedor' || b.origin==='Cadastro do Profissional').length;
-                    document.getElementById('mgr-origin-validated').innerText = total ? Math.round((valCount/total)*100) + '%' : '0%';
-                    document.getElementById('mgr-origin-imported').innerText = total ? Math.round((impCount/total)*100) + '%' : '0%';
-                    document.getElementById('mgr-origin-entrepreneur').innerText = total ? Math.round((entCount/total)*100) + '%' : '0%';
-                    
-                    document.getElementById('mgr-dq-geo').innerText = '82%'; document.getElementById('mgr-dq-updated').innerText = '94%';
+                    const porOrigem = o => bs.filter(b => b.origin === o).length;
+                    const entN = porOrigem('Cadastro do Empreendedor'), impN = porOrigem('Base Importada'), syncN = porOrigem('Sincronizado');
+                    document.getElementById('mgr-origin-entrepreneur').innerText = `${entN} · ${pct(entN)}%`;
+                    document.getElementById('mgr-origin-imported').innerText = `${impN} · ${pct(impN)}%`;
+                    document.getElementById('mgr-origin-sync').innerText = `${syncN} · ${pct(syncN)}%`;
 
-                    const segCount = {};
-                    appData.businesses.forEach(b => { segCount[b.category] = (segCount[b.category] || 0) + 1; });
-                    const colors = ['bg-brand-500', 'bg-emerald-500', 'bg-amber-500', 'bg-purple-500', 'bg-slate-500', 'bg-rose-500', 'bg-cyan-500'];
-                    let colorIdx = 0;
-                    document.getElementById('mgr-chart-segments').innerHTML = Object.entries(segCount).sort((a,b)=>b[1]-a[1]).slice(0,5).map(([cat, count]) => {
-                        const pct = Math.round((count/total)*100); const c = colors[colorIdx++ % colors.length];
-                        return `<div><div class="flex justify-between text-xs font-semibold text-slate-700 mb-1"><span>${cat}</span><span>${pct}%</span></div><div class="w-full bg-slate-100 rounded-full h-2"><div class="${c} h-2 rounded-full" style="width: ${pct}%"></div></div></div>`;
-                    }).join('') || '<div class="text-sm text-slate-500">Sem dados.</div>';
+                    const geoN = bs.filter(b => b.lat != null && b.lng != null).length;
+                    const limite = new Date(); limite.setFullYear(limite.getFullYear() - 1);
+                    const updN = bs.filter(b => b.updatedAt && new Date(b.updatedAt) >= limite).length;
+                    document.getElementById('mgr-dq-geo').innerText = pct(geoN) + '%';
+                    document.getElementById('mgr-dq-updated').innerText = pct(updN) + '%';
+
+                    this.renderMgrBarChart('mgr-chart-segments', bs, b => b.category, total);
+                    this.renderMgrBarChart('mgr-chart-porte', bs, b => b.porte, total);
                 }
 
                 if(view === 'base') this.renderBaseTable();
@@ -2312,6 +2587,20 @@
                 this.updateValidationsBadge();
             },
 
+            renderMgrBarChart(elId, lista, campo, total) {
+                const el = document.getElementById(elId);
+                if(!el) return;
+                const cont = {};
+                lista.forEach(b => { const k = campo(b) || 'Não informado'; cont[k] = (cont[k] || 0) + 1; });
+                const colors = ['bg-brand-500', 'bg-emerald-500', 'bg-amber-500', 'bg-purple-500', 'bg-slate-500', 'bg-rose-500', 'bg-cyan-500', 'bg-indigo-500'];
+                let colorIdx = 0;
+                el.innerHTML = Object.entries(cont).sort((a,b)=>b[1]-a[1]).map(([rotulo, count]) => {
+                    const p = total ? Math.round((count/total)*100) : 0;
+                    const c = colors[colorIdx++ % colors.length];
+                    return `<div><div class="flex justify-between text-xs font-semibold text-slate-700 mb-1"><span>${rotulo}</span><span>${count} · ${p}%</span></div><div class="w-full bg-slate-100 rounded-full h-2"><div class="${c} h-2 rounded-full" style="width: ${p}%"></div></div></div>`;
+                }).join('') || '<div class="text-sm text-slate-500">Sem dados.</div>';
+            },
+
             renderBaseTable() {
                 const search = document.getElementById('mgr-base-search').value.toLowerCase();
                 const cat = document.getElementById('mgr-filter-category').value;
@@ -2330,16 +2619,39 @@
 
                 document.getElementById('mgr-base-count').innerText = filtered.length;
 
-                tbody.innerHTML = filtered.map(b => `
+                tbody.innerHTML = filtered.map(b => {
+                    const semVitrine = b.hasVitrine === false;
+                    const etiquetaVitrine = semVitrine
+                        ? '<div class="text-[10px] font-bold text-slate-600 bg-slate-100 border border-slate-200 rounded px-1.5 py-0.5 mt-1 inline-block">Sem vitrine</div>'
+                        : '<div class="text-[10px] font-bold text-brand-700 bg-brand-50 border border-brand-100 rounded px-1.5 py-0.5 mt-1 inline-block">Com vitrine</div>';
+                    const acao = semVitrine
+                        ? `<button onclick="app.openBaseDetails(${b.id})" class="text-slate-500 hover:text-slate-800 bg-slate-100 p-2 rounded-lg" title="Sem vitrine pública — ver dados cadastrais"><i data-lucide="file-text" class="w-4 h-4"></i></button>`
+                        : `<button onclick="app.viewProfileFromManager(${b.id})" class="text-brand-600 hover:text-brand-800 bg-brand-50 p-2 rounded-lg" title="Ver Vitrine"><i data-lucide="eye" class="w-4 h-4"></i></button>`;
+                    return `
                     <tr class="hover:bg-slate-50/50">
                         <td class="px-6 py-4 cursor-pointer" onclick="app.openBaseDetails(${b.id})"><div class="font-bold text-slate-900 hover:text-brand-600">${b.name}</div><div class="text-xs text-slate-500">${b.cnae || 'S/ CNAE'}</div></td>
                         <td class="px-6 py-4 text-slate-600">${b.category}</td>
                         <td class="px-6 py-4"><div class="text-sm font-medium text-slate-900">${b.type === 'urban'?'Urbano':'Rural/Autônomo'}</div><div class="text-xs text-slate-500">${b.porte}</div></td>
+                        <td class="px-6 py-4"><div class="text-sm text-slate-700">${b.origin || '-'}</div>${etiquetaVitrine}</td>
                         <td class="px-6 py-4">${b.validationStatus === 'validado' ? '<span class="text-emerald-700 bg-emerald-50 px-2 py-1 rounded text-xs font-bold border border-emerald-100">Validado</span>' : '<span class="text-amber-700 bg-amber-50 px-2 py-1 rounded text-xs font-bold border border-amber-100">Pendente</span>'}</td>
-                        <td class="px-6 py-4 text-center"><button onclick="app.viewProfileFromManager(${b.id})" class="text-brand-600 hover:text-brand-800 bg-brand-50 p-2 rounded-lg" title="Ver Vitrine"><i data-lucide="eye" class="w-4 h-4"></i></button></td>
-                    </tr>
-                `).join('');
+                        <td class="px-6 py-4 text-center">${acao}</td>
+                    </tr>`;
+                }).join('') || `
+                    <tr><td colspan="6" class="px-6 py-12 text-center">
+                        <div class="w-12 h-12 bg-slate-100 rounded-full flex items-center justify-center mx-auto mb-3 text-slate-400"><i data-lucide="search-x" class="w-6 h-6"></i></div>
+                        <p class="text-sm font-bold text-slate-700">Nenhum registro encontrado</p>
+                        <p class="text-xs text-slate-500 mt-1">Nenhum negócio da base atende aos filtros selecionados.</p>
+                        <button onclick="app.limparFiltrosBase()" class="mt-4 px-4 py-2 bg-slate-900 hover:bg-slate-800 text-white rounded-lg text-xs font-bold transition">Limpar filtros</button>
+                    </td></tr>`;
                 if(typeof lucide !== 'undefined') lucide.createIcons();
+            },
+
+            limparFiltrosBase() {
+                document.getElementById('mgr-base-search').value = '';
+                document.getElementById('mgr-filter-category').value = '';
+                document.getElementById('mgr-filter-type').value = '';
+                document.getElementById('mgr-filter-status').value = '';
+                this.renderBaseTable();
             },
 
             viewProfileFromManager(id) {
@@ -2357,6 +2669,12 @@
                 if(b.protectedLocation) protBadge.classList.remove('hidden'); else protBadge.classList.add('hidden');
                 document.getElementById('bd-whatsapp').innerText = b.whatsapp || '-'; document.getElementById('bd-desc').innerText = b.description || '-';
                 document.getElementById('bd-tags').innerText = (b.tags||[]).join(', ') || '-';
+
+                // Registro importado pela Prefeitura ainda não tem vitrine: mostra o aviso
+                // no lugar dos campos vazios de WhatsApp, descrição e tags.
+                const semVitrine = b.hasVitrine === false;
+                document.getElementById('bd-vitrine-block').classList.toggle('hidden', semVitrine);
+                document.getElementById('bd-sem-vitrine-block').classList.toggle('hidden', !semVitrine);
                 let iconName = b.type === 'urban' ? 'store' : (b.type === 'rural' ? 'tractor' : 'user');
                 document.getElementById('bd-icon').innerHTML = `<i data-lucide="${iconName}" class="w-6 h-6"></i>`;
                 this.openModal('modal-base-details');
@@ -2477,7 +2795,7 @@
                     const newBiz = {
                         id: Date.now(), name: d.name, category: d.category, type: d.type, porte: d.porte, cnae: d.cnae, address: d.address, 
                         protectedLocation: d.protectedLocation, whatsapp: d.whatsapp, description: d.description, tags: d.tags, hours: d.hours,
-                        status: "aberto", catalog: [], origin: "Cadastro Validado", validationStatus: "validado", updatedAt: new Date().toISOString().split('T')[0],
+                        status: "aberto", catalog: [], hasVitrine: true, origin: "Cadastro do Empreendedor", validationStatus: "validado", updatedAt: new Date().toISOString().split('T')[0],
                         color: "bg-slate-700", icon: "store", stats: { views: 0, contacts: 0 }, lat: -25.2983, lng: -54.0933 // Default Medianeira
                     };
                     appData.businesses.push(newBiz);
@@ -2533,7 +2851,7 @@
                 v.status = "adjustment_requested"; v.feedback = msg;
                 this.addHistory("Ajuste Solicitado", v.businessName);
                 storage.save(); this.closeModal('modal-adjustment'); this.renderValidations(); this.updateValidationsBadge();
-                this.showToast("Solicitação de ajuste enviada.", "success");
+                this.showToast("Solicitação de ajuste enviada. O empreendedor será notificado no WhatsApp cadastrado.", "success");
             },
 
             updateValidationsBadge() {
@@ -2572,21 +2890,60 @@
             },
 
             renderImpact() {
+                const bs = appData.businesses;
+                const publicos = bs.filter(b => b.validationStatus === 'validado' && b.hasVitrine !== false);
+                const soma = campo => publicos.reduce((t, b) => t + ((b.stats && b.stats[campo]) || 0), 0);
+
+                // Funil: uma única grandeza semeada (buscas). O resto sai da base.
+                const buscas = appData.metrics.buscas || 0;
+                const semResultado = appData.gaps.reduce((t, g) => t + (g.count || 0), 0);
+                const comResultado = Math.max(buscas - semResultado, 0);
+                const vitrines = soma('opens');
+                const contatos = soma('contacts');
+
+                const taxa = (parte, todo) => todo ? (Math.round((parte / todo) * 1000) / 10).toString().replace('.', ',') + '%' : '0%';
+                const nf = n => n.toLocaleString('pt-BR');
+
+                document.getElementById('imp-buscas').innerText = nf(buscas);
+                document.getElementById('imp-taxa-atendimento').innerText = taxa(comResultado, buscas);
+                document.getElementById('imp-vitrines').innerText = nf(vitrines);
+                document.getElementById('imp-taxa-descoberta').innerText = taxa(vitrines, comResultado);
+                document.getElementById('imp-contatos').innerText = nf(contatos);
+                document.getElementById('imp-taxa-contato').innerText = taxa(contatos, vitrines);
+
+                document.getElementById('imp-funil-buscas').innerText = nf(buscas);
+                document.getElementById('imp-funil-resultado').innerText = nf(comResultado);
+                document.getElementById('imp-funil-vitrines').innerText = nf(vitrines);
+                document.getElementById('imp-funil-contatos').innerText = nf(contatos);
+
+                // Cruzamento demanda pública x oferta local (informativo, não contrata).
+                const atendeDemanda = (b, d) => {
+                    if(b.validationStatus !== 'validado' || b.hasVitrine === false) return false;
+                    if(d.cnae && b.cnae && b.cnae === d.cnae) return true;
+                    if(d.category === b.category) return true;
+                    const tags = (b.tags || []).map(t => this.normalize(t));
+                    return (d.tags || []).some(t => tags.some(x => x.includes(this.normalize(t))));
+                };
+                const comOferta = appData.demands.filter(d => bs.some(b => atendeDemanda(b, d)));
+                const aptos = bs.filter(b => appData.demands.some(d => atendeDemanda(b, d)));
+
                 document.getElementById('imp-demand-count').innerText = appData.demands.length;
-                let matches = 0;
-                appData.demands.forEach(d => {
-                    const m = appData.businesses.filter(b => b.validationStatus==='validado' && ((d.cnae && b.cnae && b.cnae.includes(d.cnae)) || d.category === b.category));
-                    if(m.length>0) matches++;
-                });
-                document.getElementById('imp-demand-matched').innerText = matches;
-                document.getElementById('imp-biz-matched').innerText = appData.businesses.length; // Simplified for demo
+                document.getElementById('imp-demand-matched').innerText = comOferta.length;
+                document.getElementById('imp-biz-matched').innerText = aptos.length;
             },
 
             openExecutiveReport() {
                 document.getElementById('rep-total').innerText = appData.businesses.length;
                 document.getElementById('rep-urban').innerText = appData.businesses.filter(b=>b.type==='urban').length;
                 document.getElementById('rep-rural').innerText = appData.businesses.filter(b=>b.type!=='urban').length;
-                document.getElementById('rep-geo').innerText = '82%';
+                const geoTotal = appData.businesses.length;
+                const geoOk = appData.businesses.filter(b => b.lat != null && b.lng != null).length;
+                document.getElementById('rep-geo').innerText = (geoTotal ? Math.round((geoOk/geoTotal)*100) : 0) + '%';
+                const pub = appData.businesses.filter(b => b.validationStatus === 'validado' && b.hasVitrine !== false);
+                const somaRep = campo => pub.reduce((t, b) => t + ((b.stats && b.stats[campo]) || 0), 0);
+                document.getElementById('rep-buscas').innerText = (appData.metrics.buscas || 0).toLocaleString('pt-BR');
+                document.getElementById('rep-vitrines').innerText = somaRep('opens').toLocaleString('pt-BR');
+                document.getElementById('rep-contatos').innerText = somaRep('contacts').toLocaleString('pt-BR');
                 document.getElementById('rep-gaps').innerText = appData.gaps.slice(0,3).map(g=>g.term).join(', ') || 'Nenhuma';
                 this.openModal('modal-executive-report');
             },
@@ -2609,6 +2966,7 @@
                 L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', { attribution: '&copy; OSM', subdomains: 'abcd', maxZoom: 19 }).addTo(this.mgrLeafletMap);
 
                 appData.businesses.forEach(b => {
+                    if(b.lat == null || b.lng == null) return;
                     let iconName = b.type === 'urban' ? 'store' : (b.type === 'rural' ? 'tractor' : 'user');
                     if(!b.protectedLocation) {
                         const customIcon = L.divIcon({
@@ -2626,7 +2984,21 @@
                 setTimeout(() => { if(typeof lucide !== 'undefined') lucide.createIcons(); }, 50);
             },
 
-            simulateExport() { this.showToast('Download do documento iniciado.', 'success'); },
+            simulateExport() {
+                this.addHistory('Exportação de Dados', 'Relatório executivo gerado em PDF.');
+                storage.save();
+                this.showToast('Relatório executivo gerado e registrado na auditoria.', 'success');
+            },
+
+            // Exportação demonstrativa: não gera arquivo, mas registra na trilha de auditoria
+            // como qualquer saída de dados faria.
+            exportarBase(formato) {
+                const n = appData.businesses.length;
+                this.addHistory('Exportação de Dados', `Base econômica exportada em ${formato} (${n} registros, com minimização LGPD).`);
+                storage.save();
+                this.showToast(`Exportação em ${formato} gerada e registrada na auditoria.`, 'success');
+                if(this.currentView === 'history') this.renderHistory();
+            },
             
             showToast(message, type = 'success') {
                 const container = document.getElementById('toast-container');
@@ -2863,8 +3235,13 @@
                     }
                     this.addBotMessage(html);
                 } else {
-                    app.addGapToManager(text);
-                    this.addBotMessage(`Poxa, ainda não encontrei negócios validados para <b>"${text}"</b>. Mas não se preocupe: acabei de registrar essa falta no painel da Prefeitura para que eles possam atrair profissionais dessa área!`);
+                    const aguardando = app.aguardandoValidacao(text);
+                    if(aguardando.length > 0) {
+                        this.addBotMessage(`Existe ${aguardando.length === 1 ? 'um cadastro' : aguardando.length + ' cadastros'} para <b>"${text}"</b> aguardando validação da Prefeitura. Assim que for aprovado, a vitrine aparece na busca.`);
+                    } else {
+                        app.addGapToManager(text);
+                        this.addBotMessage(`Poxa, ainda não encontrei negócios validados para <b>"${text}"</b>. Mas não se preocupe: acabei de registrar essa falta no painel da Prefeitura para que eles possam atrair profissionais dessa área!`);
+                    }
                 }
             }
         };
