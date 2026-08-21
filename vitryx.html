@@ -994,7 +994,7 @@
                             <div class="overflow-x-auto">
                                 <table class="w-full text-sm text-left whitespace-nowrap">
                                     <thead class="bg-slate-50 text-slate-500 text-xs uppercase font-semibold border-b border-slate-200">
-                                        <tr><th class="px-6 py-4">Negócio</th><th class="px-6 py-4">Categoria</th><th class="px-6 py-4">Tipo/Porte</th><th class="px-6 py-4">Origem do Dado</th><th class="px-6 py-4">Status</th><th class="px-6 py-4 text-center">Ações</th></tr>
+                                        <tr><th class="px-6 py-4">Negócio</th><th class="px-6 py-4">CPF / CNPJ</th><th class="px-6 py-4">Categoria</th><th class="px-6 py-4">Tipo/Porte</th><th class="px-6 py-4">Origem do Dado</th><th class="px-6 py-4">Status</th><th class="px-6 py-4 text-center">Ações</th></tr>
                                     </thead>
                                     <tbody class="divide-y divide-slate-100" id="mgr-base-table"></tbody>
                                 </table>
@@ -1450,7 +1450,14 @@
                     <div class="flex items-center gap-2 mb-2"><div class="w-6 h-6 rounded-full bg-brand-600 text-white flex items-center justify-center text-xs font-bold">2</div><h4 class="font-bold text-slate-900">Seu negócio</h4></div>
                     <p class="text-sm text-slate-500 -mt-2">Por enquanto só o básico. O resto da vitrine a Vitória monta com você.</p>
                     <div><label class="block text-sm font-bold text-slate-900 mb-1">Nome do estabelecimento <span class="text-red-500">*</span></label><input type="text" id="ap-negocio" class="w-full px-4 py-2.5 bg-white border border-slate-200 rounded-lg text-sm outline-none" placeholder="Ex: Bolos da Joana"></div>
-                    <div><label class="block text-sm font-bold text-slate-900 mb-1">Tipo / Porte</label><select id="ap-porte" class="w-full px-4 py-2.5 bg-white border border-slate-200 rounded-lg text-sm outline-none"><option>MEI</option><option>Empresa (ME/EPP/LTDA)</option><option>Profissional Autônomo</option><option>Produtor Rural</option></select></div>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div><label class="block text-sm font-bold text-slate-900 mb-1">Tipo / Porte</label><select id="ap-porte" class="w-full px-4 py-2.5 bg-white border border-slate-200 rounded-lg text-sm outline-none"><option>MEI</option><option>Empresa (ME/EPP/LTDA)</option><option>Profissional Autônomo</option><option>Produtor Rural</option></select></div>
+                        <div>
+                            <label class="block text-sm font-bold text-slate-900 mb-1">CNPJ <span class="font-normal text-slate-400">(se tiver)</span></label>
+                            <input type="text" id="ap-cnpj" oninput="app.maskCpfCnpj(this)" class="w-full px-4 py-2.5 bg-white border border-slate-200 rounded-lg text-sm outline-none" placeholder="00.000.000/0000-00">
+                            <p class="text-[11px] text-slate-400 mt-1">Sem CNPJ? Deixe em branco — o cadastro segue no seu CPF.</p>
+                        </div>
+                    </div>
                     <div class="bg-blue-50 border border-blue-100 p-3 rounded-lg text-xs text-blue-800 font-medium flex items-start gap-2">
                         <i data-lucide="info" class="w-4 h-4 flex-shrink-0 mt-0.5"></i>
                         <span>Sua vitrine começa <b>vazia</b>. Descrição, categoria, palavras-chave e horário vêm na conversa com a Vitória — e você revisa tudo antes de enviar.</span>
@@ -1465,7 +1472,11 @@
                 <div id="onb-step-acesso" class="step-content space-y-4">
                     <div class="flex items-center gap-2 mb-2"><div class="w-6 h-6 rounded-full bg-brand-600 text-white flex items-center justify-center text-xs font-bold">3</div><h4 class="font-bold text-slate-900">Seu acesso</h4></div>
                     <p class="text-sm text-slate-500 -mt-2">Crie o login que você vai usar para administrar sua vitrine.</p>
-                    <div><label class="block text-sm font-bold text-slate-900 mb-1">E-mail <span class="text-red-500">*</span></label><input type="email" id="ap-email" class="w-full px-4 py-2.5 bg-white border border-slate-200 rounded-lg text-sm outline-none" placeholder="voce@email.com"></div>
+                    <div>
+                        <label class="block text-sm font-bold text-slate-900 mb-1">Seu e-mail <span class="text-red-500">*</span></label>
+                        <input type="email" id="ap-email" class="w-full px-4 py-2.5 bg-white border border-slate-200 rounded-lg text-sm outline-none" placeholder="Digite o e-mail que você usa">
+                        <p class="text-[11px] text-slate-400 mt-1">Informe o seu e-mail: é com ele que você vai entrar na plataforma.</p>
+                    </div>
                     <div class="grid grid-cols-2 gap-4">
                         <div><label class="block text-sm font-bold text-slate-900 mb-1">Senha</label><input type="password" id="ap-senha" class="w-full px-4 py-2.5 bg-white border border-slate-200 rounded-lg text-sm outline-none" value="demo1234"></div>
                         <div><label class="block text-sm font-bold text-slate-900 mb-1">Confirmar senha</label><input type="password" id="ap-senha2" class="w-full px-4 py-2.5 bg-white border border-slate-200 rounded-lg text-sm outline-none" value="demo1234"></div>
@@ -1561,6 +1572,24 @@
                             <button onclick="app.applyHoursToWeek('gonb')" class="text-xs text-brand-600 font-bold hover:underline">Aplicar Seg a Sex igual</button>
                         </div>
                         <div id="gonb-weekly-hours" class="space-y-3"></div>
+                    </div>
+
+                    <div class="border border-slate-200 rounded-lg p-4 bg-white">
+                        <label class="block text-sm font-bold text-slate-900 mb-1">Comprovante de vínculo com Medianeira</label>
+                        <p class="text-[11px] text-slate-500 mb-3">Alvará, conta de luz ou outro documento que mostre seu endereço. Usado só na análise da Prefeitura — nunca aparece na vitrine pública.</p>
+                        <select id="gonb-evidencia-tipo" class="w-full px-3 py-2 bg-white border border-slate-200 rounded-lg text-sm outline-none mb-2">
+                            <option value="enderecoNegocio">Comprovante de endereço do negócio</option>
+                            <option value="residencia">Comprovante de residência</option>
+                            <option value="identificacao">Documento de identificação</option>
+                            <option value="representacao">Documento de representação</option>
+                            <option value="outro">Outro documento cadastral</option>
+                        </select>
+                        <label for="gonb-file-upload" class="border-2 border-dashed border-slate-300 rounded-xl bg-slate-50 p-4 text-center cursor-pointer hover:bg-white transition block">
+                            <i data-lucide="upload-cloud" class="w-6 h-6 text-slate-400 mx-auto mb-2" id="gonb-file-icon"></i>
+                            <span class="text-xs font-semibold text-brand-600 block" id="gonb-file-text">Clique para anexar o arquivo</span>
+                            <input type="file" id="gonb-file-upload" class="hidden" onchange="app.handleEvidenciaUpload(this)">
+                        </label>
+                        <p class="text-[11px] text-slate-400 mt-2">Demonstração local: arquivos até 400 KB ficam guardados no navegador; acima disso registramos apenas os dados do documento.</p>
                     </div>
 
                     <div class="bg-amber-50 border border-amber-200 p-3 rounded-xl text-xs text-amber-800 font-medium flex items-start gap-2">
@@ -1707,14 +1736,27 @@
                 <div>
                     <h4 class="text-sm font-bold text-slate-900 border-b border-slate-200 pb-2 mb-3"><i data-lucide="file-text" class="w-4 h-4 inline mr-1 text-slate-400"></i> Informações de Cadastro</h4>
                     <div class="grid grid-cols-2 gap-y-3 gap-x-4 text-sm">
-                        <div><span class="text-slate-500 block text-xs">CPF/CNPJ</span><span class="font-medium text-slate-700 inline-flex items-center gap-1"><i data-lucide="lock" class="w-3 h-3 text-slate-400"></i> Protegido (LGPD)</span></div>
+                        <div>
+                            <span class="text-slate-500 block text-xs">CPF / CNPJ</span>
+                            <span class="inline-flex items-center gap-2" id="bd-documento">-</span>
+                        </div>
+                        <div><span class="text-slate-500 block text-xs">Tipo de Pessoa</span><span class="font-medium text-slate-900" id="bd-tipo-pessoa">-</span></div>
                         <div><span class="text-slate-500 block text-xs">Porte / Tipo</span><span class="font-medium text-slate-900" id="bd-porte">MEI</span></div>
+                        <div><span class="text-slate-500 block text-xs">Natureza Jurídica</span><span class="font-medium text-slate-900" id="bd-natureza">-</span></div>
                         <div><span class="text-slate-500 block text-xs">CNAE</span><span class="font-medium text-slate-900" id="bd-cnae">0000-0/00</span></div>
                         <div><span class="text-slate-500 block text-xs">Origem do Dado</span><span class="font-medium text-slate-900" id="bd-origin">Base</span></div>
+                        <div><span class="text-slate-500 block text-xs">Responsável</span><span class="font-medium text-slate-900" id="bd-responsavel">-</span></div>
+                        <div><span class="text-slate-500 block text-xs">E-mail Informado</span><span class="font-medium text-slate-900 break-all" id="bd-email">-</span></div>
                         <div><span class="text-slate-500 block text-xs">Telefone Cadastral</span><span class="font-medium text-slate-900" id="bd-phone">-</span></div>
                         <div><span class="text-slate-500 block text-xs">Status de Validação</span><span id="bd-validation"></span></div>
                         <div><span class="text-slate-500 block text-xs">Última Atualização</span><span class="font-medium text-slate-900" id="bd-updated">-</span></div>
                     </div>
+                    <p class="text-[11px] text-slate-400 mt-3">Dados administrativos de acesso restrito ao painel da Gestão. O documento completo exige ação explícita e a consulta fica registrada na trilha de auditoria. Nada disso aparece na vitrine pública.</p>
+                </div>
+
+                <div>
+                    <h4 class="text-sm font-bold text-slate-900 border-b border-slate-200 pb-2 mb-3"><i data-lucide="paperclip" class="w-4 h-4 inline mr-1 text-slate-400"></i> Evidências e Comprovantes</h4>
+                    <div id="bd-evidencias"></div>
                 </div>
                 <div>
                     <h4 class="text-sm font-bold text-slate-900 border-b border-slate-200 pb-2 mb-3"><i data-lucide="map-pin" class="w-4 h-4 inline mr-1 text-slate-400"></i> Localização e Vínculo</h4>
@@ -1886,6 +1928,12 @@
                 </div>
                 <div class="grid grid-cols-2 gap-3">
                     <div><label class="block text-xs font-bold text-slate-700 mb-1">CNAE</label><input type="text" id="nb-cnae" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm outline-none" placeholder="0000-0/00"></div>
+                </div>
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 mb-1">CPF / CNPJ <span class="font-normal text-slate-400">(se disponível)</span></label>
+                        <input type="text" id="nb-doc" oninput="app.maskCpfCnpj(this)" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm outline-none" placeholder="000.000.000-00">
+                    </div>
                     <div><label class="block text-xs font-bold text-slate-700 mb-1">Telefone (opcional)</label><input type="text" id="nb-phone" oninput="app.maskPhone(this)" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm outline-none" placeholder="(00) 00000-0000"></div>
                 </div>
                 <div><label class="block text-xs font-bold text-slate-700 mb-1">Endereço <span class="text-red-500">*</span></label><input type="text" id="nb-address" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm outline-none" placeholder="Rua, Número, Bairro"></div>
@@ -2510,9 +2558,267 @@
         // deste número, da base de negócios e das lacunas registradas.
         const seedMetrics = { buscas: 560 };
 
-        const appData = { businesses: [], validations: [], gaps: [], history: [], demands: [], metrics: { buscas: 0 } };
+        const appData = {
+            businesses: [], validations: [], gaps: [], history: [], demands: [], metrics: { buscas: 0 },
+            // Coleções preparadas na Etapa 1 para as próximas etapas do plano.
+            usageEvents: [], purchases: [], auditEvents: [], users: [], pilotMetrics: {}
+        };
 
         const SEED_VERSION = '2026-08-20-catalogo-v2';
+
+        // Versão do MODELO de dados. Diferente de SEED_VERSION: subir esta constante
+        // acrescenta campos e coleções sem apagar nada do que o usuário já criou.
+        const DATA_MODEL_VERSION = 3;
+
+        // ---------------------------------------------------------------------
+        // USUÁRIOS DEMONSTRATIVOS
+        // Ambiente local: nenhuma senha real é guardada e nada é enviado para fora.
+        // ---------------------------------------------------------------------
+        const seedUsers = [
+            { id: 'u-gestor',    nome: 'Marina Ferrari',   email: 'gestor@medianeira.pr.gov.br',        perfil: 'manager',      situacao: 'ativo', businessId: null },
+            { id: 'u-analista',  nome: 'Carlos Bueno',     email: 'analista@medianeira.pr.gov.br',      perfil: 'analyst',      situacao: 'ativo', businessId: null },
+            { id: 'u-empreende', nome: 'Maria Aparecida',  email: 'maria@marcenariamedianeira.com.br',  perfil: 'entrepreneur', situacao: 'ativo', businessId: 6 }
+        ];
+
+        // Métricas do piloto: só a moldura, preenchida nas etapas seguintes.
+        const seedPilotMetrics = {
+            inicioPiloto: '2026-06-01',
+            municipio: 'Medianeira - PR',
+            observacao: 'Estrutura preparada na Etapa 1. Indicadores serão calculados na etapa de Impacto e Resultados.'
+        };
+
+        // ---------------------------------------------------------------------
+        // IDENTIFICAÇÃO LEGAL — utilitários reutilizáveis
+        // Documentos da massa demonstrativa são FICTÍCIOS. O documento completo só
+        // é lido pelo painel do gestor, mediante ação explícita registrada em auditoria.
+        // ---------------------------------------------------------------------
+        const docUtils = {
+            somenteDigitos(v) { return String(v || '').replace(/\D/g, ''); },
+
+            validarCPF(valor) {
+                const c = this.somenteDigitos(valor);
+                if (c.length !== 11 || /^(\d)\1{10}$/.test(c)) return false;
+                let soma = 0;
+                for (let i = 0; i < 9; i++) soma += parseInt(c[i], 10) * (10 - i);
+                let d1 = (soma * 10) % 11; if (d1 === 10) d1 = 0;
+                if (d1 !== parseInt(c[9], 10)) return false;
+                soma = 0;
+                for (let i = 0; i < 10; i++) soma += parseInt(c[i], 10) * (11 - i);
+                let d2 = (soma * 10) % 11; if (d2 === 10) d2 = 0;
+                return d2 === parseInt(c[10], 10);
+            },
+
+            validarCNPJ(valor) {
+                const c = this.somenteDigitos(valor);
+                if (c.length !== 14 || /^(\d)\1{13}$/.test(c)) return false;
+                const calc = tamanho => {
+                    let soma = 0, pos = tamanho - 7;
+                    for (let i = tamanho; i >= 1; i--) {
+                        soma += parseInt(c[tamanho - i], 10) * pos--;
+                        if (pos < 2) pos = 9;
+                    }
+                    const r = soma % 11;
+                    return r < 2 ? 0 : 11 - r;
+                };
+                return calc(12) === parseInt(c[12], 10) && calc(13) === parseInt(c[13], 10);
+            },
+
+            validar(valor) {
+                const c = this.somenteDigitos(valor);
+                if (c.length === 11) return this.validarCPF(c);
+                if (c.length === 14) return this.validarCNPJ(c);
+                return false;
+            },
+
+            tipoDocumento(valor) {
+                const c = this.somenteDigitos(valor);
+                if (c.length === 14) return 'CNPJ';
+                if (c.length === 11) return 'CPF';
+                return null;
+            },
+
+            formatarCPF(valor) {
+                const c = this.somenteDigitos(valor).slice(0, 11);
+                return c.replace(/(\d{3})(\d)/, '$1.$2').replace(/(\d{3})(\d)/, '$1.$2').replace(/(\d{3})(\d{1,2})$/, '$1-$2');
+            },
+
+            formatarCNPJ(valor) {
+                const c = this.somenteDigitos(valor).slice(0, 14);
+                return c.replace(/^(\d{2})(\d)/, '$1.$2').replace(/^(\d{2})\.(\d{3})(\d)/, '$1.$2.$3')
+                        .replace(/\.(\d{3})(\d)/, '.$1/$2').replace(/(\d{4})(\d)/, '$1-$2');
+            },
+
+            formatar(valor) {
+                const tipo = this.tipoDocumento(valor);
+                if (tipo === 'CNPJ') return this.formatarCNPJ(valor);
+                if (tipo === 'CPF') return this.formatarCPF(valor);
+                return String(valor || '');
+            },
+
+            // Exibição protegida: mantém o final para conferência sem revelar o número.
+            mascarar(valor) {
+                const c = this.somenteDigitos(valor);
+                if (c.length === 11) return `***.***.${c.slice(6, 9)}-${c.slice(9)}`;
+                if (c.length === 14) return `**.***.${c.slice(5, 8)}/${c.slice(8, 12)}-${c.slice(12)}`;
+                return c ? '***' : '';
+            }
+        };
+
+        // Estrutura administrativa de identificação legal de um negócio.
+        function novaIdentificacaoLegal(dados) {
+            const d = dados || {};
+            const documento = docUtils.somenteDigitos(d.documento);
+            const tipoDoc = docUtils.tipoDocumento(documento);
+            const agora = new Date().toISOString();
+            return {
+                tipoPessoa: d.tipoPessoa || (tipoDoc === 'CNPJ' ? 'PJ' : (tipoDoc === 'CPF' ? 'PF' : null)),
+                tipoDocumento: tipoDoc,
+                documento: documento || '',
+                documentoMascarado: docUtils.mascarar(documento),
+                responsavelNome: d.responsavelNome || '',
+                responsavelCpf: docUtils.somenteDigitos(d.responsavelCpf) || '',
+                email: d.email || '',
+                telefone: d.telefone || '',
+                naturezaJuridica: d.naturezaJuridica || '',
+                origemCadastro: d.origemCadastro || 'Cadastro do Empreendedor',
+                criadoEm: d.criadoEm || agora,
+                atualizadoEm: d.atualizadoEm || agora
+            };
+        }
+
+        // Natureza jurídica sugerida a partir do porte declarado, sem inventar dado novo.
+        function naturezaPorPorte(porte) {
+            const mapa = {
+                'MEI': 'Microempreendedor Individual (MEI)',
+                'ME': 'Microempresa (ME)',
+                'EPP': 'Empresa de Pequeno Porte (EPP)',
+                'LTDA': 'Sociedade Empresária Limitada',
+                'Empresa (ME/EPP/LTDA)': 'Sociedade Empresária Limitada',
+                'Autônomo': 'Profissional Autônomo (pessoa física)',
+                'Profissional Autônomo': 'Profissional Autônomo (pessoa física)',
+                'Produtor Rural': 'Produtor Rural (pessoa física)'
+            };
+            return mapa[porte] || '';
+        }
+
+        // ---------------------------------------------------------------------
+        // EVIDÊNCIAS (comprovantes) — metadados sempre; arquivo só se couber.
+        // ---------------------------------------------------------------------
+        const EVIDENCIA_LIMITE_BYTES = 400 * 1024; // 400 KB por arquivo no localStorage
+
+        const TIPOS_EVIDENCIA = {
+            residencia:    'Comprovante de residência',
+            enderecoNegocio: 'Comprovante de endereço do negócio',
+            identificacao: 'Documento de identificação',
+            representacao: 'Documento de representação',
+            outro:         'Outro documento cadastral'
+        };
+
+        const SITUACOES_EVIDENCIA = {
+            recebido:    'Recebido',
+            pendente:    'Pendente de análise',
+            aceito:      'Aceito',
+            recusado:    'Recusado',
+            substituir:  'Substituição solicitada'
+        };
+
+        function novaEvidencia(dados) {
+            const d = dados || {};
+            return {
+                id: d.id || ('ev-' + Date.now() + '-' + Math.random().toString(36).slice(2, 7)),
+                type: d.type || 'outro',
+                fileName: d.fileName || 'documento',
+                mimeType: d.mimeType || 'application/octet-stream',
+                size: Number(d.size) || 0,
+                uploadedAt: d.uploadedAt || new Date().toISOString(),
+                status: d.status || 'recebido',
+                source: d.source || 'Upload do empreendedor',
+                // 'local' = arquivo guardado em dataUrl; 'metadata' = só os metadados.
+                storageMode: d.storageMode || (d.dataUrl ? 'local' : 'metadata'),
+                dataUrl: d.dataUrl || null
+            };
+        }
+
+        // ---------------------------------------------------------------------
+        // MASSA DEMONSTRATIVA DE IDENTIFICAÇÃO LEGAL
+        // Todos os documentos abaixo são FICTÍCIOS: números construídos apenas para
+        // passar na validação de dígito verificador. Nenhum pertence a pessoa real.
+        // ---------------------------------------------------------------------
+        const seedLegalPorNegocio = {
+            1:  { tipoPessoa: 'PF', documento: '12345678909', responsavelNome: 'Isabela Nunes',        responsavelCpf: '12345678909', email: 'contato@bellanails.demo',        telefone: '(45) 99912-0001', naturezaJuridica: 'Microempreendedor Individual (MEI)', origemCadastro: 'Cadastro do Empreendedor' },
+            2:  { tipoPessoa: 'PF', documento: '98765432100', responsavelNome: 'Ana Paula Ribeiro',   responsavelCpf: '98765432100', email: 'anaclean@servicos.demo',          telefone: '(45) 99884-0002', naturezaJuridica: 'Profissional Autônomo (pessoa física)', origemCadastro: 'Cadastro do Empreendedor' },
+            3:  { tipoPessoa: 'PJ', documento: '11222333000181', responsavelNome: 'José Almeida',     responsavelCpf: '45678912364', email: 'contato@mecanicasaojose.demo',    telefone: '(45) 3264-0003',  naturezaJuridica: 'Sociedade Empresária Limitada', origemCadastro: 'Cadastro do Empreendedor' },
+            4:  { tipoPessoa: 'PF', documento: '32165498791', responsavelNome: 'Valdir Kunzler',      responsavelCpf: '32165498791', email: 'sitioaguasclaras@rural.demo',     telefone: '(45) 99947-0004', naturezaJuridica: 'Produtor Rural (pessoa física)', origemCadastro: 'Sincronizado' },
+            5:  { tipoPessoa: 'PF', documento: '15975348625', responsavelNome: 'Rafael Constantino',  responsavelCpf: '15975348625', email: 'eletrorapido@servicos.demo',      telefone: '(45) 99771-0005', naturezaJuridica: 'Microempreendedor Individual (MEI)', origemCadastro: 'Cadastro do Empreendedor' },
+            6:  { tipoPessoa: 'PJ', documento: '44555666000181', responsavelNome: 'Maria Aparecida',  responsavelCpf: '75315985237', email: 'maria@marcenariamedianeira.com.br', telefone: '(45) 99823-0006', naturezaJuridica: 'Microempresa (ME)', origemCadastro: 'Cadastro do Empreendedor' },
+            7:  { tipoPessoa: 'PJ', documento: '77888999000181', responsavelNome: 'Sérgio Baldissera',responsavelCpf: '25814736909', email: 'padaria@paonosso.demo',           telefone: '(45) 3264-0007',  naturezaJuridica: 'Microempresa (ME)', origemCadastro: 'Cadastro do Empreendedor' },
+            8:  { tipoPessoa: 'PF', documento: '86429753182', responsavelNome: 'Diego Fontana',       responsavelCpf: '86429753182', email: 'tecnofix@assistencia.demo',       telefone: '(45) 99936-0008', naturezaJuridica: 'Microempreendedor Individual (MEI)', origemCadastro: 'Cadastro do Empreendedor' },
+            9:  { tipoPessoa: 'PF', documento: '25814736909', responsavelNome: 'Ilda Schneider',      responsavelCpf: '25814736909', email: 'agrosabor@colonia.demo',          telefone: '(45) 99958-0009', naturezaJuridica: 'Produtor Rural (pessoa física)', origemCadastro: 'Sincronizado' },
+            10: { tipoPessoa: 'PJ', documento: '22333444000181', responsavelNome: 'Rosane Klein',     responsavelCpf: '75315985237', email: 'malharia@pontocerto.demo',        telefone: '(45) 99815-0010', naturezaJuridica: 'Empresa de Pequeno Porte (EPP)', origemCadastro: 'Cadastro do Empreendedor' },
+            11: { tipoPessoa: 'PF', documento: '75315985237', responsavelNome: 'Luana Bertoldi',      responsavelCpf: '75315985237', email: 'studioluz@fotografia.demo',       telefone: '(45) 99902-0011', naturezaJuridica: 'Microempreendedor Individual (MEI)', origemCadastro: 'Cadastro do Empreendedor' },
+            12: { tipoPessoa: 'PJ', documento: '55666777000181', responsavelNome: '',                 email: '', telefone: '', naturezaJuridica: 'Empresa de Pequeno Porte (EPP)', origemCadastro: 'Base Importada' },
+            13: { tipoPessoa: 'PJ', documento: '88999000000198', responsavelNome: '',                 email: '', telefone: '', naturezaJuridica: 'Sociedade Empresária Limitada', origemCadastro: 'Base Importada' },
+            14: { tipoPessoa: 'PJ', documento: '11222333000181', responsavelNome: '',                 email: '', telefone: '', naturezaJuridica: 'Microempresa (ME)', origemCadastro: 'Base Importada' },
+            15: { tipoPessoa: 'PJ', documento: '44555666000181', responsavelNome: '',                 email: '', telefone: '', naturezaJuridica: 'Empresa de Pequeno Porte (EPP)', origemCadastro: 'Base Importada' }
+        };
+
+        // Evidências demonstrativas: só metadados, com nomes fictícios. Nenhum
+        // documento real e nenhum arquivo embutido na massa inicial.
+        const seedEvidencias = {
+            1:  [{ type: 'residencia',      fileName: 'comprovante-residencia-fic.pdf', mimeType: 'application/pdf', size: 184320, status: 'aceito',   source: 'Upload do empreendedor', storageMode: 'metadata' }],
+            3:  [{ type: 'enderecoNegocio', fileName: 'alvara-funcionamento-fic.pdf',   mimeType: 'application/pdf', size: 245760, status: 'aceito',   source: 'Upload do empreendedor', storageMode: 'metadata' }],
+            5:  [{ type: 'identificacao',   fileName: 'documento-identidade-fic.jpg',   mimeType: 'image/jpeg',      size: 132096, status: 'pendente', source: 'Upload do empreendedor', storageMode: 'metadata' }],
+            6:  [{ type: 'enderecoNegocio', fileName: 'alvara-marcenaria-fic.pdf',      mimeType: 'application/pdf', size: 210944, status: 'aceito',   source: 'Upload do empreendedor', storageMode: 'metadata' },
+                 { type: 'representacao',   fileName: 'contrato-social-fic.pdf',        mimeType: 'application/pdf', size: 356352, status: 'aceito',   source: 'Upload do empreendedor', storageMode: 'metadata' }],
+            11: [{ type: 'residencia',      fileName: 'conta-energia-fic.pdf',          mimeType: 'application/pdf', size: 98304,  status: 'substituir', source: 'Upload do empreendedor', storageMode: 'metadata' }],
+            12: [{ type: 'outro',           fileName: 'ficha-cadastral-municipio.pdf',  mimeType: 'application/pdf', size: 76800,  status: 'recebido', source: 'Importação da Prefeitura', storageMode: 'metadata' }]
+        };
+
+        // ---------------------------------------------------------------------
+        // MIGRAÇÃO VERSIONADA E NÃO DESTRUTIVA
+        // Acrescenta o que falta; nunca remove nem duplica o que já existe.
+        // ---------------------------------------------------------------------
+        function ensureDataModelVersion() {
+            const versaoGravada = Number(localStorage.getItem('vitryx_data_model_version') || 0);
+
+            // Coleções novas: criadas apenas se ainda não existirem.
+            if (!Array.isArray(appData.usageEvents)) appData.usageEvents = [];
+            if (!Array.isArray(appData.purchases)) appData.purchases = [];
+            if (!Array.isArray(appData.auditEvents)) appData.auditEvents = [];
+            if (!Array.isArray(appData.users) || appData.users.length === 0) {
+                appData.users = JSON.parse(JSON.stringify(seedUsers));
+            }
+            if (!appData.pilotMetrics || typeof appData.pilotMetrics !== 'object' || !appData.pilotMetrics.municipio) {
+                appData.pilotMetrics = JSON.parse(JSON.stringify(seedPilotMetrics));
+            }
+
+            // Campos novos por negócio, preservando o que já estiver preenchido.
+            appData.businesses.forEach(b => {
+                if (!Array.isArray(b.evidences)) {
+                    const sementes = seedEvidencias[b.id];
+                    b.evidences = sementes ? sementes.map(e => novaEvidencia(e)) : [];
+                }
+                if (!b.legal || typeof b.legal !== 'object') {
+                    const semente = seedLegalPorNegocio[b.id];
+                    b.legal = novaIdentificacaoLegal(semente || {
+                        responsavelNome: '',
+                        email: '',
+                        telefone: b.whatsapp || b.phone || '',
+                        naturezaJuridica: naturezaPorPorte(b.porte),
+                        origemCadastro: b.origin || 'Cadastro do Empreendedor',
+                        criadoEm: b.updatedAt ? new Date(b.updatedAt + 'T00:00:00').toISOString() : undefined
+                    });
+                } else {
+                    // Reaplica a máscara caso o documento tenha sido editado direto.
+                    b.legal.documentoMascarado = docUtils.mascarar(b.legal.documento);
+                }
+            });
+
+            if (versaoGravada !== DATA_MODEL_VERSION) {
+                localStorage.setItem('vitryx_data_model_version', String(DATA_MODEL_VERSION));
+            }
+            return DATA_MODEL_VERSION;
+        }
 
         // Migração de compatibilidade: negócios antigos (gravados no localStorage antes
         // desta versão, ou criados pelos fluxos de cadastro) só têm `catalog`. Aqui
@@ -2579,7 +2885,15 @@
                     appData.history = JSON.parse(localStorage.getItem('vitryx_demo_history') || '[]');
                     appData.demands = JSON.parse(localStorage.getItem('vitryx_demo_demands') || '[]');
                     appData.metrics = JSON.parse(localStorage.getItem('vitryx_demo_metrics') || JSON.stringify(seedMetrics));
+                    // Coleções da Etapa 1: lidas se existirem, criadas vazias se não.
+                    appData.usageEvents = JSON.parse(localStorage.getItem('vitryx_demo_usage_events') || '[]');
+                    appData.purchases   = JSON.parse(localStorage.getItem('vitryx_demo_purchases') || '[]');
+                    appData.auditEvents = JSON.parse(localStorage.getItem('vitryx_demo_audit_events') || '[]');
+                    appData.users       = JSON.parse(localStorage.getItem('vitryx_demo_users') || '[]');
+                    appData.pilotMetrics= JSON.parse(localStorage.getItem('vitryx_demo_pilot_metrics') || '{}');
                     normalizeAll();
+                    ensureDataModelVersion();
+                    this.save();
                 }
             },
             save() {
@@ -2589,7 +2903,13 @@
                 localStorage.setItem('vitryx_demo_history', JSON.stringify(appData.history));
                 localStorage.setItem('vitryx_demo_demands', JSON.stringify(appData.demands));
                 localStorage.setItem('vitryx_demo_metrics', JSON.stringify(appData.metrics));
+                localStorage.setItem('vitryx_demo_usage_events', JSON.stringify(appData.usageEvents));
+                localStorage.setItem('vitryx_demo_purchases', JSON.stringify(appData.purchases));
+                localStorage.setItem('vitryx_demo_audit_events', JSON.stringify(appData.auditEvents));
+                localStorage.setItem('vitryx_demo_users', JSON.stringify(appData.users));
+                localStorage.setItem('vitryx_demo_pilot_metrics', JSON.stringify(appData.pilotMetrics));
                 localStorage.setItem('vitryx_seed_version', SEED_VERSION);
+                localStorage.setItem('vitryx_data_model_version', String(DATA_MODEL_VERSION));
             },
             reset() {
                 appData.businesses = JSON.parse(JSON.stringify(seedBusinesses));
@@ -2598,18 +2918,52 @@
                 appData.metrics = JSON.parse(JSON.stringify(seedMetrics));
                 appData.history = [ { date: new Date().toISOString(), user: 'Sistema', action: 'Importação Inicial', detail: 'Base carregada com sucesso.' } ];
                 appData.demands = JSON.parse(JSON.stringify(initialDemands));
+                appData.usageEvents = [];
+                appData.purchases = [];
+                appData.auditEvents = [];
+                appData.users = [];
+                appData.pilotMetrics = {};
                 normalizeAll();
+                ensureDataModelVersion();
+                registrarAuditoria({
+                    acao: 'Reset da demonstração', modulo: 'Sistema', entidade: 'appData', entidadeId: null,
+                    descricao: 'Dados demonstrativos restaurados para o estado inicial.'
+                });
                 this.save();
             }
         };
+
+        // ---------------------------------------------------------------------
+        // AUDITORIA — trilha administrativa (separada dos eventos de uso anônimos)
+        // ---------------------------------------------------------------------
+        function registrarAuditoria(dados) {
+            const d = dados || {};
+            const usuario = (typeof app !== 'undefined' && app.usuarioAtual) ? app.usuarioAtual : null;
+            const perfil = (typeof app !== 'undefined' && app.currentPersona) ? app.currentPersona : 'system';
+            appData.auditEvents.unshift({
+                id: 'au-' + Date.now() + '-' + Math.random().toString(36).slice(2, 7),
+                dataHora: new Date().toISOString(),
+                usuario: d.usuario || (usuario ? usuario.nome : 'Sistema'),
+                usuarioId: d.usuarioId || (usuario ? usuario.id : null),
+                perfil: d.perfil || perfil,
+                acao: d.acao || 'Ação não identificada',
+                modulo: d.modulo || 'Sistema',
+                entidade: d.entidade || null,
+                entidadeId: d.entidadeId != null ? d.entidadeId : null,
+                descricao: d.descricao || '',
+                dadosAnteriores: d.dadosAnteriores !== undefined ? d.dadosAnteriores : null,
+                dadosPosteriores: d.dadosPosteriores !== undefined ? d.dadosPosteriores : null
+            });
+            if (appData.auditEvents.length > 300) appData.auditEvents.length = 300;
+        }
 
         const app = {
             currentPersona: 'citizen', currentLayout: 'public', currentView: 'landing', currentSearchTerm: '', radarFilter: 'all',
             mobileMapVisible: false, leafletMap: null, mapMarkers: [], mgrLeafletMap: null,
             // Sem sessão e sem negócio vinculado até alguém entrar ou concluir o cadastro.
-            sessao: null, loggedInBusinessId: null,
+            sessao: null, loggedInBusinessId: null, usuarioAtual: null,
             profileLeafletMap: null, profileMapLayer: null, perfilAtual: null,
-            onboardingStep: 0, onboardingType: 'new', currentTags: [], currentEditTags: [], currentDemandTags: [], currentUploadedFile: null,
+            onboardingStep: 0, onboardingType: 'new', currentTags: [], currentEditTags: [], currentDemandTags: [], currentUploadedFile: null, evidenciaPendente: null,
 
             init() {
                 try {
@@ -2977,7 +3331,7 @@
                 this.onboardingType = 'new';
                 this.guia = { passo: 0, respostas: {}, sugestao: null };
                 this.currentGuiaTags = [];
-                ['ap-nome', 'ap-cpf', 'ap-telefone', 'ap-negocio', 'ap-email'].forEach(id => {
+                ['ap-nome', 'ap-cpf', 'ap-telefone', 'ap-negocio', 'ap-cnpj', 'ap-email'].forEach(id => {
                     const el = document.getElementById(id); if(el) el.value = '';
                 });
                 document.getElementById('ap-cpf').classList.remove('input-error');
@@ -2994,8 +3348,10 @@
                     if(!nome) return this.showToast('Informe seu nome completo.', 'error');
                     if(!cpf.value || cpf.classList.contains('input-error')) return this.showToast('Informe um CPF válido.', 'error');
                     if(!tel.value || tel.classList.contains('input-error')) return this.showToast('Informe um telefone válido.', 'error');
+                    if(!docUtils.validarCPF(cpf.value)) return this.showToast('Informe um CPF válido.', 'error');
                     this.guia.respostas.responsavel = nome;
-                    // Telefone do responsável entra como sugestão de contato na conversa.
+                    // Documento e telefone entram na identificação legal do cadastro.
+                    this.guia.respostas.responsavelCpf = docUtils.somenteDigitos(cpf.value);
                     this.guia.respostas.telefonePessoa = tel.value;
                     return this.mostrarEtapaAssistido('empresa');
                 }
@@ -3005,9 +3361,14 @@
                     if(!negocio) return this.showToast('Informe o nome do estabelecimento.', 'error');
                     this.guia.respostas.nome = negocio;
                     this.guia.respostas.porte = document.getElementById('ap-porte').value;
-                    // Sugere um e-mail coerente, mas deixa editável.
-                    const email = document.getElementById('ap-email');
-                    if(!email.value) email.value = this.normalize(negocio).replace(/[^a-z0-9]+/g, '.').replace(/^\.|\.$/g, '') + '@email.com';
+
+                    // CNPJ é opcional: quem é MEI/autônomo pode seguir só com o CPF.
+                    const cnpj = document.getElementById('ap-cnpj');
+                    const cnpjDigitos = docUtils.somenteDigitos(cnpj.value);
+                    if(cnpjDigitos && !docUtils.validarCNPJ(cnpjDigitos)) return this.showToast('O CNPJ informado é inválido. Deixe em branco se não tiver.', 'error');
+                    this.guia.respostas.cnpj = cnpjDigitos;
+                    this.guia.respostas.naturezaJuridica = naturezaPorPorte(this.guia.respostas.porte);
+                    // O e-mail é do empreendedor: nada é sugerido automaticamente.
                     return this.mostrarEtapaAssistido('acesso');
                 }
 
@@ -3020,10 +3381,12 @@
                     if(s1 !== s2) return this.showToast('As senhas não conferem.', 'error');
 
                     // Login demonstrativo: abre sessão SEM vitrine vinculada.
+                    // A senha NÃO é armazenada — é apenas conferência de digitação local.
                     this.guia.respostas.email = email;
                     this.sessao = 'entrepreneur';
                     this.loggedInBusinessId = null;
                     this.currentPersona = 'entrepreneur';
+                    this.usuarioAtual = { id: 'u-' + Date.now(), nome: this.guia.respostas.responsavel || 'Empreendedor', email: email, perfil: 'entrepreneur', situacao: 'ativo', businessId: null };
                     this.atualizarBarraSessao();
                     this.updateBusinessSelector();
                     this.showToast('Acesso criado. Agora vamos montar sua vitrine!', 'success');
@@ -3143,8 +3506,9 @@
                 this.guia.sugestao = null;
                 this.currentGuiaTags = [];
                 this.onboardingType = 'new';
-                // A conversa substitui o upload de comprovante do formulário clássico.
-                this.currentUploadedFile = { name: 'cadastro-assistido.txt', type: 'Declaração do empreendedor' };
+                // Nenhum comprovante é fabricado aqui: o empreendedor anexa o documento
+                // no passo de revisão, e o que for anexado vira uma evidência de verdade.
+                this.currentUploadedFile = null;
                 document.getElementById('gonb-messages').innerHTML = '';
                 document.getElementById('gonb-extra').innerHTML = '';
                 document.getElementById('gonb-input').value = '';
@@ -3411,11 +3775,37 @@
 
             submitOnboarding() {
                 const name = document.getElementById('onb-name').value || "Novo Empreendedor";
+                const r = (this.guia && this.guia.respostas) ? this.guia.respostas : {};
+                const porte = document.getElementById('onb-porte').value;
+
+                // Identificação legal: PJ quando houver CNPJ; senão o CPF do responsável.
+                const documento = r.cnpj || r.responsavelCpf || docUtils.somenteDigitos(document.getElementById('onb-doc').value);
+                const legal = novaIdentificacaoLegal({
+                    documento: documento,
+                    responsavelNome: r.responsavel || document.getElementById('onb-legal-name').value || '',
+                    responsavelCpf: r.responsavelCpf || '',
+                    email: r.email || document.getElementById('onb-email').value || '',
+                    telefone: r.telefonePessoa || document.getElementById('onb-phone').value || '',
+                    naturezaJuridica: r.naturezaJuridica || naturezaPorPorte(porte),
+                    origemCadastro: 'Cadastro do Empreendedor'
+                });
+
+                // Evidência anexada na revisão; sem invenção de arquivo quando não há.
+                const evidencias = [];
+                if(this.evidenciaPendente) evidencias.push(novaEvidencia(this.evidenciaPendente));
+                else if(this.currentUploadedFile) {
+                    evidencias.push(novaEvidencia({
+                        type: 'outro', fileName: this.currentUploadedFile.name,
+                        mimeType: this.currentUploadedFile.type, size: 0,
+                        status: 'recebido', source: 'Upload do empreendedor', storageMode: 'metadata'
+                    }));
+                }
+
                 const data = {
                     name: name,
                     category: document.getElementById('onb-category').value,
                     type: document.getElementById('onb-type').value,
-                    porte: document.getElementById('onb-porte').value,
+                    porte: porte,
                     cnae: document.getElementById('onb-cnae').value,
                     address: document.getElementById('onb-address').value,
                     protectedLocation: document.getElementById('onb-protected').checked,
@@ -3423,7 +3813,9 @@
                     description: document.getElementById('onb-desc').value,
                     tags: this.currentTags,
                     hours: this.extractHoursData('onb-weekly-hours'),
-                    file: this.currentUploadedFile
+                    file: this.currentUploadedFile,
+                    legal: legal,
+                    evidences: evidencias
                 };
 
                 appData.validations.push({
@@ -3533,9 +3925,22 @@
                         return;
                     }
 
-                    const padrao = appData.businesses.find(b => b.name === 'Marcenaria Medianeira') || appData.businesses.find(b => b.hasVitrine !== false);
-                    if(padrao) this.loggedInBusinessId = padrao.id;
+                    // Reconhece o e-mail digitado: se houver cadastro com ele, entra
+                    // naquela vitrine. Caso contrário, cai na conta demonstrativa padrão.
+                    const digitado = (document.getElementById('login-user').value || '').trim().toLowerCase();
+                    const usuario = appData.users.find(u => u.perfil === 'entrepreneur' && (u.email || '').toLowerCase() === digitado);
+                    const porEmail = appData.businesses.find(b => b.legal && (b.legal.email || '').toLowerCase() === digitado && digitado);
+
+                    const alvo = (usuario && appData.businesses.find(b => b.id === usuario.businessId))
+                        || porEmail
+                        || appData.businesses.find(b => b.name === 'Marcenaria Medianeira')
+                        || appData.businesses.find(b => b.hasVitrine !== false);
+
+                    if(alvo) this.loggedInBusinessId = alvo.id;
+                    this.usuarioAtual = usuario || { id: 'u-demo-ent', nome: (alvo && alvo.legal && alvo.legal.responsavelNome) || 'Empreendedor', email: digitado, perfil: 'entrepreneur', situacao: 'ativo', businessId: alvo ? alvo.id : null };
                     this.updateBusinessSelector();
+                } else if(perfil === 'manager') {
+                    this.usuarioAtual = appData.users.find(u => u.perfil === 'manager') || { id: 'u-gestor', nome: 'Gestor Municipal', email: '', perfil: 'manager', situacao: 'ativo', businessId: null };
                 }
 
                 this.switchPersona(perfil);
@@ -3545,6 +3950,8 @@
             logout(silencioso) {
                 this.sessao = null;
                 this.loggedInBusinessId = null;
+                this.usuarioAtual = null;
+                this.documentosRevelados = {};
                 this.switchPersona('citizen');
                 if(!silencioso) this.showToast('Sessão encerrada. Você voltou ao acesso público.', 'success');
             },
@@ -4351,6 +4758,158 @@
                 return String(str == null ? '' : str).replace(/[&<>"']/g, c => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[c]));
             },
 
+            // =================================================================
+            // IDENTIFICAÇÃO LEGAL — exibição protegida e revelação auditada
+            // O documento existe no registro administrativo; o que é controlado é
+            // QUEM vê e o REGISTRO de quem viu. Nunca sai no portal público.
+            // =================================================================
+            documentosRevelados: {},
+
+            // Rótulo curto para a listagem administrativa. Sempre mascarado.
+            documentoProtegido(b) {
+                const legal = b && b.legal;
+                if(!legal || !legal.documento) return '<span class="vx-meta">Não informado</span>';
+                return `<span class="font-mono">${this.escapeHtml(legal.documentoMascarado)}</span>`;
+            },
+
+            // Só a Gestão vê o número completo, e a leitura fica registrada.
+            revelarDocumento(businessId) {
+                if(this.currentPersona !== 'manager') {
+                    return this.showToast('Apenas o perfil da Gestão Municipal pode revelar o documento.', 'error');
+                }
+                const b = appData.businesses.find(x => x.id === businessId);
+                if(!b || !b.legal || !b.legal.documento) return this.showToast('Este cadastro não possui documento informado.', 'error');
+
+                this.documentosRevelados[businessId] = true;
+                registrarAuditoria({
+                    acao: 'Revelação de documento', modulo: 'Base Econômica',
+                    entidade: 'business', entidadeId: b.id,
+                    descricao: `Documento ${b.legal.tipoDocumento} de "${b.name}" exibido na íntegra no painel administrativo.`,
+                    dadosAnteriores: { documento: b.legal.documentoMascarado },
+                    dadosPosteriores: { documento: 'exibido ao usuário' }
+                });
+                storage.save();
+                this.renderDocumentoDetalhe(b);
+                this.showToast('Documento exibido. A consulta foi registrada na auditoria.', 'success');
+            },
+
+            ocultarDocumento(businessId) {
+                delete this.documentosRevelados[businessId];
+                const b = appData.businesses.find(x => x.id === businessId);
+                if(b) this.renderDocumentoDetalhe(b);
+            },
+
+            // Bloco do documento dentro do modal de detalhes do cadastro.
+            renderDocumentoDetalhe(b) {
+                const alvo = document.getElementById('bd-documento');
+                if(!alvo) return;
+                const legal = b.legal || {};
+                if(!legal.documento) {
+                    alvo.innerHTML = '<span class="vx-meta">Não informado</span>';
+                    return;
+                }
+                const revelado = !!this.documentosRevelados[b.id];
+                const podeRevelar = this.currentPersona === 'manager';
+                const valor = revelado ? docUtils.formatar(legal.documento) : legal.documentoMascarado;
+                const acao = revelado
+                    ? `<button onclick="app.ocultarDocumento(${b.id})" class="text-slate-400 hover:text-slate-700 transition" title="Ocultar novamente"><i data-lucide="eye-off" class="w-4 h-4"></i></button>`
+                    : (podeRevelar
+                        ? `<button onclick="app.revelarDocumento(${b.id})" class="text-slate-400 hover:text-slate-700 transition" title="Revelar documento (a consulta fica registrada na auditoria)"><i data-lucide="eye" class="w-4 h-4"></i></button>`
+                        : '');
+                alvo.innerHTML = `
+                    <span class="font-medium font-mono" style="color: var(--vx-text)">${this.escapeHtml(valor)}</span>
+                    <span class="vx-meta ml-1">(${this.escapeHtml(legal.tipoDocumento || '—')})</span>
+                    ${acao}`;
+                if(typeof lucide !== 'undefined') lucide.createIcons();
+            },
+
+            // =================================================================
+            // EVIDÊNCIAS — metadados sempre; arquivo local só dentro do limite
+            // =================================================================
+            // Upload do assistido: guarda o arquivo se couber, senão só os metadados.
+            handleEvidenciaUpload(input) {
+                if(!input.files || !input.files[0]) return;
+                const arquivo = input.files[0];
+                const tipo = (document.getElementById('gonb-evidencia-tipo') || {}).value || 'outro';
+                const texto = document.getElementById('gonb-file-text');
+                const icone = document.getElementById('gonb-file-icon');
+
+                const concluir = dataUrl => {
+                    this.evidenciaPendente = {
+                        type: tipo,
+                        fileName: arquivo.name,
+                        mimeType: arquivo.type || 'application/octet-stream',
+                        size: arquivo.size,
+                        status: 'recebido',
+                        source: 'Upload do empreendedor',
+                        storageMode: dataUrl ? 'local' : 'metadata',
+                        dataUrl: dataUrl || null
+                    };
+                    // O submit clássico ainda lê currentUploadedFile; mantemos em sincronia.
+                    this.currentUploadedFile = { name: arquivo.name, type: arquivo.type || 'Documento' };
+                    texto.innerHTML = `<span class="text-emerald-600 font-bold">${this.escapeHtml(arquivo.name)}</span> <span class="text-slate-400">(${this.formatarTamanho(arquivo.size)}${dataUrl ? '' : ' · somente metadados'})</span>`;
+                    icone.classList.replace('text-slate-400', 'text-emerald-500');
+                    icone.setAttribute('data-lucide', 'file-check');
+                    if(typeof lucide !== 'undefined') lucide.createIcons();
+                };
+
+                if(arquivo.size <= EVIDENCIA_LIMITE_BYTES) {
+                    const leitor = new FileReader();
+                    leitor.onload = e => concluir(e.target.result);
+                    leitor.onerror = () => concluir(null);
+                    leitor.readAsDataURL(arquivo);
+                } else {
+                    concluir(null);
+                    this.showToast('Arquivo grande para esta demonstração: guardamos os dados do documento, sem o conteúdo.', 'success');
+                }
+            },
+
+            formatarTamanho(bytes) {
+                const n = Number(bytes) || 0;
+                if(n < 1024) return n + ' B';
+                if(n < 1024 * 1024) return (n / 1024).toFixed(0) + ' KB';
+                return (n / (1024 * 1024)).toFixed(1) + ' MB';
+            },
+
+            // Anexa uma evidência ao negócio, com registro em auditoria.
+            adicionarEvidencia(business, dados) {
+                if(!business) return null;
+                if(!Array.isArray(business.evidences)) business.evidences = [];
+                const ev = novaEvidencia(dados);
+                business.evidences.push(ev);
+                registrarAuditoria({
+                    acao: 'Inclusão de evidência', modulo: 'Cadastro',
+                    entidade: 'business', entidadeId: business.id,
+                    descricao: `Evidência "${ev.fileName}" (${TIPOS_EVIDENCIA[ev.type] || ev.type}) anexada ao cadastro de "${business.name}".`,
+                    dadosPosteriores: { id: ev.id, fileName: ev.fileName, type: ev.type, size: ev.size, storageMode: ev.storageMode }
+                });
+                return ev;
+            },
+
+            renderEvidenciasDetalhe(b) {
+                const alvo = document.getElementById('bd-evidencias');
+                if(!alvo) return;
+                const lista = b.evidences || [];
+                if(!lista.length) {
+                    alvo.innerHTML = '<p class="vx-meta">Nenhuma evidência vinculada a este cadastro.</p>';
+                    return;
+                }
+                const cor = { aceito: 'vx-badge-success', recusado: 'vx-badge-danger', pendente: 'vx-badge-warning', substituir: 'vx-badge-warning', recebido: 'vx-badge-neutral' };
+                alvo.innerHTML = lista.map(ev => `
+                    <div class="flex items-start justify-between gap-3 py-2.5" style="border-bottom: 1px solid var(--vx-border)">
+                        <div class="min-w-0 flex items-start gap-2.5">
+                            <i data-lucide="paperclip" class="w-4 h-4 mt-0.5 flex-shrink-0" style="color: var(--vx-text-muted)"></i>
+                            <div class="min-w-0">
+                                <div class="text-sm font-semibold truncate" style="color: var(--vx-text)">${this.escapeHtml(ev.fileName)}</div>
+                                <div class="vx-meta">${this.escapeHtml(TIPOS_EVIDENCIA[ev.type] || ev.type)} · ${this.formatarTamanho(ev.size)} · ${new Date(ev.uploadedAt).toLocaleDateString('pt-BR')}</div>
+                                <div class="vx-meta">${this.escapeHtml(ev.source)}${ev.storageMode === 'metadata' ? ' · <span title="Arquivo não armazenado: apenas os metadados foram guardados nesta demonstração local.">somente metadados</span>' : ' · arquivo guardado localmente'}</div>
+                            </div>
+                        </div>
+                        <span class="vx-badge ${cor[ev.status] || 'vx-badge-neutral'} flex-shrink-0">${this.escapeHtml(SITUACOES_EVIDENCIA[ev.status] || ev.status)}</span>
+                    </div>`).join('');
+                if(typeof lucide !== 'undefined') lucide.createIcons();
+            },
+
             actionWhatsApp() { this.showToast("Demonstração: Abrindo WhatsApp...", "success"); },
             actionCall() { this.showToast("Demonstração: Iniciando chamada...", "success"); },
             actionRoute() { this.showToast("Demonstração: Abrindo Rota...", "success"); },
@@ -4474,12 +5033,25 @@
                     b.validationStatus = "pendente";
                 }
 
+                const telefoneAntes = b.whatsapp;
                 b.whatsapp = document.getElementById('edit-whatsapp').value;
                 b.status = document.getElementById('edit-status').value;
                 b.description = document.getElementById('edit-description').value;
                 b.tags = [...this.currentEditTags];
                 b.protectedLocation = document.getElementById('edit-protected').checked;
                 b.hours = this.extractHoursData('weekly-hours-container');
+
+                // Telefone também é dado da identificação legal: mantém os dois em sincronia.
+                if(b.legal && telefoneAntes !== b.whatsapp) {
+                    b.legal.telefone = b.whatsapp;
+                    b.legal.atualizadoEm = new Date().toISOString();
+                    registrarAuditoria({
+                        acao: 'Atualização da identificação legal', modulo: 'Cadastro',
+                        entidade: 'business', entidadeId: b.id,
+                        descricao: `Telefone de contato de "${b.name}" atualizado pelo empreendedor.`,
+                        dadosAnteriores: { telefone: telefoneAntes }, dadosPosteriores: { telefone: b.whatsapp }
+                    });
+                }
 
                 const adj = appData.validations.find(v => v.businessId === b.id && v.status === 'adjustment_requested');
                 if(adj) adj.status = 'resolved';
@@ -4844,6 +5416,7 @@
                     return `
                     <tr class="hover:bg-slate-50/50">
                         <td class="px-6 py-4 cursor-pointer" onclick="app.openBaseDetails(${b.id})"><div class="font-bold text-slate-900 hover:text-brand-600">${b.name}</div><div class="text-xs text-slate-500">${b.cnae || 'S/ CNAE'}</div></td>
+                        <td class="px-6 py-4 text-slate-600 text-xs">${this.documentoProtegido(b)}</td>
                         <td class="px-6 py-4 text-slate-600">${b.category}</td>
                         <td class="px-6 py-4"><div class="text-sm font-medium text-slate-900">${b.type === 'urban'?'Urbano':'Rural/Autônomo'}</div><div class="text-xs text-slate-500">${b.porte}</div></td>
                         <td class="px-6 py-4"><div class="text-sm text-slate-700">${b.origin || '-'}</div>${etiquetaVitrine}</td>
@@ -4851,7 +5424,7 @@
                         <td class="px-6 py-4 text-center">${acao}</td>
                     </tr>`;
                 }).join('') || `
-                    <tr><td colspan="6" class="px-6 py-12 text-center">
+                    <tr><td colspan="7" class="px-6 py-12 text-center">
                         <div class="w-12 h-12 bg-slate-100 rounded-full flex items-center justify-center mx-auto mb-3 text-slate-400"><i data-lucide="search-x" class="w-6 h-6"></i></div>
                         <p class="text-sm font-bold text-slate-700">Nenhum registro encontrado</p>
                         <p class="text-xs text-slate-500 mt-1">Nenhum negócio da base atende aos filtros selecionados.</p>
@@ -4879,7 +5452,14 @@
                 document.getElementById('bd-name').innerText = b.name; document.getElementById('bd-category').innerText = b.category;
                 document.getElementById('bd-cnae').innerText = b.cnae || '-'; document.getElementById('bd-porte').innerText = b.porte || 'N/A';
                 document.getElementById('bd-origin').innerText = b.origin || 'Base'; document.getElementById('bd-address').innerText = b.address;
-                document.getElementById('bd-phone').innerText = b.phone || b.whatsapp || '-';
+                const legal = b.legal || {};
+                document.getElementById('bd-phone').innerText = legal.telefone || b.phone || b.whatsapp || '-';
+                document.getElementById('bd-tipo-pessoa').innerText = legal.tipoPessoa === 'PJ' ? 'Pessoa Jurídica' : (legal.tipoPessoa === 'PF' ? 'Pessoa Física' : '-');
+                document.getElementById('bd-natureza').innerText = legal.naturezaJuridica || '-';
+                document.getElementById('bd-responsavel').innerText = legal.responsavelNome || '-';
+                document.getElementById('bd-email').innerText = legal.email || '-';
+                this.renderDocumentoDetalhe(b);
+                this.renderEvidenciasDetalhe(b);
                 document.getElementById('bd-validation').innerHTML = b.validationStatus === 'validado'
                     ? '<span class="text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded text-xs font-bold border border-emerald-100">Validado</span>'
                     : '<span class="text-amber-700 bg-amber-50 px-2 py-0.5 rounded text-xs font-bold border border-amber-100">Pendente</span>';
@@ -4903,7 +5483,7 @@
             },
 
             openNewBusiness() {
-                ['nb-name','nb-cnae','nb-phone','nb-address'].forEach(id => {
+                ['nb-name','nb-cnae','nb-phone','nb-address','nb-doc'].forEach(id => {
                     const el = document.getElementById(id); if(el) el.value = '';
                 });
                 document.getElementById('nb-category').selectedIndex = 0;
@@ -4922,22 +5502,39 @@
                 const category = document.getElementById('nb-category').value;
                 const porte = document.getElementById('nb-porte').value;
                 const tipo = (category === 'Rural' || porte === 'Produtor Rural') ? 'rural' : (porte === 'Autônomo' ? 'professional' : 'urban');
+                const telefone = document.getElementById('nb-phone').value.trim();
 
-                appData.businesses.push(normalizeBusiness({
+                const documento = docUtils.somenteDigitos(document.getElementById('nb-doc').value);
+                if(documento && !docUtils.validar(documento)) return this.showToast("O CPF/CNPJ informado é inválido. Deixe em branco se não tiver o dado.", "error");
+
+                const novo = normalizeBusiness({
                     id: Date.now(),
                     name, category, porte,
                     type: tipo,
                     cnae: document.getElementById('nb-cnae').value.trim(),
                     address,
-                    phone: document.getElementById('nb-phone').value.trim(),
+                    phone: telefone,
                     status: "aberto", hours: null, description: "", catalog: [], tags: [], whatsapp: "",
                     lat: null, lng: null, protectedLocation: false,
                     hasVitrine: false, origin: "Base Importada", validationStatus: "validado",
                     updatedAt: new Date().toISOString().split('T')[0],
                     color: "bg-slate-500", icon: "building-2",
-                    stats: { views: 0, opens: 0, contacts: 0 }
-                }));
+                    stats: { views: 0, opens: 0, contacts: 0 },
+                    evidences: [],
+                    legal: novaIdentificacaoLegal({
+                        documento: documento, telefone: telefone,
+                        naturezaJuridica: naturezaPorPorte(porte),
+                        origemCadastro: 'Base Importada'
+                    })
+                });
+                appData.businesses.push(novo);
 
+                registrarAuditoria({
+                    acao: 'Criação de cadastro', modulo: 'Base Econômica',
+                    entidade: 'business', entidadeId: novo.id,
+                    descricao: `Empresa "${name}" incluída na base econômica pela Prefeitura (sem vitrine pública).`,
+                    dadosPosteriores: { name: name, category: category, porte: porte, documento: novo.legal.documentoMascarado }
+                });
                 this.addHistory("Cadastro pela Prefeitura", `${name} incluída na base econômica (sem vitrine)`);
                 storage.save();
                 this.closeModal('modal-mgr-new-business');
@@ -5186,12 +5783,34 @@
                         id: Date.now(), name: d.name, category: d.category, type: d.type, porte: d.porte, cnae: d.cnae, address: d.address, 
                         protectedLocation: d.protectedLocation, whatsapp: d.whatsapp, description: d.description, tags: d.tags, hours: d.hours,
                         status: "aberto", catalog: [], hasVitrine: true, origin: "Cadastro do Empreendedor", validationStatus: "validado", updatedAt: new Date().toISOString().split('T')[0],
-                        color: "bg-slate-700", icon: "store", stats: { views: 0, contacts: 0 }, lat: -25.2983, lng: -54.0933 // Default Medianeira
+                        color: "bg-slate-700", icon: "store", stats: { views: 0, contacts: 0 }, lat: -25.2983, lng: -54.0933, // Default Medianeira
+                        // Identificação legal e evidências vêm do cadastro, não são recriadas.
+                        legal: d.legal ? JSON.parse(JSON.stringify(d.legal)) : null,
+                        evidences: Array.isArray(d.evidences) ? JSON.parse(JSON.stringify(d.evidences)) : []
                     };
                     appData.businesses.push(normalizeBusiness(newBiz));
                     this.loggedInBusinessId = newBiz.id;
                     this.updateBusinessSelector();
                     this.atualizarBarraSessao();
+                    // Cria/atualiza o usuário empreendedor a partir do e-mail do cadastro
+                    // (e não da sessão atual, que aqui é a do gestor que está aprovando).
+                    const emailDono = (newBiz.legal && newBiz.legal.email || '').toLowerCase();
+                    if(emailDono) {
+                        const existente = appData.users.find(u => (u.email || '').toLowerCase() === emailDono);
+                        if(existente) existente.businessId = newBiz.id;
+                        else appData.users.push({
+                            id: 'u-' + newBiz.id,
+                            nome: newBiz.legal.responsavelNome || newBiz.name,
+                            email: newBiz.legal.email,
+                            perfil: 'entrepreneur', situacao: 'ativo', businessId: newBiz.id
+                        });
+                    }
+                    registrarAuditoria({
+                        acao: 'Criação de cadastro', modulo: 'Base Econômica',
+                        entidade: 'business', entidadeId: newBiz.id,
+                        descricao: `Cadastro de "${newBiz.name}" aprovado e publicado na base econômica.`,
+                        dadosPosteriores: { name: newBiz.name, category: newBiz.category, documento: newBiz.legal ? newBiz.legal.documentoMascarado : null }
+                    });
                 } else if(v.businessId) {
                     const b = appData.businesses.find(x => x.id === v.businessId);
                     if(b) {
