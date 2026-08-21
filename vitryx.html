@@ -1264,6 +1264,57 @@
                 <button onclick="app.closeModal('modal-onboarding')" class="text-slate-400 hover:text-slate-600 bg-slate-100 p-1.5 rounded-full"><i data-lucide="x" class="w-5 h-5"></i></button>
             </div>
             <div class="flex-grow overflow-y-auto p-6 bg-slate-50 relative" id="onb-body">
+                <!-- ASSISTIDO 1/5: dados da pessoa (o dono) -->
+                <div id="onb-step-pessoa" class="step-content space-y-4">
+                    <div class="flex items-center gap-2 mb-2"><div class="w-6 h-6 rounded-full bg-brand-600 text-white flex items-center justify-center text-xs font-bold">1</div><h4 class="font-bold text-slate-900">Quem é você</h4></div>
+                    <p class="text-sm text-slate-500 -mt-2">Só o essencial para identificar o responsável pelo cadastro.</p>
+                    <div><label class="block text-sm font-bold text-slate-900 mb-1">Nome completo <span class="text-red-500">*</span></label><input type="text" id="ap-nome" class="w-full px-4 py-2.5 bg-white border border-slate-200 rounded-lg text-sm outline-none" placeholder="Ex: Joana Pereira da Silva"></div>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-bold text-slate-900 mb-1">CPF <span class="text-red-500">*</span></label>
+                            <input type="text" id="ap-cpf" oninput="app.maskCpfCnpj(this)" class="w-full px-4 py-2.5 bg-white border border-slate-200 rounded-lg text-sm outline-none" placeholder="000.000.000-00">
+                            <span id="ap-cpf-error" class="text-xs text-red-500 hidden mt-1">Documento inválido.</span>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-bold text-slate-900 mb-1">Telefone <span class="text-red-500">*</span></label>
+                            <input type="text" id="ap-telefone" oninput="app.maskPhone(this)" class="w-full px-4 py-2.5 bg-white border border-slate-200 rounded-lg text-sm outline-none" placeholder="(00) 00000-0000">
+                        </div>
+                    </div>
+                    <div class="flex justify-end pt-2"><button onclick="app.assistidoAvancar('pessoa')" class="px-6 py-2.5 bg-brand-600 hover:bg-brand-700 text-white rounded-xl text-sm font-bold shadow-md transition">Continuar</button></div>
+                </div>
+
+                <!-- ASSISTIDO 2/5: dados básicos da empresa (mínimo) -->
+                <div id="onb-step-empresa" class="step-content space-y-4">
+                    <div class="flex items-center gap-2 mb-2"><div class="w-6 h-6 rounded-full bg-brand-600 text-white flex items-center justify-center text-xs font-bold">2</div><h4 class="font-bold text-slate-900">Seu negócio</h4></div>
+                    <p class="text-sm text-slate-500 -mt-2">Por enquanto só o básico. O resto da vitrine a Vitória monta com você.</p>
+                    <div><label class="block text-sm font-bold text-slate-900 mb-1">Nome do estabelecimento <span class="text-red-500">*</span></label><input type="text" id="ap-negocio" class="w-full px-4 py-2.5 bg-white border border-slate-200 rounded-lg text-sm outline-none" placeholder="Ex: Bolos da Joana"></div>
+                    <div><label class="block text-sm font-bold text-slate-900 mb-1">Tipo / Porte</label><select id="ap-porte" class="w-full px-4 py-2.5 bg-white border border-slate-200 rounded-lg text-sm outline-none"><option>MEI</option><option>Empresa (ME/EPP/LTDA)</option><option>Profissional Autônomo</option><option>Produtor Rural</option></select></div>
+                    <div class="bg-blue-50 border border-blue-100 p-3 rounded-lg text-xs text-blue-800 font-medium flex items-start gap-2">
+                        <i data-lucide="info" class="w-4 h-4 flex-shrink-0 mt-0.5"></i>
+                        <span>Sua vitrine começa <b>vazia</b>. Descrição, categoria, palavras-chave e horário vêm na conversa com a Vitória — e você revisa tudo antes de enviar.</span>
+                    </div>
+                    <div class="flex justify-between pt-2">
+                        <button onclick="app.assistidoVoltar('empresa')" class="px-4 py-2.5 text-sm font-bold text-slate-600 hover:bg-slate-200 rounded-xl transition">Voltar</button>
+                        <button onclick="app.assistidoAvancar('empresa')" class="px-6 py-2.5 bg-brand-600 hover:bg-brand-700 text-white rounded-xl text-sm font-bold shadow-md transition">Continuar</button>
+                    </div>
+                </div>
+
+                <!-- ASSISTIDO 3/5: acesso à plataforma (login demonstrativo) -->
+                <div id="onb-step-acesso" class="step-content space-y-4">
+                    <div class="flex items-center gap-2 mb-2"><div class="w-6 h-6 rounded-full bg-brand-600 text-white flex items-center justify-center text-xs font-bold">3</div><h4 class="font-bold text-slate-900">Seu acesso</h4></div>
+                    <p class="text-sm text-slate-500 -mt-2">Crie o login que você vai usar para administrar sua vitrine.</p>
+                    <div><label class="block text-sm font-bold text-slate-900 mb-1">E-mail <span class="text-red-500">*</span></label><input type="email" id="ap-email" class="w-full px-4 py-2.5 bg-white border border-slate-200 rounded-lg text-sm outline-none" placeholder="voce@email.com"></div>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div><label class="block text-sm font-bold text-slate-900 mb-1">Senha</label><input type="password" id="ap-senha" class="w-full px-4 py-2.5 bg-white border border-slate-200 rounded-lg text-sm outline-none" value="demo1234"></div>
+                        <div><label class="block text-sm font-bold text-slate-900 mb-1">Confirmar senha</label><input type="password" id="ap-senha2" class="w-full px-4 py-2.5 bg-white border border-slate-200 rounded-lg text-sm outline-none" value="demo1234"></div>
+                    </div>
+                    <p class="text-[11px] text-slate-400">Ambiente demonstrativo: a senha vem preenchida e nenhum dado real é enviado.</p>
+                    <div class="flex justify-between pt-2">
+                        <button onclick="app.assistidoVoltar('acesso')" class="px-4 py-2.5 text-sm font-bold text-slate-600 hover:bg-slate-200 rounded-xl transition">Voltar</button>
+                        <button onclick="app.assistidoAvancar('acesso')" class="px-6 py-2.5 bg-brand-600 hover:bg-brand-700 text-white rounded-xl text-sm font-bold shadow-md transition flex items-center gap-2"><i data-lucide="log-in" class="w-4 h-4"></i> Entrar e montar minha vitrine</button>
+                    </div>
+                </div>
+
                 <!-- ONBOARDING ASSISTIDO: conversa conduzida pela Vitória -->
                 <div id="onb-step-chat" class="step-content">
                     <div class="flex items-center gap-3 mb-4 pb-4 border-b border-slate-200">
@@ -2738,13 +2789,90 @@
             guia: { passo: 0, respostas: {}, sugestao: null },
             currentGuiaTags: [],
 
+            // O nome do estabelecimento já veio no passo "empresa": a conversa começa
+            // no que realmente alimenta as sugestões.
             roteiroGuiado: [
-                { campo: 'nome',     pergunta: 'Para começar: qual é o nome do seu estabelecimento, como as pessoas te conhecem?', placeholder: 'Ex: Bolos da Joana' },
-                { campo: 'atividade',pergunta: 'Me conta com suas palavras o que você faz, vende ou oferece. Pode escrever à vontade — é daqui que eu tiro as sugestões.', placeholder: 'Ex: faço unha em gel e alongamento' },
-                { campo: 'bairro',   pergunta: 'Em que bairro ou endereço você atende?', placeholder: 'Ex: Rua das Flores, 45 - Centro' },
+                { campo: 'atividade',pergunta: 'Me conta com suas palavras o que a sua empresa faz, vende ou oferece. Pode escrever à vontade — é daqui que eu tiro as sugestões.', placeholder: 'Ex: faço unha em gel e alongamento' },
                 { campo: 'horario',  pergunta: 'Quais dias e horários você atende?', placeholder: 'Ex: de segunda a sexta das 9h às 18h' },
-                { campo: 'contato',  pergunta: 'Por último: qual o WhatsApp ou telefone para o cliente falar com você?', placeholder: '(45) 90000-0000' }
+                { campo: 'contato',  pergunta: 'Como o cliente entra em contato? Pode ser WhatsApp ou telefone.', placeholder: '(45) 90000-0000' },
+                { campo: 'bairro',   pergunta: 'Por último: em que endereço ou bairro você atende?', placeholder: 'Ex: Rua das Flores, 45 - Centro' }
             ],
+
+            // Sequência do cadastro assistido, do primeiro passo até a revisão.
+            etapasAssistido: ['pessoa', 'empresa', 'acesso', 'chat', 'revisao'],
+
+            mostrarEtapaAssistido(nome) {
+                document.querySelectorAll('.step-content').forEach(el => el.classList.remove('active'));
+                document.getElementById('onb-step-' + nome).classList.add('active');
+                document.getElementById('onb-footer').classList.add('hidden');
+                const body = document.getElementById('onb-body');
+                if(body) body.scrollTop = 0;
+                if(typeof lucide !== 'undefined') lucide.createIcons();
+            },
+
+            // Ponto de entrada do cadastro novo: pessoa -> empresa -> acesso -> Vitória.
+            iniciarCadastroAssistido() {
+                this.onboardingType = 'new';
+                this.guia = { passo: 0, respostas: {}, sugestao: null };
+                this.currentGuiaTags = [];
+                ['ap-nome', 'ap-cpf', 'ap-telefone', 'ap-negocio', 'ap-email'].forEach(id => {
+                    const el = document.getElementById(id); if(el) el.value = '';
+                });
+                document.getElementById('ap-cpf').classList.remove('input-error');
+                document.getElementById('ap-telefone').classList.remove('input-error');
+                document.getElementById('onb-title').innerText = 'Novo Cadastro';
+                this.mostrarEtapaAssistido('pessoa');
+            },
+
+            assistidoAvancar(etapa) {
+                if(etapa === 'pessoa') {
+                    const nome = document.getElementById('ap-nome').value.trim();
+                    const cpf = document.getElementById('ap-cpf');
+                    const tel = document.getElementById('ap-telefone');
+                    if(!nome) return this.showToast('Informe seu nome completo.', 'error');
+                    if(!cpf.value || cpf.classList.contains('input-error')) return this.showToast('Informe um CPF válido.', 'error');
+                    if(!tel.value || tel.classList.contains('input-error')) return this.showToast('Informe um telefone válido.', 'error');
+                    this.guia.respostas.responsavel = nome;
+                    // Telefone do responsável entra como sugestão de contato na conversa.
+                    this.guia.respostas.telefonePessoa = tel.value;
+                    return this.mostrarEtapaAssistido('empresa');
+                }
+
+                if(etapa === 'empresa') {
+                    const negocio = document.getElementById('ap-negocio').value.trim();
+                    if(!negocio) return this.showToast('Informe o nome do estabelecimento.', 'error');
+                    this.guia.respostas.nome = negocio;
+                    this.guia.respostas.porte = document.getElementById('ap-porte').value;
+                    // Sugere um e-mail coerente, mas deixa editável.
+                    const email = document.getElementById('ap-email');
+                    if(!email.value) email.value = this.normalize(negocio).replace(/[^a-z0-9]+/g, '.').replace(/^\.|\.$/g, '') + '@email.com';
+                    return this.mostrarEtapaAssistido('acesso');
+                }
+
+                if(etapa === 'acesso') {
+                    const email = document.getElementById('ap-email').value.trim();
+                    const s1 = document.getElementById('ap-senha').value;
+                    const s2 = document.getElementById('ap-senha2').value;
+                    if(!email || email.indexOf('@') < 1) return this.showToast('Informe um e-mail válido.', 'error');
+                    if(!s1) return this.showToast('Defina uma senha de acesso.', 'error');
+                    if(s1 !== s2) return this.showToast('As senhas não conferem.', 'error');
+
+                    // Login demonstrativo: abre sessão SEM vitrine vinculada.
+                    this.guia.respostas.email = email;
+                    this.sessao = 'entrepreneur';
+                    this.loggedInBusinessId = null;
+                    this.currentPersona = 'entrepreneur';
+                    this.atualizarBarraSessao();
+                    this.updateBusinessSelector();
+                    this.showToast('Acesso criado. Agora vamos montar sua vitrine!', 'success');
+                    return this.iniciarConversaGuiada();
+                }
+            },
+
+            assistidoVoltar(etapa) {
+                if(etapa === 'empresa') return this.mostrarEtapaAssistido('pessoa');
+                if(etapa === 'acesso') return this.mostrarEtapaAssistido('empresa');
+            },
 
             // --- Motor de correspondência de termos (sem IA) ---
             sugerirDeTexto(texto) {
@@ -2793,18 +2921,38 @@
             // Interpreta "seg a sex das 9h às 18h" e devolve a grade semanal.
             interpretarHorario(texto) {
                 const t = this.normalize(texto);
+                const ordem = ['seg', 'ter', 'qua', 'qui', 'sex', 'sab', 'dom'];
                 const dias = { seg: false, ter: false, qua: false, qui: false, sex: false, sab: false, dom: false };
                 const uteis = ['seg', 'ter', 'qua', 'qui', 'sex'];
+                // Como cada dia pode ser escrito: nome inteiro ou abreviação.
+                const nomes = [
+                    { k: 'seg', rx: 'segunda|seg\\b' }, { k: 'ter', rx: 'terca|ter\\b' }, { k: 'qua', rx: 'quarta|qua\\b' },
+                    { k: 'qui', rx: 'quinta|qui\\b' }, { k: 'sex', rx: 'sexta|sex\\b' }, { k: 'sab', rx: 'sabado|sab\\b' },
+                    { k: 'dom', rx: 'domingo|dom\\b' }
+                ];
+                const qualDia = trecho => (nomes.find(n => new RegExp(n.rx).test(trecho)) || {}).k;
 
-                if(/segunda a sexta|seg a sex|dias uteis|de segunda|comercial/.test(t)) uteis.forEach(d => dias[d] = true);
-                if(/segunda a sabado|seg a sab|toda semana|todos os dias|todo dia/.test(t)) { uteis.forEach(d => dias[d] = true); dias.sab = true; }
-                if(/todos os dias|todo dia|domingo a domingo/.test(t)) dias.dom = true;
-                if(/sabado|sábado/.test(t)) dias.sab = true;
-                if(/domingo/.test(t)) dias.dom = true;
-                ['segunda:seg', 'terca:ter', 'quarta:qua', 'quinta:qui', 'sexta:sex'].forEach(par => {
-                    const [nome, chave] = par.split(':');
-                    if(t.includes(nome)) dias[chave] = true;
-                });
+                if(/dias uteis|comercial/.test(t)) uteis.forEach(d => dias[d] = true);
+                if(/todos os dias|todo dia|domingo a domingo/.test(t)) ordem.forEach(d => dias[d] = true);
+                if(/toda semana/.test(t)) { uteis.forEach(d => dias[d] = true); dias.sab = true; }
+
+                // Intervalo "de X a Y": marca todos os dias entre as pontas.
+                const intervalo = t.match(/(segunda|seg|terca|ter|quarta|qua|quinta|qui|sexta|sex|sabado|sab|domingo|dom)\s*(?:-|a|as|ate|até)\s*(segunda|seg|terca|ter|quarta|qua|quinta|qui|sexta|sex|sabado|sab|domingo|dom)/);
+                if(intervalo) {
+                    const ini = ordem.indexOf(qualDia(intervalo[1]));
+                    const fim = ordem.indexOf(qualDia(intervalo[2]));
+                    if(ini > -1 && fim > -1) {
+                        // Aceita inclusive intervalos que dão a volta (ex.: sáb a ter).
+                        for(let i = ini; ; i = (i + 1) % ordem.length) {
+                            dias[ordem[i]] = true;
+                            if(i === fim) break;
+                        }
+                    }
+                } else {
+                    // Sem intervalo: marca os dias citados individualmente.
+                    nomes.forEach(n => { if(new RegExp(n.rx).test(t)) dias[n.k] = true; });
+                }
+
                 // Nada reconhecido: assume dias úteis, que é o caso mais comum.
                 if(!Object.values(dias).some(Boolean)) uteis.forEach(d => dias[d] = true);
 
@@ -2827,27 +2975,39 @@
             },
 
             // --- Condução da conversa ---
-            iniciarOnboardingGuiado() {
-                this.guia = { passo: 0, respostas: {}, sugestao: null };
+            // Entra na conversa (o modal já está aberto, vindo do passo de acesso).
+            iniciarConversaGuiada() {
+                this.guia.passo = 0;
+                this.guia.sugestao = null;
                 this.currentGuiaTags = [];
                 this.onboardingType = 'new';
+                // A conversa substitui o upload de comprovante do formulário clássico.
                 this.currentUploadedFile = { name: 'cadastro-assistido.txt', type: 'Declaração do empreendedor' };
                 document.getElementById('gonb-messages').innerHTML = '';
                 document.getElementById('gonb-extra').innerHTML = '';
                 document.getElementById('gonb-input').value = '';
                 document.getElementById('onb-title').innerText = 'Cadastro assistido';
 
-                this.mostrarPassoGuiado('chat');
-                this.openModal('modal-onboarding');
-                this.guiaFala('Oi! Eu sou a Vitória. Vou te ajudar a montar sua vitrine — é só responder o que eu perguntar, uma coisa de cada vez.');
+                this.mostrarEtapaAssistido('chat');
+                const quem = (this.guia.respostas.responsavel || '').split(' ')[0];
+                const negocio = this.guia.respostas.nome || 'seu negócio';
+                this.guiaFala(`Oi${quem ? ', ' + this.escapeHtml(quem) : ''}! Eu sou a Vitória. A vitrine de <b>${this.escapeHtml(negocio)}</b> está vazia por enquanto — vamos preencher juntos, uma coisa de cada vez.`);
                 setTimeout(() => this.guiaPerguntar(), 700);
             },
 
-            mostrarPassoGuiado(qual) {
-                document.querySelectorAll('.step-content').forEach(el => el.classList.remove('active'));
-                document.getElementById(qual === 'chat' ? 'onb-step-chat' : 'onb-step-revisao').classList.add('active');
-                document.getElementById('onb-footer').classList.add('hidden');
-                if(typeof lucide !== 'undefined') lucide.createIcons();
+            // Entrada usada pelo login com conta sem vitrine e pelo atalho da Vitória:
+            // abre o modal já direto na conversa.
+            iniciarOnboardingGuiado() {
+                this.guia = { passo: 0, respostas: {}, sugestao: null };
+                const b = appData.businesses.find(x => x.id === this.loggedInBusinessId);
+                if(b) this.guia.respostas.nome = b.name;
+                this.openModal('modal-onboarding');
+                if(!this.guia.respostas.nome) {
+                    // Sem nome ainda: começa pelos passos curtos antes da conversa.
+                    document.getElementById('onb-title').innerText = 'Novo Cadastro';
+                    return this.iniciarCadastroAssistido();
+                }
+                this.iniciarConversaGuiada();
             },
 
             guiaFala(html) {
@@ -2873,6 +3033,10 @@
                 this.guiaFala(item.pergunta);
                 document.getElementById('gonb-input').placeholder = item.placeholder;
                 document.getElementById('gonb-progresso').innerText = `${this.guia.passo + 1} de ${this.roteiroGuiado.length}`;
+                // Contato: oferece o telefone informado no primeiro passo como sugestão.
+                if(item.campo === 'contato' && this.guia.respostas.telefonePessoa) {
+                    document.getElementById('gonb-input').value = this.guia.respostas.telefonePessoa;
+                }
                 document.getElementById('gonb-input').focus();
 
                 // O passo do bairro oferece a proteção de endereço já na conversa.
@@ -2928,15 +3092,19 @@
             },
 
             guiadoVoltarConversa() {
-                this.mostrarPassoGuiado('chat');
+                this.mostrarEtapaAssistido('chat');
                 this.guiaScroll();
             },
 
             guiadoUsarFormulario() {
-                // Caminho de escape: cai no onboarding clássico, já existente.
+                // Alternativa secundária: cai no onboarding clássico, já existente,
+                // aproveitando o que a pessoa já informou nos passos anteriores.
+                const r = this.guia.respostas || {};
+                if(r.nome) { document.getElementById('onb-name').value = r.nome; document.getElementById('onb-legal-name').value = r.nome; }
+                if(r.telefonePessoa) document.getElementById('onb-phone').value = r.telefonePessoa;
+                if(r.porte) document.getElementById('onb-porte').value = r.porte;
                 this.onboardingStep = 1;
                 document.getElementById('onb-title').innerText = 'Novo Cadastro';
-                document.querySelectorAll('.step-content').forEach(el => el.classList.remove('active'));
                 this.renderOnboardingStep();
             },
 
@@ -2967,7 +3135,7 @@
                     ? `Reconheci os termos <b>${s.termosCasados.slice(0, 4).map(t => this.escapeHtml(t)).join('</b>, <b>')}</b> na sua resposta e sugeri categoria, palavras-chave e horário a partir deles.`
                     : 'Não reconheci um segmento específico no que você escreveu, então usei sugestões genéricas. Ajuste os campos como preferir.';
 
-                this.mostrarPassoGuiado('revisao');
+                this.mostrarEtapaAssistido('revisao');
             },
 
             guiadoConcluir() {
@@ -2990,6 +3158,8 @@
                 document.getElementById('onb-desc').value = document.getElementById('gonb-desc').value;
                 document.getElementById('onb-protected').checked = document.getElementById('gonb-protected').checked;
                 document.getElementById('onb-cnae').value = '';
+                // Porte declarado no passo "empresa"; CNAE fica para a Prefeitura completar.
+                if(this.guia.respostas.porte) document.getElementById('onb-porte').value = this.guia.respostas.porte;
                 this.currentTags = [...this.currentGuiaTags];
 
                 // O submit lê a grade de horários do container clássico.
@@ -3007,9 +3177,8 @@
                 this.currentUploadedFile = null;
                 document.getElementById('onb-file-text').innerText = "Clique para enviar arquivo";
                 document.getElementById('onb-title').innerText = 'Quero fazer parte da Vitryx';
-                // Garante que os passos do cadastro assistido não fiquem ativos aqui.
-                document.getElementById('onb-step-chat').classList.remove('active');
-                document.getElementById('onb-step-revisao').classList.remove('active');
+                this.currentGuiaTags = [];
+                this.guia = { passo: 0, respostas: {}, sugestao: null };
                 this.renderOnboardingStep();
                 modal.classList.add('active');
                 setTimeout(() => content.classList.replace('scale-95', 'scale-100'), 10);
@@ -3018,6 +3187,9 @@
             setOnboardingType(type) {
                 this.onboardingType = type;
                 document.getElementById('onb-title').innerText = type === 'claim' ? 'Reivindicar Perfil' : 'Novo Cadastro';
+                // Cadastro novo é o fluxo assistido pela Vitória. A reivindicação de
+                // perfil segue no formulário clássico (steps 1 a 3).
+                if(type === 'new') return this.iniciarCadastroAssistido();
                 this.nextOnboardingStep();
             },
 
