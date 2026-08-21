@@ -43,6 +43,149 @@
     </script>
     
     <style>
+        /* =================================================================
+           DESIGN SYSTEM — TOKENS
+           Fonte única de cor, tipografia, raio, sombra e espaçamento.
+           Convivem com o Tailwind do CDN: as classes .vx-* abaixo consomem
+           estes tokens e podem ser usadas em qualquer tela sem conflito.
+           ================================================================= */
+        :root {
+            /* Cor — marca */
+            --vx-primary: #2563EB;
+            --vx-primary-hover: #1D4ED8;
+            --vx-primary-soft: #EFF6FF;
+            --vx-primary-border: #DBEAFE;
+
+            /* Cor — superfície e texto */
+            --vx-bg: #F8FAFC;
+            --vx-surface: #FFFFFF;
+            --vx-surface-muted: #F8FAFC;
+            --vx-text: #0F172A;
+            --vx-text-secondary: #475569;
+            --vx-text-muted: #64748B;
+            --vx-border: #E2E8F0;
+            --vx-border-strong: #CBD5E1;
+
+            /* Cor — semântica */
+            --vx-success: #059669;  --vx-success-soft: #ECFDF5;  --vx-success-border: #A7F3D0;
+            --vx-warning: #B45309;  --vx-warning-soft: #FFFBEB;  --vx-warning-border: #FDE68A;
+            --vx-danger:  #DC2626;  --vx-danger-soft:  #FEF2F2;  --vx-danger-border:  #FECACA;
+            --vx-whatsapp: #25D366; --vx-whatsapp-hover: #1EBD5B;
+
+            /* Tipografia — nunca abaixo de 12px */
+            --vx-font: 'Inter', system-ui, -apple-system, sans-serif;
+            --vx-text-xs: 0.75rem;    /* 12px — piso */
+            --vx-text-sm: 0.875rem;   /* 14px */
+            --vx-text-base: 1rem;     /* 16px */
+            --vx-text-lg: 1.125rem;
+            --vx-text-xl: 1.25rem;
+            --vx-text-2xl: 1.5rem;
+            --vx-text-3xl: 1.875rem;
+
+            /* Raio */
+            --vx-radius-control: 10px;  /* botões e inputs */
+            --vx-radius-input: 12px;
+            --vx-radius-card: 16px;
+            --vx-radius-pill: 9999px;
+
+            /* Sombra — suave, nunca somada a borda forte */
+            --vx-shadow-sm: 0 1px 2px rgba(15, 23, 42, 0.04);
+            --vx-shadow: 0 1px 3px rgba(15, 23, 42, 0.06), 0 1px 2px rgba(15, 23, 42, 0.04);
+            --vx-shadow-md: 0 4px 12px rgba(15, 23, 42, 0.07);
+            --vx-shadow-lg: 0 12px 28px rgba(15, 23, 42, 0.10);
+
+            /* Espaçamento base 4/8/12/16/24/32 */
+            --vx-1: 4px; --vx-2: 8px; --vx-3: 12px; --vx-4: 16px; --vx-6: 24px; --vx-8: 32px;
+        }
+
+        /* ---------- Superfícies ---------- */
+        .vx-card {
+            background: var(--vx-surface);
+            border: 1px solid var(--vx-border);
+            border-radius: var(--vx-radius-card);
+        }
+        .vx-card-raised { background: var(--vx-surface); border-radius: var(--vx-radius-card); box-shadow: var(--vx-shadow-md); }
+        .vx-card-quiet  { background: var(--vx-surface-muted); border: 1px solid var(--vx-border); border-radius: var(--vx-radius-card); }
+        .vx-divider { height: 1px; background: var(--vx-border); border: 0; }
+
+        /* ---------- Botões ---------- */
+        .vx-btn {
+            display: inline-flex; align-items: center; justify-content: center; gap: var(--vx-2);
+            font-family: var(--vx-font); font-size: var(--vx-text-sm); font-weight: 700;
+            padding: 10px 16px; border-radius: var(--vx-radius-control);
+            border: 1px solid transparent; cursor: pointer;
+            transition: background-color .15s ease, color .15s ease, border-color .15s ease;
+            line-height: 1.2;
+        }
+        .vx-btn:focus-visible { outline: 2px solid var(--vx-primary); outline-offset: 2px; }
+        .vx-btn-primary   { background: var(--vx-primary); color: #fff; box-shadow: var(--vx-shadow-sm); }
+        .vx-btn-primary:hover { background: var(--vx-primary-hover); }
+        .vx-btn-secondary { background: var(--vx-surface); color: var(--vx-text-secondary); border-color: var(--vx-border); }
+        .vx-btn-secondary:hover { background: var(--vx-surface-muted); color: var(--vx-text); border-color: var(--vx-border-strong); }
+        .vx-btn-quiet     { background: transparent; color: var(--vx-text-muted); }
+        .vx-btn-quiet:hover { background: var(--vx-surface-muted); color: var(--vx-text); }
+        .vx-btn-danger    { background: var(--vx-danger); color: #fff; }
+        .vx-btn-danger:hover { filter: brightness(0.94); }
+        .vx-btn-whatsapp  { background: var(--vx-whatsapp); color: #fff; box-shadow: var(--vx-shadow-sm); }
+        .vx-btn-whatsapp:hover { background: var(--vx-whatsapp-hover); }
+        .vx-btn-lg { font-size: var(--vx-text-base); padding: 13px 20px; }
+        .vx-btn-block { width: 100%; }
+
+        /* ---------- Campos ---------- */
+        .vx-field {
+            width: 100%; font-family: var(--vx-font); font-size: var(--vx-text-sm);
+            color: var(--vx-text); background: var(--vx-surface);
+            border: 1px solid var(--vx-border); border-radius: var(--vx-radius-input);
+            padding: 10px 12px; outline: none; transition: border-color .15s ease, box-shadow .15s ease;
+        }
+        .vx-field:focus { border-color: var(--vx-primary); box-shadow: 0 0 0 3px var(--vx-primary-soft); }
+        .vx-field::placeholder { color: var(--vx-text-muted); }
+
+        /* ---------- Badges ---------- */
+        .vx-badge {
+            display: inline-flex; align-items: center; gap: 6px;
+            font-size: var(--vx-text-xs); font-weight: 700; line-height: 1;
+            padding: 5px 10px; border-radius: var(--vx-radius-pill); border: 1px solid transparent;
+        }
+        .vx-badge-neutral { background: var(--vx-surface-muted); color: var(--vx-text-secondary); border-color: var(--vx-border); }
+        .vx-badge-primary { background: var(--vx-primary-soft); color: var(--vx-primary-hover); border-color: var(--vx-primary-border); }
+        .vx-badge-success { background: var(--vx-success-soft); color: var(--vx-success); border-color: var(--vx-success-border); }
+        .vx-badge-warning { background: var(--vx-warning-soft); color: var(--vx-warning); border-color: var(--vx-warning-border); }
+        .vx-badge-danger  { background: var(--vx-danger-soft);  color: var(--vx-danger);  border-color: var(--vx-danger-border); }
+
+        /* ---------- Alertas e estado vazio ---------- */
+        .vx-alert { display: flex; gap: var(--vx-3); padding: var(--vx-3) var(--vx-4); border-radius: var(--vx-radius-input); border: 1px solid; font-size: var(--vx-text-xs); line-height: 1.5; }
+        .vx-alert-info    { background: var(--vx-primary-soft); border-color: var(--vx-primary-border); color: #1E40AF; }
+        .vx-alert-success { background: var(--vx-success-soft); border-color: var(--vx-success-border); color: #065F46; }
+        .vx-alert-warning { background: var(--vx-warning-soft); border-color: var(--vx-warning-border); color: #92400E; }
+        .vx-alert-danger  { background: var(--vx-danger-soft);  border-color: var(--vx-danger-border);  color: #991B1B; }
+        .vx-empty { text-align: center; padding: var(--vx-8) var(--vx-6); background: var(--vx-surface); border: 1px dashed var(--vx-border-strong); border-radius: var(--vx-radius-card); color: var(--vx-text-muted); }
+
+        /* ---------- Tipografia auxiliar ---------- */
+        .vx-eyebrow { font-size: var(--vx-text-xs); font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--vx-text-muted); }
+        .vx-section-title { font-size: var(--vx-text-lg); font-weight: 700; color: var(--vx-text); }
+        .vx-meta { font-size: var(--vx-text-xs); color: var(--vx-text-muted); }
+
+        /* ---------- Cards do catálogo da vitrine ---------- */
+        .vx-item-card {
+            display: flex; flex-direction: column; height: 100%; text-align: left;
+            background: var(--vx-surface); border: 1px solid var(--vx-border);
+            border-radius: var(--vx-radius-card); overflow: hidden;
+            transition: border-color .15s ease, box-shadow .15s ease, transform .15s ease;
+        }
+        .vx-item-card:hover { border-color: var(--vx-border-strong); box-shadow: var(--vx-shadow-md); transform: translateY(-2px); }
+        .vx-item-media { position: relative; width: 100%; aspect-ratio: 4 / 3; background: var(--vx-surface-muted); overflow: hidden; }
+        .vx-item-media > img, .vx-item-media > div[role="img"] { width: 100%; height: 100%; object-fit: cover; }
+        .vx-item-body { display: flex; flex-direction: column; flex-grow: 1; padding: var(--vx-3) var(--vx-4) var(--vx-4); }
+        .vx-item-name { font-size: var(--vx-text-sm); font-weight: 700; color: var(--vx-text); line-height: 1.35; }
+        .vx-item-desc { font-size: var(--vx-text-xs); color: var(--vx-text-muted); line-height: 1.5; margin-top: 4px; flex-grow: 1;
+                        display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+        .vx-item-price { font-size: var(--vx-text-sm); font-weight: 700; color: var(--vx-primary); margin-top: var(--vx-3); }
+        .vx-item-duration { font-size: var(--vx-text-xs); color: var(--vx-text-muted); display: flex; align-items: center; gap: 4px; margin-top: 2px; }
+
+        /* Coluna lateral fixa só onde há altura para isso */
+        @media (min-width: 1024px) { .vx-sticky { position: sticky; top: var(--vx-6); } }
+
         ::-webkit-scrollbar { width: 6px; height: 6px; }
         ::-webkit-scrollbar-track { background: transparent; }
         ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
@@ -272,136 +415,155 @@
             </section>
 
             <!-- VIEW: PERFIL PÚBLICO -->
-            <section id="view-public-profile" class="app-view h-full w-full overflow-y-auto bg-slate-100 hidden">
-                <div class="max-w-md md:max-w-2xl lg:max-w-3xl mx-auto bg-white min-h-full shadow-lg relative pb-28">
-                    <div class="absolute top-4 left-4 right-4 flex justify-between z-20">
-                        <button onclick="app.navigate('public', 'radar')" class="w-10 h-10 bg-white/90 backdrop-blur rounded-full flex items-center justify-center text-slate-700 shadow-md hover:bg-white transition-colors border border-slate-200"><i data-lucide="arrow-left" class="w-5 h-5"></i></button>
-                        <button onclick="app.shareProfile()" class="w-10 h-10 bg-white/90 backdrop-blur rounded-full flex items-center justify-center text-slate-700 shadow-md hover:bg-white transition-colors border border-slate-200"><i data-lucide="share" class="w-5 h-5"></i></button>
-                    </div>
+            <section id="view-public-profile" class="app-view h-full w-full overflow-y-auto hidden" style="background: var(--vx-bg)">
+                <div class="max-w-6xl mx-auto px-4 sm:px-6 pb-28 lg:pb-12">
 
-                    <div class="h-48 md:h-64 w-full bg-slate-200 relative overflow-hidden" id="profile-cover">
-                        <img src="" class="w-full h-full object-cover" id="profile-cover-img" alt="Capa">
-                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
-                    </div>
-
-                    <div class="px-6 relative -mt-14 z-10 flex flex-col items-center text-center">
-                        <div class="w-28 h-28 rounded-2xl bg-white border-4 border-white shadow-lg overflow-hidden flex items-center justify-center bg-slate-100" id="profile-logo-box">
-                            <span id="profile-logo-text" class="text-3xl font-extrabold text-brand-600"></span>
-                        </div>
-                        <div class="mt-4 w-full">
-                            <div class="flex items-center justify-center gap-2 mb-1">
-                                <span id="profile-type-icon" class="text-slate-400"></span>
-                                <p class="text-xs font-semibold text-slate-500 uppercase tracking-wider" id="profile-category">Categoria</p>
+                    <!-- HERO: capa + identidade + ações -->
+                    <div class="vx-card overflow-hidden mt-4 lg:mt-6">
+                        <div class="h-40 sm:h-52 lg:h-64 w-full relative overflow-hidden" id="profile-cover" style="background: var(--vx-surface-muted)">
+                            <img src="" class="w-full h-full object-cover" id="profile-cover-img" alt="Capa">
+                            <div class="absolute inset-0 bg-gradient-to-t from-slate-900/45 to-transparent"></div>
+                            <div class="absolute top-4 left-4 right-4 flex justify-between z-20">
+                                <button onclick="app.navigate('public', 'radar')" class="w-10 h-10 bg-white/95 backdrop-blur rounded-full flex items-center justify-center text-slate-700 hover:bg-white transition-colors" style="box-shadow: var(--vx-shadow-md)" title="Voltar"><i data-lucide="arrow-left" class="w-5 h-5"></i></button>
+                                <button onclick="app.shareProfile()" class="w-10 h-10 bg-white/95 backdrop-blur rounded-full flex items-center justify-center text-slate-700 hover:bg-white transition-colors lg:hidden" style="box-shadow: var(--vx-shadow-md)" title="Compartilhar"><i data-lucide="share-2" class="w-5 h-5"></i></button>
                             </div>
-                            <h1 class="text-2xl md:text-3xl font-extrabold text-slate-900 leading-tight mb-2 flex items-center justify-center gap-2">
-                                <span id="profile-name">Nome</span>
-                                <i data-lucide="badge-check" id="profile-verified-badge" class="w-6 h-6 text-brand-500 hidden" title="Cadastro Verificado"></i>
-                            </h1>
-                            <div class="flex flex-wrap justify-center gap-2 mb-3" id="profile-badges"></div>
-                            <div class="flex justify-center mb-4"><div id="profile-status-badge"></div></div>
-                            <p class="text-sm text-slate-600 max-w-lg mx-auto" id="profile-description">Descrição</p>
                         </div>
-                        <div class="grid grid-cols-3 gap-3 w-full mt-6">
-                            <button onclick="app.actionCall()" class="bg-orange-50 text-orange-600 border border-orange-100 py-3 rounded-xl flex flex-col items-center justify-center gap-1.5 hover:bg-orange-100 transition-colors"><i data-lucide="phone" class="w-5 h-5"></i><span class="text-xs font-bold">Ligar</span></button>
-                            <button onclick="app.actionRoute()" class="bg-brand-50 text-brand-600 border border-brand-100 py-3 rounded-xl flex flex-col items-center justify-center gap-1.5 hover:bg-brand-100 transition-colors"><i data-lucide="map-pin" class="w-5 h-5"></i><span class="text-xs font-bold">Ver rota</span></button>
-                            <button onclick="app.shareProfile()" class="bg-slate-50 text-slate-600 border border-slate-200 py-3 rounded-xl flex flex-col items-center justify-center gap-1.5 hover:bg-slate-100 transition-colors"><i data-lucide="share-2" class="w-5 h-5"></i><span class="text-xs font-bold">Compartilhar</span></button>
-                        </div>
-                    </div>
 
-                    <!-- MODO A: VITRINE COMPLETA (negócio com produtos e/ou serviços) -->
-                    <div id="profile-mode-showcase" class="hidden">
-                        <div class="w-full h-2 bg-slate-50 mt-8 mb-6 border-y border-slate-100"></div>
+                        <div class="px-5 sm:px-8 pb-6">
+                            <div class="flex flex-col items-center text-center lg:flex-row lg:items-end lg:text-left lg:gap-6">
+                                <div class="w-24 h-24 lg:w-28 lg:h-28 rounded-2xl border-4 border-white overflow-hidden flex items-center justify-center flex-shrink-0 -mt-12 lg:-mt-14 relative z-10" style="background: var(--vx-surface-muted); box-shadow: var(--vx-shadow-md)" id="profile-logo-box">
+                                    <span id="profile-logo-text" class="text-3xl font-extrabold" style="color: var(--vx-primary)"></span>
+                                </div>
 
-                        <div class="px-6">
-                            <div class="flex items-center gap-2 text-xs font-semibold text-slate-500 bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 mb-6" id="profile-summary-bar"></div>
-
-                            <div id="profile-products-section" class="hidden mb-8">
-                                <div class="flex justify-between items-end mb-4"><h3 class="text-lg font-bold text-slate-900" id="profile-catalog-title">Produtos</h3><span class="text-xs font-semibold text-slate-400" id="profile-products-count"></span></div>
-                                <div class="grid grid-cols-2 gap-3" id="profile-catalog"></div>
+                                <div class="mt-4 lg:mt-0 lg:pb-1 min-w-0 flex-grow">
+                                    <div class="flex items-center justify-center lg:justify-start gap-2 mb-1">
+                                        <span id="profile-type-icon" style="color: var(--vx-text-muted)"></span>
+                                        <p class="vx-eyebrow" id="profile-category">Categoria</p>
+                                    </div>
+                                    <h1 class="text-2xl lg:text-3xl font-extrabold leading-tight flex items-center justify-center lg:justify-start gap-2 flex-wrap" style="color: var(--vx-text)">
+                                        <span id="profile-name">Nome</span>
+                                        <i data-lucide="badge-check" id="profile-verified-badge" class="w-6 h-6 hidden flex-shrink-0" style="color: var(--vx-primary)" title="Cadastro Verificado"></i>
+                                    </h1>
+                                    <div class="flex flex-wrap justify-center lg:justify-start items-center gap-2 mt-3">
+                                        <div id="profile-status-badge" class="contents"></div>
+                                        <div id="profile-badges" class="contents"></div>
+                                    </div>
+                                </div>
                             </div>
 
-                            <div id="profile-services-section" class="hidden mb-2">
-                                <div class="flex justify-between items-end mb-4"><h3 class="text-lg font-bold text-slate-900">Serviços</h3><span class="text-xs font-semibold text-slate-400" id="profile-services-count"></span></div>
-                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3" id="profile-services"></div>
+                            <p class="text-sm sm:text-base mt-5 text-center lg:text-left max-w-3xl leading-relaxed" style="color: var(--vx-text-secondary)" id="profile-description">Descrição</p>
+
+                            <!-- Ações: WhatsApp é a principal; as demais, secundárias -->
+                            <div class="flex flex-col sm:flex-row gap-2.5 mt-6">
+                                <button onclick="app.actionWhatsApp()" class="vx-btn vx-btn-whatsapp vx-btn-lg hidden lg:inline-flex"><i data-lucide="message-circle" class="w-5 h-5"></i> Falar pelo WhatsApp</button>
+                                <button onclick="app.actionCall()" class="vx-btn vx-btn-secondary vx-btn-lg sm:vx-btn"><i data-lucide="phone" class="w-4 h-4"></i> Ligar</button>
+                                <button onclick="app.actionRoute()" class="vx-btn vx-btn-secondary vx-btn-lg sm:vx-btn"><i data-lucide="map-pin" class="w-4 h-4"></i> Ver rota</button>
+                                <button onclick="app.shareProfile()" class="vx-btn vx-btn-secondary vx-btn-lg sm:vx-btn hidden sm:inline-flex"><i data-lucide="share-2" class="w-4 h-4"></i> Compartilhar</button>
                             </div>
-
-                            <div id="profile-catalog-empty" class="hidden text-center py-6 text-sm text-slate-500 bg-slate-50 rounded-xl border border-dashed border-slate-200">Nenhum item cadastrado no catálogo.</div>
-                        </div>
-
-                        <div id="profile-gallery-section" class="hidden mt-8">
-                            <div class="px-6 mb-3"><h3 class="text-base font-bold text-slate-900 flex items-center gap-2"><i data-lucide="images" class="w-5 h-5 text-slate-400"></i> Galeria</h3></div>
-                            <div class="flex gap-3 overflow-x-auto px-6 pb-2" id="profile-gallery"></div>
-                        </div>
-
-                        <div class="w-full h-2 bg-slate-50 mt-8 mb-6 border-y border-slate-100"></div>
-
-                        <div class="px-6">
-                            <h3 class="text-base font-bold text-slate-900 mb-3 flex items-center gap-2"><i data-lucide="clock" class="w-5 h-5 text-slate-400"></i> Horário de Atendimento</h3>
-                            <div class="text-sm text-slate-600 ml-7 space-y-1" id="profile-hours"></div>
                         </div>
                     </div>
 
-                    <!-- MODO B: PERFIL DE CONTATO (sem vitrine comercial - "só quero ser achado") -->
-                    <div id="profile-mode-contact" class="hidden">
-                        <div class="w-full h-2 bg-slate-50 mt-8 mb-6 border-y border-slate-100"></div>
-                        <div class="px-6 grid grid-cols-1 md:grid-cols-3 gap-6">
-                            <div class="md:col-span-2 space-y-5">
-                                <div id="profile-activities-block" class="hidden">
-                                    <h3 class="text-base font-bold text-slate-900 mb-3 flex items-center gap-2"><i data-lucide="tag" class="w-5 h-5 text-slate-400"></i> Atividades declaradas</h3>
+                    <!-- CORPO: conteúdo principal + coluna lateral -->
+                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-5 lg:gap-6 mt-5 lg:mt-6 items-start">
+                        <div class="lg:col-span-2 space-y-5 lg:space-y-6 min-w-0">
+
+                            <!-- MODO A: VITRINE COMPLETA (negócio com produtos e/ou serviços) -->
+                            <div id="profile-mode-showcase" class="hidden space-y-5 lg:space-y-6">
+                                <div class="vx-card p-5 sm:p-6">
+                                    <div class="flex items-center gap-2 vx-meta font-semibold mb-5" id="profile-summary-bar"></div>
+
+                                    <div id="profile-products-section" class="hidden">
+                                        <div class="flex justify-between items-baseline mb-4">
+                                            <h2 class="vx-section-title" id="profile-catalog-title">Produtos</h2>
+                                            <span class="vx-meta font-semibold" id="profile-products-count"></span>
+                                        </div>
+                                        <div class="grid grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4" id="profile-catalog"></div>
+                                    </div>
+
+                                    <hr class="vx-divider my-6 hidden" id="profile-catalog-sep">
+
+                                    <div id="profile-services-section" class="hidden">
+                                        <div class="flex justify-between items-baseline mb-4">
+                                            <h2 class="vx-section-title">Serviços</h2>
+                                            <span class="vx-meta font-semibold" id="profile-services-count"></span>
+                                        </div>
+                                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4" id="profile-services"></div>
+                                    </div>
+
+                                    <div id="profile-catalog-empty" class="hidden vx-empty text-sm">Nenhum item cadastrado no catálogo.</div>
+                                </div>
+
+                                <div id="profile-gallery-section" class="hidden vx-card p-5 sm:p-6">
+                                    <h2 class="vx-section-title mb-4">Galeria</h2>
+                                    <div class="flex gap-3 overflow-x-auto pb-1 -mx-1 px-1" id="profile-gallery"></div>
+                                </div>
+                            </div>
+
+                            <!-- MODO B: PERFIL DE CONTATO (sem vitrine comercial) -->
+                            <div id="profile-mode-contact" class="hidden space-y-5">
+                                <div id="profile-activities-block" class="hidden vx-card p-5 sm:p-6">
+                                    <h2 class="vx-section-title mb-4">Atividades declaradas</h2>
                                     <div class="flex flex-wrap gap-2" id="profile-activities"></div>
                                 </div>
-                                <div class="bg-slate-50 border border-slate-200 rounded-xl p-4">
+                                <div class="vx-card p-5 sm:p-6">
                                     <div class="flex items-start gap-3">
-                                        <div class="w-8 h-8 rounded-lg bg-white border border-slate-200 text-slate-500 flex items-center justify-center flex-shrink-0"><i data-lucide="store" class="w-4 h-4"></i></div>
+                                        <div class="w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0" style="background: var(--vx-surface-muted); color: var(--vx-text-muted)"><i data-lucide="store" class="w-4 h-4"></i></div>
                                         <div>
-                                            <p class="text-sm font-bold text-slate-900">Perfil de contato</p>
-                                            <p class="text-xs text-slate-600 mt-1" id="profile-contact-note">Este negócio está na base econômica municipal para ser encontrado pela população, mas ainda não publicou catálogo de produtos e serviços.</p>
+                                            <p class="text-sm font-bold" style="color: var(--vx-text)">Perfil de contato</p>
+                                            <p class="text-sm mt-1 leading-relaxed" style="color: var(--vx-text-secondary)" id="profile-contact-note">Este negócio está na base econômica municipal para ser encontrado pela população, mas ainda não publicou catálogo de produtos e serviços.</p>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <div class="md:col-span-1">
-                                <div class="bg-white border border-slate-200 rounded-xl shadow-sm p-4">
-                                    <h4 class="text-sm font-bold text-slate-900 mb-3">Informações</h4>
-                                    <div class="space-y-3 text-sm" id="profile-info-box"></div>
+
+                            <!-- Localização e mapa -->
+                            <div class="vx-card p-5 sm:p-6">
+                                <h2 class="vx-section-title mb-4">Localização e área de atendimento</h2>
+                                <p class="text-sm font-medium" style="color: var(--vx-text-secondary)" id="profile-address">Endereço</p>
+                                <div class="mt-4 rounded-xl overflow-hidden relative z-0 hidden" id="profile-map-wrap" style="height: 260px; border: 1px solid var(--vx-border)">
+                                    <div id="profile-map" class="absolute inset-0 z-0"></div>
                                 </div>
                             </div>
                         </div>
-                    </div>
 
-                    <div class="w-full h-2 bg-slate-50 mt-8 mb-6 border-y border-slate-100"></div>
+                        <!-- COLUNA LATERAL -->
+                        <aside class="lg:col-span-1 space-y-5 min-w-0">
+                            <div class="vx-sticky space-y-5">
+                                <div class="vx-card p-5">
+                                    <h2 class="text-sm font-bold mb-4" style="color: var(--vx-text)">Informações</h2>
+                                    <div class="space-y-3.5 text-sm" id="profile-info-box"></div>
+                                </div>
 
-                    <div class="px-6 space-y-6">
-                        <div>
-                            <h3 class="text-base font-bold text-slate-900 mb-3 flex items-center gap-2"><i data-lucide="map" class="w-5 h-5 text-slate-400"></i> Localização / Área</h3>
-                            <div class="bg-slate-50 rounded-xl p-4 border border-slate-100">
-                                <p class="text-sm text-slate-700 font-medium" id="profile-address">Endereço</p>
-                            </div>
-                            <div class="mt-3 rounded-xl overflow-hidden border border-slate-200 relative z-0 hidden" id="profile-map-wrap" style="height: 220px;">
-                                <div id="profile-map" class="absolute inset-0 z-0"></div>
-                            </div>
-                        </div>
-                        <details class="group bg-slate-50 rounded-xl border border-slate-200 mt-6">
-                            <summary class="flex justify-between items-center font-medium cursor-pointer list-none p-4 text-sm text-slate-700">
-                                <span>Dados e rastreabilidade</span>
-                                <span class="transition group-open:rotate-180"><i data-lucide="chevron-down" class="w-4 h-4"></i></span>
-                            </summary>
-                            <div class="text-xs text-slate-600 p-4 pt-0 border-t border-slate-200 mt-2 space-y-3">
-                                <p class="text-slate-600 pt-3" id="profile-trace-note"></p>
-                                <div class="flex justify-between"><span class="text-slate-500">Origem do dado:</span> <span class="font-medium text-slate-900" id="profile-origin"></span></div>
-                                <div class="flex justify-between"><span class="text-slate-500">Status de Validação:</span> <span class="font-medium text-emerald-600" id="profile-validation"></span></div>
-                                <div class="flex justify-between"><span class="text-slate-500">Última atualização:</span> <span class="font-medium text-slate-900" id="profile-updated"></span></div>
-                                <div class="flex justify-between hidden" id="profile-cep-row"><span class="text-slate-500">CEP:</span> <span class="font-medium text-slate-900" id="profile-cep"></span></div>
-                            </div>
-                        </details>
-                        <p class="text-[11px] text-slate-400 text-center leading-relaxed pt-2">Vitrine pública demonstrativa. A Vitryx apenas dá visibilidade à oferta local: não intermedeia, não vende e não realiza contratação entre as partes.</p>
-                    </div>
+                                <div class="vx-card p-5 hidden" id="profile-hours-card">
+                                    <h2 class="text-sm font-bold mb-3 flex items-center gap-2" style="color: var(--vx-text)"><i data-lucide="clock" class="w-4 h-4" style="color: var(--vx-text-muted)"></i> Horário de atendimento</h2>
+                                    <div class="text-sm space-y-1.5" style="color: var(--vx-text-secondary)" id="profile-hours"></div>
+                                </div>
 
-                    <div class="fixed md:absolute bottom-0 left-0 w-full bg-white/90 backdrop-blur-md border-t border-slate-200 p-4 z-30 shadow-[0_-10px_20px_rgba(0,0,0,0.05)]">
-                        <button onclick="app.actionWhatsApp()" class="w-full bg-[#25D366] hover:bg-[#1ebd5b] text-white py-3.5 rounded-xl font-extrabold flex items-center justify-center gap-2 shadow-lg transition-transform transform active:scale-95 text-lg">
-                            <i data-lucide="message-circle" class="w-6 h-6"></i> Falar pelo WhatsApp
-                        </button>
+                                <details class="vx-card overflow-hidden group">
+                                    <summary class="flex justify-between items-center cursor-pointer list-none p-4 text-sm font-semibold" style="color: var(--vx-text-secondary)">
+                                        <span>Dados e rastreabilidade</span>
+                                        <span class="transition group-open:rotate-180"><i data-lucide="chevron-down" class="w-4 h-4"></i></span>
+                                    </summary>
+                                    <div class="px-4 pb-4 space-y-2.5" style="border-top: 1px solid var(--vx-border)">
+                                        <p class="vx-meta pt-3 leading-relaxed" id="profile-trace-note"></p>
+                                        <div class="flex justify-between gap-3 vx-meta"><span>Origem do dado:</span> <span class="font-semibold text-right" style="color: var(--vx-text)" id="profile-origin"></span></div>
+                                        <div class="flex justify-between gap-3 vx-meta"><span>Status de validação:</span> <span class="font-semibold text-right" style="color: var(--vx-success)" id="profile-validation"></span></div>
+                                        <div class="flex justify-between gap-3 vx-meta"><span>Última atualização:</span> <span class="font-semibold text-right" style="color: var(--vx-text)" id="profile-updated"></span></div>
+                                        <div class="justify-between gap-3 vx-meta hidden" id="profile-cep-row"><span>CEP:</span> <span class="font-semibold text-right" style="color: var(--vx-text)" id="profile-cep"></span></div>
+                                    </div>
+                                </details>
+
+                                <p class="vx-meta text-center leading-relaxed px-2">Vitrine pública demonstrativa. A Vitryx apenas dá visibilidade à oferta local: não intermedeia, não vende e não realiza contratação entre as partes.</p>
+                            </div>
+                        </aside>
                     </div>
+                </div>
+
+                <!-- WhatsApp fixo apenas em telas pequenas -->
+                <div class="fixed bottom-0 left-0 w-full p-4 z-30 lg:hidden" style="background: rgba(255,255,255,.92); backdrop-filter: blur(8px); border-top: 1px solid var(--vx-border)">
+                    <button onclick="app.actionWhatsApp()" class="vx-btn vx-btn-whatsapp vx-btn-lg vx-btn-block">
+                        <i data-lucide="message-circle" class="w-5 h-5"></i> Falar pelo WhatsApp
+                    </button>
                 </div>
             </section>
         </main>
@@ -1680,22 +1842,22 @@
     <!-- Modal: Detalhe do item da vitrine (produto ou serviço) -->
     <div id="modal-item-detail" class="modal-overlay">
         <div class="bg-white w-full max-w-md rounded-2xl shadow-2xl flex flex-col overflow-hidden max-h-[90vh] transform scale-95 transition-transform duration-200" id="modal-item-detail-content">
-            <div class="relative h-48 bg-slate-100 flex-shrink-0" id="item-image"></div>
-            <button onclick="app.closeModal('modal-item-detail')" class="absolute top-3 right-3 z-10 w-9 h-9 bg-white/90 backdrop-blur rounded-full flex items-center justify-center text-slate-700 shadow-md hover:bg-white transition"><i data-lucide="x" class="w-5 h-5"></i></button>
-            <div class="flex-grow overflow-y-auto p-5">
-                <span class="inline-block text-[10px] font-bold uppercase tracking-wide px-2 py-0.5 rounded-full mb-2" id="item-kind"></span>
-                <h3 class="text-lg font-extrabold text-slate-900 leading-tight" id="item-name">Item</h3>
+            <div class="relative flex-shrink-0" id="item-image" style="aspect-ratio: 16/9; background: var(--vx-surface-muted)"></div>
+            <button onclick="app.closeModal('modal-item-detail')" class="absolute top-3 right-3 z-10 w-9 h-9 bg-white/95 backdrop-blur rounded-full flex items-center justify-center text-slate-700 hover:bg-white transition" style="box-shadow: var(--vx-shadow-md)"><i data-lucide="x" class="w-5 h-5"></i></button>
+            <div class="flex-grow overflow-y-auto p-5 sm:p-6">
+                <span class="vx-badge mb-3" id="item-kind"></span>
+                <h3 class="text-lg font-extrabold leading-tight" style="color: var(--vx-text)" id="item-name">Item</h3>
                 <div class="flex flex-wrap items-center gap-3 mt-2">
-                    <span class="text-base font-bold text-brand-600" id="item-price"></span>
-                    <span class="text-xs font-semibold text-slate-500 flex items-center gap-1 hidden" id="item-duration-wrap"><i data-lucide="clock" class="w-3.5 h-3.5"></i> <span id="item-duration"></span></span>
+                    <span class="text-base font-bold" style="color: var(--vx-primary)" id="item-price"></span>
+                    <span class="vx-meta font-semibold flex items-center gap-1 hidden" id="item-duration-wrap"><i data-lucide="clock" class="w-3.5 h-3.5"></i> <span id="item-duration"></span></span>
                 </div>
-                <p class="text-sm text-slate-600 mt-4 leading-relaxed" id="item-desc"></p>
+                <p class="text-sm mt-4 leading-relaxed" style="color: var(--vx-text-secondary)" id="item-desc"></p>
                 <div class="flex flex-wrap gap-1.5 mt-4" id="item-tags"></div>
-                <p class="text-xs text-slate-500 mt-5 pt-4 border-t border-slate-100" id="item-business"></p>
+                <p class="vx-meta mt-5 pt-4" style="border-top: 1px solid var(--vx-border)" id="item-business"></p>
             </div>
-            <div class="px-5 py-4 border-t border-slate-100 bg-slate-50 flex-shrink-0">
-                <button onclick="app.actionWhatsApp()" class="w-full bg-[#25D366] hover:bg-[#1ebd5b] text-white py-3 rounded-xl font-bold flex items-center justify-center gap-2 shadow-sm transition"><i data-lucide="message-circle" class="w-5 h-5"></i> Falar sobre este item</button>
-                <p class="text-[10px] text-slate-400 text-center mt-2">Preços e prazos são informados pelo próprio negócio. A plataforma não intermedeia a negociação.</p>
+            <div class="p-5 flex-shrink-0" style="border-top: 1px solid var(--vx-border); background: var(--vx-surface-muted)">
+                <button onclick="app.actionWhatsApp()" class="vx-btn vx-btn-whatsapp vx-btn-block"><i data-lucide="message-circle" class="w-5 h-5"></i> Falar sobre este item</button>
+                <p class="vx-meta text-center mt-2.5">Preços e prazos são informados pelo próprio negócio. A plataforma não intermedeia a negociação.</p>
             </div>
         </div>
     </div>
@@ -3953,8 +4115,9 @@
                 const vBadge = document.getElementById('profile-verified-badge');
                 if(b.validationStatus === 'validado') vBadge.classList.remove('hidden'); else vBadge.classList.add('hidden');
 
-                const statusColor = b.status === 'aberto' ? 'text-emerald-700 bg-emerald-50 border-emerald-200' : 'text-slate-600 bg-slate-100 border-slate-200';
-                document.getElementById('profile-status-badge').innerHTML = `<span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold ${statusColor} border shadow-sm"><div class="w-2 h-2 rounded-full ${b.status==='aberto'?'bg-emerald-500':'bg-slate-400'}"></div>${b.status==='aberto'?'Aberto':'Fechado'}</span>`;
+                const aberto = b.status === 'aberto';
+                document.getElementById('profile-status-badge').innerHTML =
+                    `<span class="vx-badge ${aberto ? 'vx-badge-success' : 'vx-badge-neutral'}"><span class="w-1.5 h-1.5 rounded-full" style="background: ${aberto ? 'var(--vx-success)' : 'var(--vx-text-muted)'}"></span>${aberto ? 'Aberto agora' : 'Fechado'}</span>`;
 
                 this.renderProfileBadges(b);
 
@@ -3964,10 +4127,12 @@
                 document.getElementById('profile-mode-contact').classList.toggle('hidden', modoVitrine);
                 if(modoVitrine) this.renderProfileVitrine(b); else this.renderProfileContato(b);
 
-                // --- Blocos comuns: localização, mapa e rastreabilidade ---
+                // --- Blocos comuns: lateral, localização, mapa e rastreabilidade ---
+                this.renderProfileLateral(b);
+
                 document.getElementById('profile-address').innerHTML = b.protectedLocation ?
-                    `${(b.address || '').split(',')[0]} (Área Aproximada) <br><span class="inline-block mt-2 text-xs text-amber-700 font-bold bg-amber-50 px-2 py-1 rounded border border-amber-200"><i data-lucide="shield" class="w-3 h-3 inline"></i> Endereço exato preservado por privacidade.</span>` :
-                    (b.address || 'Endereço não informado');
+                    `${this.escapeHtml((b.address || '').split(',')[0])} (área aproximada) <span class="vx-badge vx-badge-warning mt-2 inline-flex"><i data-lucide="shield" class="w-3 h-3"></i> Endereço exato preservado por privacidade</span>` :
+                    this.escapeHtml(b.address || 'Endereço não informado');
 
                 document.getElementById('profile-origin').innerText = b.origin || 'Base';
                 document.getElementById('profile-validation').innerText = b.validationStatus.charAt(0).toUpperCase() + b.validationStatus.slice(1);
@@ -4009,14 +4174,14 @@
 
             renderProfileBadges(b) {
                 const zona = b.type === 'urban' ? 'Urbana' : (b.type === 'rural' ? 'Rural' : 'Autônomo');
-                const selos = [`<span class="text-[10px] font-bold uppercase tracking-wide px-2 py-1 rounded-full bg-slate-100 text-slate-600 border border-slate-200">${zona}</span>`];
+                const selos = [`<span class="vx-badge vx-badge-neutral">${zona}</span>`];
                 if(b.origin === 'Base Importada' || b.origin === 'Sincronizado') {
-                    selos.push('<span class="text-[10px] font-bold uppercase tracking-wide px-2 py-1 rounded-full bg-blue-50 text-blue-700 border border-blue-100">Base oficial</span>');
+                    selos.push('<span class="vx-badge vx-badge-primary">Base oficial</span>');
                 }
                 if(b.validationStatus === 'validado') {
-                    selos.push('<span class="text-[10px] font-bold uppercase tracking-wide px-2 py-1 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-100">Validado pela Prefeitura</span>');
+                    selos.push('<span class="vx-badge vx-badge-success"><i data-lucide="shield-check" class="w-3 h-3"></i> Validado pela Prefeitura</span>');
                 }
-                if(b.porte) selos.push(`<span class="text-[10px] font-bold uppercase tracking-wide px-2 py-1 rounded-full bg-slate-100 text-slate-600 border border-slate-200">${b.porte}</span>`);
+                if(b.porte) selos.push(`<span class="vx-badge vx-badge-neutral">${this.escapeHtml(b.porte)}</span>`);
                 document.getElementById('profile-badges').innerHTML = selos.join('');
             },
 
@@ -4029,7 +4194,7 @@
                 if(servicos.length) partes.push(`<b class="text-slate-700">${servicos.length}</b> ${servicos.length === 1 ? 'serviço' : 'serviços'}`);
                 if(b.area) partes.push(this.escapeHtml(b.area));
                 document.getElementById('profile-summary-bar').innerHTML =
-                    `<i data-lucide="package" class="w-4 h-4 text-slate-400 flex-shrink-0"></i><span>${partes.join(' · ')}</span>`;
+                    `<i data-lucide="package" class="w-4 h-4 flex-shrink-0" style="color: var(--vx-text-muted)"></i><span>${partes.join(' · ')}</span>`;
 
                 const secProd = document.getElementById('profile-products-section');
                 const gridProd = document.getElementById('profile-catalog');
@@ -4043,36 +4208,36 @@
                 document.getElementById('profile-services-count').innerText = servicos.length ? `${servicos.length} ${servicos.length === 1 ? 'item' : 'itens'}` : '';
                 gridServ.innerHTML = servicos.map(s => this.cardItemVitrine(b, s)).join('');
 
+                // Separador só quando as duas seções aparecem juntas.
+                document.getElementById('profile-catalog-sep').classList.toggle('hidden', !(produtos.length && servicos.length));
                 document.getElementById('profile-catalog-empty').classList.add('hidden');
 
                 const galeria = (b.gallery || []).filter(g => g && g.url);
                 const secGal = document.getElementById('profile-gallery-section');
                 secGal.classList.toggle('hidden', galeria.length === 0);
                 document.getElementById('profile-gallery').innerHTML = galeria.map(g =>
-                    `<div class="w-40 h-28 flex-shrink-0 rounded-xl overflow-hidden border border-slate-200 bg-slate-100">${this.imgTag(g.url, g.alt || b.name, 'w-full h-full object-cover', b)}</div>`
+                    `<div class="w-44 h-32 flex-shrink-0 rounded-xl overflow-hidden" style="border: 1px solid var(--vx-border); background: var(--vx-surface-muted)">${this.imgTag(g.url, g.alt || b.name, 'w-full h-full object-cover', b)}</div>`
                 ).join('');
-
-                document.getElementById('profile-hours').innerHTML = this.formatHoursDisplay(b.hours);
             },
 
             cardItemVitrine(b, item) {
                 const capa = (item.images && item.images[0]) ? item.images[0] : null;
                 const selo = item.featured
-                    ? '<span class="absolute top-2 left-2 text-[9px] font-bold uppercase tracking-wide px-1.5 py-0.5 rounded bg-white/95 text-brand-700 shadow-sm">Destaque</span>'
+                    ? '<span class="absolute top-2 left-2 vx-badge vx-badge-primary" style="background:#fff; font-size:10px; padding:3px 8px">Destaque</span>'
                     : '';
                 const duracao = (item.kind === 'service' && item.durationLabel)
-                    ? `<span class="text-[10px] text-slate-500 font-semibold flex items-center gap-1 mt-1"><i data-lucide="clock" class="w-3 h-3"></i> ${this.escapeHtml(item.durationLabel)}</span>`
+                    ? `<span class="vx-item-duration"><i data-lucide="clock" class="w-3 h-3"></i> ${this.escapeHtml(item.durationLabel)}</span>`
                     : '';
                 const desc = item.shortDescription
-                    ? `<p class="text-[11px] text-slate-500 mt-1 line-clamp-2 leading-snug">${this.escapeHtml(item.shortDescription)}</p>`
-                    : '';
+                    ? `<p class="vx-item-desc">${this.escapeHtml(item.shortDescription)}</p>`
+                    : '<p class="vx-item-desc"></p>';
                 return `
-                    <button onclick="app.openItemDetail(${b.id}, '${item.kind}', ${item.id})" class="text-left bg-white rounded-xl border border-slate-200 overflow-hidden shadow-sm hover:shadow-md hover:border-brand-300 transition group">
-                        <div class="h-28 bg-slate-100 relative">${this.imgTag(capa && capa.url, (capa && capa.alt) || item.name, 'w-full h-full object-cover group-hover:scale-105 transition-transform duration-300', b)}${selo}</div>
-                        <div class="p-3">
-                            <h4 class="text-xs font-bold text-slate-900 line-clamp-1">${this.escapeHtml(item.name)}</h4>
+                    <button onclick="app.openItemDetail(${b.id}, '${item.kind}', ${item.id})" class="vx-item-card">
+                        <div class="vx-item-media">${this.imgTag(capa && capa.url, (capa && capa.alt) || item.name, 'w-full h-full object-cover', b)}${selo}</div>
+                        <div class="vx-item-body">
+                            <h3 class="vx-item-name">${this.escapeHtml(item.name)}</h3>
                             ${desc}
-                            <p class="text-xs text-brand-600 font-bold mt-1.5">${this.escapeHtml(item.priceLabel || 'Sob consulta')}</p>
+                            <p class="vx-item-price">${this.escapeHtml(item.priceLabel || 'Sob consulta')}</p>
                             ${duracao}
                         </div>
                     </button>`;
@@ -4084,28 +4249,42 @@
                 const bloco = document.getElementById('profile-activities-block');
                 bloco.classList.toggle('hidden', atividades.length === 0);
                 document.getElementById('profile-activities').innerHTML = atividades.map(t =>
-                    `<span class="text-xs font-semibold px-3 py-1.5 rounded-full bg-slate-100 text-slate-700 border border-slate-200">${this.escapeHtml(t)}</span>`
+                    `<span class="vx-badge vx-badge-neutral" style="padding:6px 12px">${this.escapeHtml(t)}</span>`
                 ).join('');
 
                 document.getElementById('profile-contact-note').innerText = b.hasVitrine === false
                     ? 'Registro coletado pela Prefeitura para a base econômica municipal. A vitrine com catálogo aparece quando o empreendedor reivindica o perfil.'
                     : 'Este negócio optou por manter apenas o perfil de contato: quer ser encontrado, sem publicar catálogo de produtos e serviços.';
+            },
 
-                const linha = (icone, rotulo, valor) =>
-                    `<div class="flex items-start gap-2.5"><i data-lucide="${icone}" class="w-4 h-4 text-slate-400 mt-0.5 flex-shrink-0"></i><div><span class="block text-[10px] uppercase font-bold text-slate-400 tracking-wide">${rotulo}</span><span class="text-slate-700 font-medium">${valor}</span></div></div>`;
+            // Coluna lateral: vale para os dois modos. Horário ganha card próprio
+            // quando existe; senão entra como linha "não informado" nas informações.
+            renderProfileLateral(b) {
+                const linha = (icone, rotulo, valor) => `
+                    <div class="flex items-start gap-3">
+                        <i data-lucide="${icone}" class="w-4 h-4 mt-0.5 flex-shrink-0" style="color: var(--vx-text-muted)"></i>
+                        <div class="min-w-0">
+                            <span class="block vx-eyebrow" style="letter-spacing:.04em">${rotulo}</span>
+                            <span class="font-medium block mt-0.5" style="color: var(--vx-text)">${valor}</span>
+                        </div>
+                    </div>`;
 
-                const telefone = b.whatsapp || b.phone || 'Não informado';
-                const horario = b.hours ? this.formatHoursDisplay(b.hours) : '<span class="text-slate-500">Não informado</span>';
+                const telefone = b.whatsapp || b.phone || '<span style="color: var(--vx-text-muted)">Não informado</span>';
                 const endereco = b.protectedLocation
-                    ? `${this.escapeHtml((b.address || '').split(',')[0])} <span class="text-slate-500">(área aproximada)</span>`
+                    ? `${this.escapeHtml((b.address || '').split(',')[0])} <span style="color: var(--vx-text-muted)">(área aproximada)</span>`
                     : this.escapeHtml(b.address || 'Não informado');
 
+                const temHorario = !!b.hours;
+                const cardHoras = document.getElementById('profile-hours-card');
+                cardHoras.classList.toggle('hidden', !temHorario);
+                if(temHorario) document.getElementById('profile-hours').innerHTML = this.formatHoursDisplay(b.hours);
+
                 document.getElementById('profile-info-box').innerHTML = [
-                    linha('phone', 'Telefone', this.escapeHtml(telefone)),
-                    linha('clock', 'Horário', `<span class="block text-xs leading-relaxed">${horario}</span>`),
+                    linha('phone', 'Telefone', b.whatsapp || b.phone ? this.escapeHtml(b.whatsapp || b.phone) : telefone),
                     linha('map-pin', 'Endereço', endereco),
-                    b.area ? linha('navigation', 'Área de atendimento', this.escapeHtml(b.area)) : ''
-                ].join('');
+                    b.area ? linha('navigation', 'Área de atendimento', this.escapeHtml(b.area)) : '',
+                    temHorario ? '' : linha('clock', 'Horário', '<span style="color: var(--vx-text-muted)">Não informado</span>')
+                ].filter(Boolean).join('');
             },
 
             // ---------- Mapa do perfil ----------
@@ -4149,7 +4328,7 @@
                 const selo = document.getElementById('item-kind');
                 const ehServico = kind === 'service';
                 selo.innerText = ehServico ? 'Serviço' : 'Produto';
-                selo.className = `inline-block text-[10px] font-bold uppercase tracking-wide px-2 py-0.5 rounded-full mb-2 ${ehServico ? 'bg-brand-50 text-brand-700 border border-brand-100' : 'bg-emerald-50 text-emerald-700 border border-emerald-100'}`;
+                selo.className = `vx-badge mb-3 ${ehServico ? 'vx-badge-primary' : 'vx-badge-success'}`;
 
                 document.getElementById('item-name').innerText = item.name;
                 document.getElementById('item-price').innerText = item.priceLabel || 'Sob consulta';
@@ -4160,7 +4339,7 @@
 
                 document.getElementById('item-desc').innerText = item.shortDescription || 'Sem descrição detalhada. Fale com o negócio para saber mais.';
                 document.getElementById('item-tags').innerHTML = (item.tags || []).map(t =>
-                    `<span class="text-[10px] font-semibold px-2 py-1 rounded-md bg-slate-100 text-slate-600 border border-slate-200">${this.escapeHtml(t)}</span>`
+                    `<span class="vx-badge vx-badge-neutral">${this.escapeHtml(t)}</span>`
                 ).join('');
                 document.getElementById('item-business').innerHTML = `Oferecido por <b class="text-slate-700">${this.escapeHtml(b.name)}</b>${b.area ? ' · ' + this.escapeHtml(b.area) : ''}`;
 
