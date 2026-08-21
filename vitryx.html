@@ -802,6 +802,7 @@
                     <button onclick="app.navigate('manager', 'validations')" data-target="validations" class="w-full flex items-center gap-3 px-3 py-2.5 text-slate-300 rounded-lg font-medium text-sm hover:bg-slate-800 hover:text-white transition-colors"><i data-lucide="check-square" class="w-4 h-4"></i> Validações <span id="mgr-badge-val" class="ml-auto bg-accent-500 text-white text-[10px] px-1.5 py-0.5 rounded font-bold hidden">0</span></button>
                     <button onclick="app.navigate('manager', 'gaps')" data-target="gaps" class="w-full flex items-center gap-3 px-3 py-2.5 text-slate-300 rounded-lg font-medium text-sm hover:bg-slate-800 hover:text-white transition-colors"><i data-lucide="search-x" class="w-4 h-4"></i> Buscas e Oportunidades</button>
                     <button onclick="app.navigate('manager', 'demands')" data-target="demands" class="w-full flex items-center gap-3 px-3 py-2.5 text-slate-300 rounded-lg font-medium text-sm hover:bg-slate-800 hover:text-white transition-colors"><i data-lucide="clipboard-list" class="w-4 h-4"></i> Demandas Públicas</button>
+                    <button onclick="app.navigate('manager', 'purchases')" data-target="purchases" class="w-full flex items-center gap-3 px-3 py-2.5 text-slate-300 rounded-lg font-medium text-sm hover:bg-slate-800 hover:text-white transition-colors"><i data-lucide="shopping-cart" class="w-4 h-4"></i> Compras Públicas</button>
                     <button onclick="app.navigate('manager', 'impact')" data-target="impact" class="w-full flex items-center gap-3 px-3 py-2.5 text-slate-300 rounded-lg font-medium text-sm hover:bg-slate-800 hover:text-white transition-colors"><i data-lucide="bar-chart-2" class="w-4 h-4"></i> Impacto e Resultados</button>
                     <div class="h-px bg-slate-800 my-2 mx-3"></div>
                     <button onclick="app.navigate('manager', 'history')" data-target="history" class="w-full flex items-center gap-3 px-3 py-2.5 text-slate-400 rounded-lg font-medium text-sm hover:bg-slate-800 hover:text-white transition-colors"><i data-lucide="history" class="w-4 h-4"></i> Histórico do Sistema</button>
@@ -1265,6 +1266,83 @@
                             <i data-lucide="clipboard" class="w-12 h-12 text-slate-300 mx-auto mb-3"></i>
                             <h4 class="font-bold text-slate-700">Nenhuma demanda cadastrada</h4>
                             <p class="text-sm text-slate-500 mt-1">Cadastre as necessidades da prefeitura para encontrar fornecedores locais.</p>
+                        </div>
+                    </div>
+
+                    <!-- VIEW: COMPRAS PÚBLICAS -->
+                    <div id="view-mgr-purchases" class="app-view max-w-6xl mx-auto">
+                        <div class="mb-6 bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4">
+                            <div>
+                                <h3 class="text-xl font-bold text-slate-900">Compras Públicas</h3>
+                                <p class="text-sm text-slate-500 mt-1">Contratações efetivamente realizadas pelo Município. Diferente de demanda (necessidade mapeada) e de fornecedor potencial (oferta local identificada).</p>
+                            </div>
+                            <button onclick="app.openNewPurchase()" class="bg-brand-600 text-white px-4 py-2 rounded-xl font-bold text-sm hover:bg-brand-700 transition shadow-sm flex-shrink-0">+ Registrar compra</button>
+                        </div>
+
+                        <div class="mb-6 bg-amber-50 text-amber-900 text-xs font-medium px-4 py-3 rounded-xl border border-amber-200 flex items-center gap-2">
+                            <i data-lucide="info" class="w-4 h-4 flex-shrink-0"></i> Dados demonstrativos. A plataforma registra e analisa contratações já realizadas; não executa licitação, empenho ou pagamento.
+                        </div>
+
+                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+                            <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
+                                <div class="text-sm font-semibold text-slate-500 mb-1 uppercase tracking-wide">Valor Total Contratado</div>
+                                <div class="text-2xl font-extrabold text-slate-900" id="pur-kpi-total">R$ 0,00</div>
+                                <div class="text-xs text-slate-400 mt-2" id="pur-kpi-total-sub">&nbsp;</div>
+                            </div>
+                            <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm border-b-4 border-b-emerald-500">
+                                <div class="text-sm font-semibold text-slate-500 mb-1 uppercase tracking-wide">Contratado Localmente</div>
+                                <div class="text-2xl font-extrabold text-emerald-600" id="pur-kpi-local">R$ 0,00</div>
+                                <div class="text-xs text-slate-400 mt-2" id="pur-kpi-local-sub">&nbsp;</div>
+                            </div>
+                            <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm border-b-4 border-b-brand-500">
+                                <div class="text-sm font-semibold text-slate-500 mb-1 uppercase tracking-wide">% do Valor com Locais</div>
+                                <div class="text-2xl font-extrabold text-brand-600" id="pur-kpi-pct">0%</div>
+                                <div class="text-xs text-slate-400 mt-2" id="pur-kpi-pct-sub">&nbsp;</div>
+                            </div>
+                            <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm border-b-4 border-b-accent-500">
+                                <div class="text-sm font-semibold text-slate-500 mb-1 uppercase tracking-wide">Fornecedores Locais</div>
+                                <div class="text-2xl font-extrabold text-accent-600" id="pur-kpi-suppliers">0</div>
+                                <div class="text-xs text-slate-400 mt-2" id="pur-kpi-suppliers-sub">&nbsp;</div>
+                            </div>
+                        </div>
+
+                        <div class="mb-6 bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+                            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-4">
+                                <h4 class="font-bold text-slate-900">Contratações registradas</h4>
+                                <div class="text-sm font-bold text-slate-600 bg-slate-100 px-3 py-1.5 rounded-lg border border-slate-200"><span id="pur-count">0</span> registros</div>
+                            </div>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3 pt-4 border-t border-slate-100">
+                                <div class="relative w-full">
+                                    <i data-lucide="search" class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400"></i>
+                                    <input type="text" id="pur-search" onkeyup="app.renderPurchases()" class="w-full pl-9 pr-4 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm focus:bg-white focus:border-brand-500 outline-none transition-all" placeholder="Processo, objeto ou fornecedor...">
+                                </div>
+                                <select id="pur-filter-period" onchange="app.renderPurchases()" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm focus:bg-white focus:border-brand-500 outline-none transition-all">
+                                    <option value="">Todo o período</option>
+                                    <option value="30">Últimos 30 dias</option>
+                                    <option value="90">Últimos 90 dias</option>
+                                    <option value="180">Últimos 6 meses</option>
+                                    <option value="365">Últimos 12 meses</option>
+                                </select>
+                                <select id="pur-filter-department" onchange="app.renderPurchases()" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm focus:bg-white focus:border-brand-500 outline-none transition-all">
+                                    <option value="">Todas as secretarias</option>
+                                </select>
+                                <select id="pur-filter-origin" onchange="app.renderPurchases()" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm focus:bg-white focus:border-brand-500 outline-none transition-all">
+                                    <option value="">Local e externo</option>
+                                    <option value="local">Somente fornecedor local</option>
+                                    <option value="externo">Somente fornecedor externo</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+                            <div class="overflow-x-auto">
+                                <table class="w-full text-sm text-left whitespace-nowrap">
+                                    <thead class="bg-slate-50 text-slate-500 text-xs uppercase font-semibold border-b border-slate-200">
+                                        <tr><th class="px-6 py-4">Processo</th><th class="px-6 py-4">Data</th><th class="px-6 py-4">Objeto</th><th class="px-6 py-4">Secretaria</th><th class="px-6 py-4">Fornecedor</th><th class="px-6 py-4">Origem</th><th class="px-6 py-4 text-right">Valor</th><th class="px-6 py-4 text-center">Ações</th></tr>
+                                    </thead>
+                                    <tbody class="divide-y divide-slate-100" id="pur-table"></tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
 
@@ -1946,6 +2024,149 @@
     </div>
 
     <!-- Modal: Nova Demanda Pública -->
+    <!-- Modal: Registrar Compra -->
+    <div id="modal-new-purchase" class="modal-overlay">
+        <div class="bg-white w-full max-w-2xl rounded-2xl shadow-2xl flex flex-col overflow-hidden max-h-[90vh] transform scale-95 transition-transform duration-200" id="modal-new-purchase-content">
+            <div class="px-6 py-4 border-b border-slate-100 flex justify-between items-center bg-slate-50">
+                <div class="flex items-center gap-3">
+                    <div class="w-9 h-9 rounded-lg bg-brand-50 text-brand-600 flex items-center justify-center"><i data-lucide="shopping-cart" class="w-4 h-4"></i></div>
+                    <div><h3 class="font-bold text-slate-900">Registrar compra pública</h3><p class="text-xs text-slate-500">Contratação já realizada pelo Município.</p></div>
+                </div>
+                <button onclick="app.closeModal('modal-new-purchase')" class="text-slate-400 hover:text-slate-600"><i data-lucide="x" class="w-5 h-5"></i></button>
+            </div>
+            <div class="flex-grow overflow-y-auto p-6 space-y-4">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 mb-1">Número do processo <span class="text-red-500">*</span></label>
+                        <input type="text" id="pur-process" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm outline-none focus:bg-white focus:border-brand-500 transition" placeholder="Ex: 2026/0415">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 mb-1">Data da compra <span class="text-red-500">*</span></label>
+                        <input type="date" id="pur-date" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm outline-none focus:bg-white focus:border-brand-500 transition">
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 mb-1">Objeto / item adquirido <span class="text-red-500">*</span></label>
+                    <input type="text" id="pur-object" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm outline-none focus:bg-white focus:border-brand-500 transition" placeholder="Ex: Reparo de carteiras e mesas escolares">
+                </div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 mb-1">Categoria</label>
+                        <select id="pur-category" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm outline-none focus:bg-white focus:border-brand-500 transition">
+                            <option value="Serviços">Serviços</option><option value="Alimentação">Alimentação</option><option value="Comércio">Comércio</option><option value="Casa e Manutenção">Casa e Manutenção</option><option value="Automotivo">Automotivo</option><option value="Tecnologia">Tecnologia</option><option value="Beleza">Beleza</option><option value="Rural">Rural</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 mb-1">Secretaria <span class="text-red-500">*</span></label>
+                        <input type="text" id="pur-department" list="pur-department-list" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm outline-none focus:bg-white focus:border-brand-500 transition" placeholder="Ex: Sec. Educação">
+                        <datalist id="pur-department-list"></datalist>
+                    </div>
+                </div>
+
+                <div class="border-t border-slate-100 pt-4">
+                    <label class="block text-xs font-bold text-slate-700 mb-2">Tipo de fornecedor <span class="text-red-500">*</span></label>
+                    <div class="grid grid-cols-2 gap-3">
+                        <label class="flex items-center gap-2 p-3 bg-slate-50 border border-slate-200 rounded-lg cursor-pointer hover:border-brand-400 transition">
+                            <input type="radio" name="pur-supplier-type" value="local" checked onchange="app.togglePurchaseSupplier()" class="w-4 h-4 text-brand-600 focus:ring-brand-500">
+                            <span class="text-sm font-semibold text-slate-800">Local (Base Econômica)</span>
+                        </label>
+                        <label class="flex items-center gap-2 p-3 bg-slate-50 border border-slate-200 rounded-lg cursor-pointer hover:border-brand-400 transition">
+                            <input type="radio" name="pur-supplier-type" value="externo" onchange="app.togglePurchaseSupplier()" class="w-4 h-4 text-brand-600 focus:ring-brand-500">
+                            <span class="text-sm font-semibold text-slate-800">Externo ao município</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div id="pur-local-wrap">
+                    <label class="block text-xs font-bold text-slate-700 mb-1">Negócio da Base Econômica <span class="text-red-500">*</span></label>
+                    <select id="pur-business" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm outline-none focus:bg-white focus:border-brand-500 transition"></select>
+                    <p class="text-xs text-slate-500 mt-1">O vínculo com um negócio cadastrado é o que classifica a compra como local.</p>
+                </div>
+
+                <div id="pur-external-wrap" class="hidden">
+                    <label class="block text-xs font-bold text-slate-700 mb-1">Nome do fornecedor externo <span class="text-red-500">*</span></label>
+                    <input type="text" id="pur-supplier-name" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm outline-none focus:bg-white focus:border-brand-500 transition" placeholder="Ex: ClimaTec Refrigeração (Cascavel/PR)">
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 mb-1">Documento do fornecedor (opcional)</label>
+                        <input type="text" id="pur-document" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm outline-none focus:bg-white focus:border-brand-500 transition" placeholder="CPF ou CNPJ">
+                        <p class="text-xs text-slate-500 mt-1">Fica mascarado nas listagens e nunca aparece no portal público.</p>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 mb-1">Valor (R$) <span class="text-red-500">*</span></label>
+                        <input type="text" id="pur-value" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm outline-none focus:bg-white focus:border-brand-500 transition" placeholder="Ex: 18400,00">
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 mb-1">Demanda relacionada (opcional)</label>
+                        <select id="pur-demand" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm outline-none focus:bg-white focus:border-brand-500 transition"></select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 mb-1">Origem do registro</label>
+                        <select id="pur-source" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm outline-none focus:bg-white focus:border-brand-500 transition">
+                            <option value="Registro manual">Registro manual</option>
+                            <option value="Importação da Prefeitura">Importação da Prefeitura</option>
+                            <option value="Sistema de compras">Sistema de compras</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="px-6 py-4 border-t border-slate-100 bg-white flex justify-end gap-3">
+                <button onclick="app.closeModal('modal-new-purchase')" class="px-4 py-2 text-sm font-bold text-slate-600 hover:bg-slate-100 rounded-xl transition">Cancelar</button>
+                <button onclick="app.savePurchase()" class="px-6 py-2 bg-brand-600 hover:bg-brand-700 text-white rounded-xl text-sm font-bold shadow-md transition">Salvar compra</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal: Detalhes da Compra -->
+    <div id="modal-purchase-details" class="modal-overlay">
+        <div class="bg-white w-full max-w-2xl rounded-2xl shadow-2xl flex flex-col overflow-hidden max-h-[85vh] transform scale-95 transition-transform duration-200" id="modal-purchase-details-content">
+            <div class="px-6 py-4 border-b border-slate-100 flex justify-between items-center bg-slate-50">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-lg bg-slate-200 text-slate-600 flex items-center justify-center"><i data-lucide="receipt" class="w-5 h-5"></i></div>
+                    <div><h3 class="font-bold text-slate-900 text-lg leading-tight" id="pd-process">Processo</h3><p class="text-xs font-semibold text-slate-500 uppercase" id="pd-department">Secretaria</p></div>
+                </div>
+                <button onclick="app.closeModal('modal-purchase-details')" class="text-slate-400 hover:text-slate-600 bg-white p-1 rounded-full shadow-sm"><i data-lucide="x" class="w-5 h-5"></i></button>
+            </div>
+            <div class="flex-grow overflow-y-auto p-6 space-y-6">
+                <div>
+                    <h4 class="text-sm font-bold text-slate-900 border-b border-slate-200 pb-2 mb-3"><i data-lucide="file-text" class="w-4 h-4 inline mr-1 text-slate-400"></i> Dados do processo</h4>
+                    <div class="grid grid-cols-2 gap-y-3 gap-x-4 text-sm">
+                        <div class="col-span-2"><span class="text-slate-500 block text-xs">Objeto</span><span class="font-medium text-slate-900" id="pd-object">-</span></div>
+                        <div><span class="text-slate-500 block text-xs">Data da compra</span><span class="font-medium text-slate-900" id="pd-date">-</span></div>
+                        <div><span class="text-slate-500 block text-xs">Valor</span><span class="font-bold text-slate-900" id="pd-value">-</span></div>
+                        <div><span class="text-slate-500 block text-xs">Categoria</span><span class="font-medium text-slate-900" id="pd-category">-</span></div>
+                        <div><span class="text-slate-500 block text-xs">Origem do dado</span><span class="font-medium text-slate-900" id="pd-source">-</span></div>
+                    </div>
+                </div>
+                <div>
+                    <h4 class="text-sm font-bold text-slate-900 border-b border-slate-200 pb-2 mb-3"><i data-lucide="truck" class="w-4 h-4 inline mr-1 text-slate-400"></i> Fornecedor</h4>
+                    <div id="pd-supplier-badge" class="mb-3"></div>
+                    <div class="grid grid-cols-2 gap-y-3 gap-x-4 text-sm">
+                        <div><span class="text-slate-500 block text-xs">Nome</span><span class="font-medium text-slate-900" id="pd-supplier">-</span></div>
+                        <div><span class="text-slate-500 block text-xs">Documento</span><span class="font-medium text-slate-700" id="pd-document">-</span></div>
+                    </div>
+                    <button id="pd-base-link" onclick="app.openBaseFromPurchase()" class="hidden mt-4 w-full sm:w-auto px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-800 rounded-lg text-xs font-bold transition inline-flex items-center gap-2"><i data-lucide="database" class="w-4 h-4"></i> Ver cadastro na Base Econômica</button>
+                </div>
+                <div id="pd-demand-wrap" class="hidden">
+                    <h4 class="text-sm font-bold text-slate-900 border-b border-slate-200 pb-2 mb-3"><i data-lucide="clipboard-list" class="w-4 h-4 inline mr-1 text-slate-400"></i> Demanda relacionada</h4>
+                    <div class="bg-slate-50 border border-slate-100 rounded-xl p-3">
+                        <p class="text-sm font-bold text-slate-900" id="pd-demand-title">-</p>
+                        <p class="text-xs text-slate-500 mt-1">Esta contratação atendeu uma necessidade previamente mapeada na plataforma.</p>
+                    </div>
+                </div>
+                <p class="text-xs text-slate-400 border-t border-slate-100 pt-3">Registrado em <span id="pd-created">-</span>. Dado demonstrativo.</p>
+            </div>
+            <div class="px-6 py-4 border-t border-slate-100 bg-slate-50 flex justify-end">
+                <button onclick="app.closeModal('modal-purchase-details')" class="px-4 py-2 bg-slate-900 hover:bg-slate-800 text-white rounded-lg text-sm font-bold transition">Fechar</button>
+            </div>
+        </div>
+    </div>
+
     <div id="modal-new-demand" class="modal-overlay">
         <div class="bg-white w-full max-w-lg rounded-2xl shadow-2xl flex flex-col overflow-hidden max-h-[90vh] transform scale-95 transition-transform duration-200" id="modal-new-demand-content">
             <div class="px-6 py-4 border-b border-slate-100 flex justify-between bg-slate-50">
@@ -2554,6 +2775,53 @@
             { id: 2, title: "Hortaliças para Merenda", sector: "Sec. Educação", category: "Alimentação", tags: ["agricultura familiar", "hortaliça", "pnae"], cnae: "0112-1/01", date: "Ago/2026", desc: "Levantamento PNAE.", status: "Em análise" }
         ];
 
+        // ---------------------------------------------------------------------
+        // COMPRAS PÚBLICAS — massa DEMONSTRATIVA (fictícia)
+        // Contratações efetivamente realizadas, diferentes de "demanda" (intenção)
+        // e de "fornecedor potencial" (oferta mapeada). Documentos são fictícios e
+        // nunca aparecem no portal público.
+        // ---------------------------------------------------------------------
+        const seedPurchases = [
+            { processNumber: '2026/0412', purchaseDate: '2026-08-12', object: 'Reparo de 40 carteiras e mesas escolares', category: 'Serviços',     department: 'Sec. Educação',        supplierName: 'Marcenaria Medianeira',        supplierDocument: '12345678000199', supplierBusinessId: 6,    isLocalSupplier: true,  value: 18400.00, demandId: 1,    source: 'Registro manual' },
+            { processNumber: '2026/0398', purchaseDate: '2026-08-05', object: 'Hortaliças e legumes para merenda escolar (PNAE)', category: 'Alimentação', department: 'Sec. Educação',   supplierName: 'Sítio Águas Claras',           supplierDocument: '98765432000155', supplierBusinessId: 4,    isLocalSupplier: true,  value: 12750.50, demandId: 2,    source: 'Registro manual' },
+            { processNumber: '2026/0387', purchaseDate: '2026-07-28', object: 'Manutenção elétrica preditiva em prédios públicos', category: 'Serviços', department: 'Sec. Administração', supplierName: 'EletroRápido Manutenção',      supplierDocument: '11222333000144', supplierBusinessId: 5,    isLocalSupplier: true,  value: 9600.00,  demandId: null, source: 'Registro manual' },
+            { processNumber: '2026/0361', purchaseDate: '2026-07-15', object: 'Uniformes escolares para rede municipal',     category: 'Comércio',    department: 'Sec. Educação',        supplierName: 'Malharia Ponto Certo',         supplierDocument: '44555666000177', supplierBusinessId: 10,   isLocalSupplier: true,  value: 34200.00, demandId: null, source: 'Registro manual' },
+            { processNumber: '2026/0344', purchaseDate: '2026-07-03', object: 'Pães e lanches para eventos institucionais',  category: 'Alimentação', department: 'Sec. Cultura',         supplierName: 'Padaria Pão Nosso',            supplierDocument: '77888999000122', supplierBusinessId: 7,    isLocalSupplier: true,  value: 4380.00,  demandId: null, source: 'Registro manual' },
+            { processNumber: '2026/0330', purchaseDate: '2026-06-24', object: 'Revisão da frota leve da Secretaria de Saúde', category: 'Automotivo', department: 'Sec. Saúde',           supplierName: 'Mecânica São José',            supplierDocument: '33444555000188', supplierBusinessId: 3,    isLocalSupplier: true,  value: 15900.00, demandId: null, source: 'Registro manual' },
+            { processNumber: '2026/0309', purchaseDate: '2026-06-10', object: 'Instalação e manutenção de ar-condicionado em escolas', category: 'Serviços', department: 'Sec. Educação', supplierName: 'ClimaTec Refrigeração (Cascavel/PR)', supplierDocument: '55666777000133', supplierBusinessId: null, isLocalSupplier: false, value: 47800.00, demandId: null, source: 'Registro manual' },
+            { processNumber: '2026/0288', purchaseDate: '2026-05-27', object: 'Aquisição de mobiliário administrativo',      category: 'Comércio',    department: 'Sec. Administração',   supplierName: 'MoveiCorp Distribuidora (Curitiba/PR)', supplierDocument: '22333444000166', supplierBusinessId: null, isLocalSupplier: false, value: 62300.00, demandId: null, source: 'Registro manual' },
+            { processNumber: '2026/0271', purchaseDate: '2026-05-14', object: 'Assistência técnica em equipamentos de informática', category: 'Tecnologia', department: 'Sec. Administração', supplierName: 'TecnoFix Assistência',    supplierDocument: '66777888000111', supplierBusinessId: 8,    isLocalSupplier: true,  value: 7250.00,  demandId: null, source: 'Registro manual' },
+            { processNumber: '2026/0255', purchaseDate: '2026-04-30', object: 'Serviço de limpeza predial complementar',     category: 'Casa e Manutenção', department: 'Sec. Saúde',     supplierName: 'HigienePro Serviços (Foz do Iguaçu/PR)', supplierDocument: '88999000000155', supplierBusinessId: null, isLocalSupplier: false, value: 28900.00, demandId: null, source: 'Registro manual' }
+        ];
+
+        // Normaliza uma compra, preenchendo o que faltar sem sobrescrever o que veio.
+        function novaCompra(dados) {
+            const d = dados || {};
+            const agora = new Date().toISOString();
+            const vinculo = d.supplierBusinessId != null ? Number(d.supplierBusinessId) : null;
+            const documento = docUtils.somenteDigitos(d.supplierDocument);
+            return {
+                id: d.id || 'cp-' + Date.now() + '-' + Math.random().toString(36).slice(2, 7),
+                processNumber: d.processNumber || '',
+                purchaseDate: d.purchaseDate || agora.slice(0, 10),
+                object: d.object || '',
+                category: d.category || 'Serviços',
+                department: d.department || '',
+                supplierName: d.supplierName || '',
+                supplierDocument: documento,
+                // O documento nunca é exibido inteiro fora do painel: guardamos a máscara pronta.
+                supplierDocumentMasked: docUtils.mascarar(documento),
+                supplierBusinessId: vinculo,
+                // Vínculo com a Base Econômica é o que define fornecedor local.
+                isLocalSupplier: vinculo != null ? true : Boolean(d.isLocalSupplier),
+                value: Number(d.value) || 0,
+                demandId: d.demandId != null ? Number(d.demandId) : null,
+                source: d.source || 'Registro manual',
+                createdAt: d.createdAt || agora,
+                updatedAt: d.updatedAt || agora
+            };
+        }
+
         // Único contador de eventos semeado. Tudo mais no Painel de Impacto é derivado
         // deste número, da base de negócios e das lacunas registradas.
         const seedMetrics = { buscas: 560 };
@@ -2568,7 +2836,7 @@
 
         // Versão do MODELO de dados. Diferente de SEED_VERSION: subir esta constante
         // acrescenta campos e coleções sem apagar nada do que o usuário já criou.
-        const DATA_MODEL_VERSION = 3;
+        const DATA_MODEL_VERSION = 4;
 
         // ---------------------------------------------------------------------
         // USUÁRIOS DEMONSTRATIVOS
@@ -2814,6 +3082,15 @@
                 }
             });
 
+            // v4 — Compras Públicas. A massa demonstrativa entra apenas na primeira
+            // subida de versão e apenas se ainda não houver compra alguma: recarregar
+            // a página não duplica, e compras registradas pelo usuário são preservadas.
+            if (versaoGravada < 4 && appData.purchases.length === 0) {
+                appData.purchases = seedPurchases.map(c => novaCompra(c));
+            } else {
+                appData.purchases = appData.purchases.map(c => novaCompra(c));
+            }
+
             if (versaoGravada !== DATA_MODEL_VERSION) {
                 localStorage.setItem('vitryx_data_model_version', String(DATA_MODEL_VERSION));
             }
@@ -2919,7 +3196,7 @@
                 appData.history = [ { date: new Date().toISOString(), user: 'Sistema', action: 'Importação Inicial', detail: 'Base carregada com sucesso.' } ];
                 appData.demands = JSON.parse(JSON.stringify(initialDemands));
                 appData.usageEvents = [];
-                appData.purchases = [];
+                appData.purchases = seedPurchases.map(c => novaCompra(c));
                 appData.auditEvents = [];
                 appData.users = [];
                 appData.pilotMetrics = {};
@@ -5158,6 +5435,7 @@
                 if(view === 'gaps') this.renderGaps();
 
                 if(view === 'demands') this.renderDemands();
+                if(view === 'purchases') this.renderPurchases();
                 if(view === 'validations') this.renderValidations();
                 if(view === 'history') this.renderHistory();
                 if(view === 'impact') this.renderImpact();
@@ -5444,6 +5722,238 @@
             viewProfileFromManager(id) {
                 this.switchPersona('citizen');
                 this.openProfile(id);
+            },
+
+            // =================================================================
+            // COMPRAS PÚBLICAS
+            // =================================================================
+            formatarMoeda(valor) {
+                return (Number(valor) || 0).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+            },
+
+            formatarData(iso) {
+                if(!iso) return '-';
+                const d = new Date(String(iso).slice(0, 10) + 'T00:00:00');
+                return isNaN(d) ? '-' : d.toLocaleDateString('pt-BR');
+            },
+
+            // Aplica busca e os três filtros da tela.
+            filtrarCompras() {
+                const termo = this.normalize((document.getElementById('pur-search') || {}).value || '');
+                const periodo = (document.getElementById('pur-filter-period') || {}).value || '';
+                const secretaria = (document.getElementById('pur-filter-department') || {}).value || '';
+                const origem = (document.getElementById('pur-filter-origin') || {}).value || '';
+
+                let lista = (appData.purchases || []).slice();
+
+                if(periodo) {
+                    const limite = new Date();
+                    limite.setDate(limite.getDate() - Number(periodo));
+                    lista = lista.filter(c => new Date(String(c.purchaseDate).slice(0,10) + 'T00:00:00') >= limite);
+                }
+                if(secretaria) lista = lista.filter(c => c.department === secretaria);
+                if(origem === 'local') lista = lista.filter(c => c.isLocalSupplier);
+                if(origem === 'externo') lista = lista.filter(c => !c.isLocalSupplier);
+                if(termo) {
+                    lista = lista.filter(c =>
+                        this.normalize(c.processNumber).includes(termo) ||
+                        this.normalize(c.object).includes(termo) ||
+                        this.normalize(c.supplierName).includes(termo));
+                }
+                return lista.sort((a, b) => String(b.purchaseDate).localeCompare(String(a.purchaseDate)));
+            },
+
+            // Preenche o filtro de secretaria a partir dos dados, sem lista fixa.
+            atualizarFiltroSecretarias() {
+                const sel = document.getElementById('pur-filter-department');
+                if(!sel) return;
+                const atual = sel.value;
+                const secretarias = [...new Set((appData.purchases || []).map(c => c.department).filter(Boolean))].sort();
+                sel.innerHTML = '<option value="">Todas as secretarias</option>' +
+                    secretarias.map(d => `<option value="${d}">${d}</option>`).join('');
+                sel.value = secretarias.includes(atual) ? atual : '';
+
+                const lista = document.getElementById('pur-department-list');
+                if(lista) lista.innerHTML = secretarias.map(d => `<option value="${d}"></option>`).join('');
+            },
+
+            renderPurchases() {
+                this.atualizarFiltroSecretarias();
+                const lista = this.filtrarCompras();
+
+                // KPIs sempre sobre o recorte visível, para bater com a tabela.
+                const total = lista.reduce((t, c) => t + (Number(c.value) || 0), 0);
+                const locais = lista.filter(c => c.isLocalSupplier);
+                const valorLocal = locais.reduce((t, c) => t + (Number(c.value) || 0), 0);
+                const pct = total ? Math.round((valorLocal / total) * 1000) / 10 : 0;
+                const fornecedores = new Set(locais.map(c => c.supplierBusinessId != null ? 'b' + c.supplierBusinessId : 'n' + this.normalize(c.supplierName)));
+
+                document.getElementById('pur-kpi-total').innerText = this.formatarMoeda(total);
+                document.getElementById('pur-kpi-total-sub').innerText = `${lista.length} ${lista.length === 1 ? 'contratação' : 'contratações'} no recorte`;
+                document.getElementById('pur-kpi-local').innerText = this.formatarMoeda(valorLocal);
+                document.getElementById('pur-kpi-local-sub').innerText = `${locais.length} de ${lista.length} com fornecedor local`;
+                document.getElementById('pur-kpi-pct').innerText = String(pct).replace('.', ',') + '%';
+                document.getElementById('pur-kpi-pct-sub').innerText = `${this.formatarMoeda(total - valorLocal)} saíram do município`;
+                document.getElementById('pur-kpi-suppliers').innerText = fornecedores.size;
+                document.getElementById('pur-kpi-suppliers-sub').innerText = 'Fornecedores locais distintos';
+                document.getElementById('pur-count').innerText = lista.length;
+
+                const tbody = document.getElementById('pur-table');
+                if(!tbody) return;
+                tbody.innerHTML = lista.map(c => {
+                    const selo = c.isLocalSupplier
+                        ? '<span class="text-emerald-700 bg-emerald-50 px-2 py-1 rounded text-xs font-bold border border-emerald-100">Local</span>'
+                        : '<span class="text-slate-600 bg-slate-100 px-2 py-1 rounded text-xs font-bold border border-slate-200">Externo</span>';
+                    const doc = c.supplierDocumentMasked ? `<div class="text-xs text-slate-400">${c.supplierDocumentMasked}</div>` : '';
+                    return `
+                    <tr class="hover:bg-slate-50/50 cursor-pointer" onclick="app.openPurchaseDetails('${c.id}')">
+                        <td class="px-6 py-4 font-bold text-slate-900">${c.processNumber || '-'}</td>
+                        <td class="px-6 py-4 text-slate-600">${this.formatarData(c.purchaseDate)}</td>
+                        <td class="px-6 py-4"><div class="text-slate-800 max-w-xs truncate" title="${c.object}">${c.object}</div><div class="text-xs text-slate-500">${c.category}</div></td>
+                        <td class="px-6 py-4 text-slate-600">${c.department || '-'}</td>
+                        <td class="px-6 py-4"><div class="text-slate-800">${c.supplierName || '-'}</div>${doc}</td>
+                        <td class="px-6 py-4">${selo}</td>
+                        <td class="px-6 py-4 text-right font-bold text-slate-900">${this.formatarMoeda(c.value)}</td>
+                        <td class="px-6 py-4 text-center"><button onclick="event.stopPropagation(); app.openPurchaseDetails('${c.id}')" class="text-brand-600 hover:text-brand-800 bg-brand-50 p-2 rounded-lg" title="Ver detalhes"><i data-lucide="eye" class="w-4 h-4"></i></button></td>
+                    </tr>`;
+                }).join('') || `
+                    <tr><td colspan="8" class="px-6 py-12 text-center">
+                        <div class="w-12 h-12 bg-slate-100 rounded-full flex items-center justify-center mx-auto mb-3 text-slate-400"><i data-lucide="receipt" class="w-6 h-6"></i></div>
+                        <p class="text-sm font-bold text-slate-700">${(appData.purchases || []).length ? 'Nenhuma compra encontrada' : 'Nenhuma compra registrada'}</p>
+                        <p class="text-xs text-slate-500 mt-1">${(appData.purchases || []).length ? 'Nenhuma contratação atende aos filtros selecionados.' : 'Registre uma contratação para acompanhar quanto do gasto público fica no município.'}</p>
+                        ${(appData.purchases || []).length ? '<button onclick="app.limparFiltrosCompras()" class="mt-4 px-4 py-2 bg-slate-900 hover:bg-slate-800 text-white rounded-lg text-xs font-bold transition">Limpar filtros</button>' : ''}
+                    </td></tr>`;
+                if(typeof lucide !== 'undefined') lucide.createIcons();
+            },
+
+            limparFiltrosCompras() {
+                ['pur-search', 'pur-filter-period', 'pur-filter-department', 'pur-filter-origin'].forEach(id => {
+                    const el = document.getElementById(id); if(el) el.value = '';
+                });
+                this.renderPurchases();
+            },
+
+            togglePurchaseSupplier() {
+                const tipo = (document.querySelector('input[name="pur-supplier-type"]:checked') || {}).value || 'local';
+                document.getElementById('pur-local-wrap').classList.toggle('hidden', tipo !== 'local');
+                document.getElementById('pur-external-wrap').classList.toggle('hidden', tipo === 'local');
+            },
+
+            openNewPurchase() {
+                ['pur-process', 'pur-object', 'pur-supplier-name', 'pur-document', 'pur-value'].forEach(id => {
+                    const el = document.getElementById(id); if(el) el.value = '';
+                });
+                document.getElementById('pur-date').value = new Date().toISOString().slice(0, 10);
+                document.getElementById('pur-department').value = '';
+                document.getElementById('pur-category').value = 'Serviços';
+                document.getElementById('pur-source').value = 'Registro manual';
+                const radioLocal = document.querySelector('input[name="pur-supplier-type"][value="local"]');
+                if(radioLocal) radioLocal.checked = true;
+
+                // Só negócios da Base Econômica podem ser fornecedor local.
+                document.getElementById('pur-business').innerHTML = appData.businesses
+                    .slice().sort((a, b) => a.name.localeCompare(b.name))
+                    .map(b => `<option value="${b.id}">${b.name}</option>`).join('');
+
+                document.getElementById('pur-demand').innerHTML = '<option value="">Nenhuma</option>' +
+                    (appData.demands || []).map(d => `<option value="${d.id}">${d.title}</option>`).join('');
+
+                this.atualizarFiltroSecretarias();
+                this.togglePurchaseSupplier();
+                this.openModal('modal-new-purchase');
+            },
+
+            savePurchase() {
+                const val = id => (document.getElementById(id) || {}).value || '';
+                const processNumber = val('pur-process').trim();
+                const purchaseDate = val('pur-date');
+                const object = val('pur-object').trim();
+                const department = val('pur-department').trim();
+                const tipo = (document.querySelector('input[name="pur-supplier-type"]:checked') || {}).value || 'local';
+                // Aceita "18.400,00" e "18400.00".
+                const valor = Number(val('pur-value').replace(/\./g, '').replace(',', '.'));
+
+                if(!processNumber) return this.showToast('Informe o número do processo.', 'error');
+                if(!purchaseDate) return this.showToast('Informe a data da compra.', 'error');
+                if(!object) return this.showToast('Informe o objeto da compra.', 'error');
+                if(!department) return this.showToast('Informe a secretaria.', 'error');
+                if(!valor || valor <= 0) return this.showToast('Informe um valor válido.', 'error');
+
+                let supplierBusinessId = null, supplierName = '';
+                if(tipo === 'local') {
+                    supplierBusinessId = Number(val('pur-business'));
+                    const negocio = appData.businesses.find(b => b.id === supplierBusinessId);
+                    if(!negocio) return this.showToast('Selecione o negócio local fornecedor.', 'error');
+                    supplierName = negocio.name;
+                } else {
+                    supplierName = val('pur-supplier-name').trim();
+                    if(!supplierName) return this.showToast('Informe o nome do fornecedor externo.', 'error');
+                }
+
+                const demandId = val('pur-demand') ? Number(val('pur-demand')) : null;
+                const compra = novaCompra({
+                    processNumber, purchaseDate, object, department,
+                    category: val('pur-category'),
+                    supplierName, supplierBusinessId,
+                    supplierDocument: val('pur-document'),
+                    isLocalSupplier: tipo === 'local',
+                    value: valor, demandId,
+                    source: val('pur-source')
+                });
+
+                appData.purchases.unshift(compra);
+                registrarAuditoria({
+                    acao: 'Registro de compra pública', modulo: 'Compras Públicas',
+                    entidade: 'purchase', entidadeId: compra.id,
+                    descricao: `Processo ${compra.processNumber} — ${compra.object} — ${this.formatarMoeda(compra.value)} — fornecedor ${compra.isLocalSupplier ? 'local' : 'externo'}: ${compra.supplierName}.`,
+                    dadosPosteriores: { processNumber: compra.processNumber, value: compra.value, isLocalSupplier: compra.isLocalSupplier }
+                });
+                this.addHistory('Compra Pública Registrada', `${compra.processNumber} — ${compra.supplierName}`);
+                storage.save();
+
+                this.closeModal('modal-new-purchase');
+                this.renderPurchases();
+                this.showToast('Compra registrada e lançada na auditoria.', 'success');
+            },
+
+            openPurchaseDetails(id) {
+                const c = (appData.purchases || []).find(x => String(x.id) === String(id));
+                if(!c) return;
+                this.compraAtual = c;
+
+                document.getElementById('pd-process').innerText = 'Processo ' + (c.processNumber || '-');
+                document.getElementById('pd-department').innerText = c.department || '-';
+                document.getElementById('pd-object').innerText = c.object || '-';
+                document.getElementById('pd-date').innerText = this.formatarData(c.purchaseDate);
+                document.getElementById('pd-value').innerText = this.formatarMoeda(c.value);
+                document.getElementById('pd-category').innerText = c.category || '-';
+                document.getElementById('pd-source').innerText = c.source || '-';
+                document.getElementById('pd-supplier').innerText = c.supplierName || '-';
+                document.getElementById('pd-document').innerText = c.supplierDocumentMasked || 'Não informado';
+
+                document.getElementById('pd-supplier-badge').innerHTML = c.isLocalSupplier
+                    ? '<span class="inline-flex items-center gap-1.5 text-xs font-bold text-emerald-800 bg-emerald-50 border border-emerald-200 rounded-full px-3 py-1.5"><i data-lucide="map-pin" class="w-3.5 h-3.5"></i> Fornecedor local — recurso mantido no município</span>'
+                    : '<span class="inline-flex items-center gap-1.5 text-xs font-bold text-amber-800 bg-amber-50 border border-amber-200 rounded-full px-3 py-1.5"><i data-lucide="external-link" class="w-3.5 h-3.5"></i> Fornecedor externo — oportunidade de retenção local</span>';
+
+                const demanda = c.demandId != null ? (appData.demands || []).find(d => d.id === c.demandId) : null;
+                document.getElementById('pd-demand-wrap').classList.toggle('hidden', !demanda);
+                if(demanda) document.getElementById('pd-demand-title').innerText = `${demanda.title} (${demanda.sector})`;
+
+                const temCadastro = c.supplierBusinessId != null && appData.businesses.some(b => b.id === c.supplierBusinessId);
+                document.getElementById('pd-base-link').classList.toggle('hidden', !temCadastro);
+
+                document.getElementById('pd-created').innerText = c.createdAt ? new Date(c.createdAt).toLocaleString('pt-BR') : '-';
+
+                this.openModal('modal-purchase-details');
+                if(typeof lucide !== 'undefined') lucide.createIcons();
+            },
+
+            // Abre o cadastro administrativo, nunca a vitrine pública.
+            openBaseFromPurchase() {
+                const c = this.compraAtual;
+                if(!c || c.supplierBusinessId == null) return;
+                this.closeModal('modal-purchase-details');
+                setTimeout(() => this.openBaseDetails(c.supplierBusinessId), 180);
             },
 
             openBaseDetails(id) {
