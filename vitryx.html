@@ -1369,103 +1369,267 @@
 
                     <!-- VIEW: IMPACTO E RESULTADOS -->
                     <div id="view-mgr-impact" class="app-view max-w-6xl mx-auto">
-                        <div class="mb-6 bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex flex-col gap-4">
-                            <div class="flex justify-between items-start">
+                        <div class="mb-6 bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex flex-col gap-5">
+                            <div class="flex flex-col lg:flex-row justify-between lg:items-start gap-4">
                                 <div>
                                     <h3 class="text-xl font-bold text-slate-900">Impacto e Resultados</h3>
-                                    <p class="text-sm text-slate-500 mt-1">Métricas de uso e resultados da plataforma no município.</p>
+                                    <p class="text-sm text-slate-500 mt-1">Uso real da plataforma por período, vitrine, segmento e tipo de interação.</p>
                                     <p class="text-xs text-slate-400 mt-2 font-medium italic">Dados demonstrativos para validação da solução.</p>
                                 </div>
-                                <div class="flex items-center gap-3">
-                                    <span class="inline-flex items-center gap-2 px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm font-semibold text-slate-600"><i data-lucide="calendar" class="w-4 h-4 text-slate-400"></i> Últimos 30 dias</span>
+                                <div class="flex items-center gap-3 flex-shrink-0">
+                                    <span id="imp-periodo-badge" class="inline-flex items-center gap-2 px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm font-semibold text-slate-600"><i data-lucide="calendar" class="w-4 h-4 text-slate-400"></i> Últimos 30 dias</span>
                                     <button onclick="app.openExecutiveReport()" class="bg-brand-600 hover:bg-brand-700 text-white px-4 py-2 rounded-xl text-sm font-bold shadow-md flex items-center gap-2 transition-colors">
                                         <i data-lucide="file-text" class="w-4 h-4"></i> Gerar Relatório Executivo
                                     </button>
                                 </div>
                             </div>
+
+                            <!-- FILTROS -->
+                            <div class="border-t border-slate-100 pt-4">
+                                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+                                    <div>
+                                        <label class="block text-[11px] font-bold text-slate-500 uppercase tracking-wide mb-1">Período</label>
+                                        <select id="imp-filter-period" onchange="app.onImpactPeriodChange()" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm outline-none focus:border-brand-500 transition">
+                                            <option value="1">Ontem</option>
+                                            <option value="3">Últimos 3 dias</option>
+                                            <option value="7">Últimos 7 dias</option>
+                                            <option value="30" selected>Últimos 30 dias</option>
+                                            <option value="90">Últimos 90 dias</option>
+                                            <option value="custom">Período personalizado</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label class="block text-[11px] font-bold text-slate-500 uppercase tracking-wide mb-1">Vitrine</label>
+                                        <select id="imp-filter-business" onchange="app.renderImpact()" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm outline-none focus:border-brand-500 transition">
+                                            <option value="">Todas as vitrines</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label class="block text-[11px] font-bold text-slate-500 uppercase tracking-wide mb-1">Segmento</label>
+                                        <select id="imp-filter-category" onchange="app.renderImpact()" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm outline-none focus:border-brand-500 transition">
+                                            <option value="">Todos os segmentos</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label class="block text-[11px] font-bold text-slate-500 uppercase tracking-wide mb-1">Interação</label>
+                                        <select id="imp-filter-type" onchange="app.renderImpact()" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm outline-none focus:border-brand-500 transition">
+                                            <option value="">Todas as interações</option>
+                                            <option value="search">Buscas</option>
+                                            <option value="storefront_open">Aberturas de vitrine</option>
+                                            <option value="contact">Ações de contato</option>
+                                            <option value="whatsapp_click">WhatsApp</option>
+                                            <option value="call_click">Ligação</option>
+                                            <option value="route_click">Rota</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div id="imp-custom-range" class="hidden grid grid-cols-1 sm:grid-cols-2 gap-3 mt-3">
+                                    <div>
+                                        <label class="block text-[11px] font-bold text-slate-500 uppercase tracking-wide mb-1">Data inicial</label>
+                                        <input type="date" id="imp-date-start" onchange="app.renderImpact()" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm outline-none focus:border-brand-500 transition">
+                                    </div>
+                                    <div>
+                                        <label class="block text-[11px] font-bold text-slate-500 uppercase tracking-wide mb-1">Data final</label>
+                                        <input type="date" id="imp-date-end" onchange="app.renderImpact()" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm outline-none focus:border-brand-500 transition">
+                                    </div>
+                                </div>
+
+                                <div class="flex flex-wrap items-center justify-between gap-3 mt-3">
+                                    <p class="text-xs text-slate-500"><span class="font-semibold text-slate-700">Recorte aplicado:</span> <span id="imp-periodo-texto">-</span> · <span id="imp-eventos-total">0</span> interações</p>
+                                    <button onclick="app.limparFiltrosImpacto()" class="px-3 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg text-xs font-bold transition flex items-center gap-2"><i data-lucide="rotate-ccw" class="w-3.5 h-3.5"></i> Limpar filtros</button>
+                                </div>
+                            </div>
                         </div>
 
-                        <!-- Statistics Cards Grid -->
-                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
-                            <!-- Buscas Realizadas -->
-                            <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex flex-col justify-center h-full">
+                        <!-- KPIs -->
+                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+                            <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
                                 <div class="flex items-center justify-between mb-2">
-                                    <h4 class="text-sm font-semibold text-slate-500 uppercase tracking-wide">Buscas Realizadas</h4>
+                                    <h4 class="text-xs font-semibold text-slate-500 uppercase tracking-wide">Buscas Realizadas</h4>
                                     <div class="w-8 h-8 rounded-full bg-slate-50 flex items-center justify-center text-slate-400"><i data-lucide="search" class="w-4 h-4"></i></div>
                                 </div>
                                 <div class="text-3xl font-extrabold text-slate-900" id="imp-buscas">0</div>
+                                <p class="text-xs text-slate-400 mt-2 font-medium" id="imp-buscas-sub">-</p>
                             </div>
-
-                            <!-- Taxa de atendimento -->
-                            <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex flex-col justify-center h-full">
+                            <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
                                 <div class="flex items-center justify-between mb-2">
-                                    <h4 class="text-sm font-semibold text-slate-500 uppercase tracking-wide">Taxa de Atendimento</h4>
+                                    <h4 class="text-xs font-semibold text-slate-500 uppercase tracking-wide">Taxa de Atendimento</h4>
                                     <div class="w-8 h-8 rounded-full bg-emerald-50 flex items-center justify-center text-emerald-500"><i data-lucide="check-circle" class="w-4 h-4"></i></div>
                                 </div>
-                                <div class="flex items-baseline gap-2">
-                                    <div class="text-3xl font-extrabold text-emerald-600" id="imp-taxa-atendimento">0%</div>
-                                </div>
-                                <p class="text-xs text-slate-400 mt-2 font-medium">Buscas que encontraram oferta local relacionada.</p>
+                                <div class="text-3xl font-extrabold text-emerald-600" id="imp-taxa-atendimento">0%</div>
+                                <p class="text-xs text-slate-400 mt-2 font-medium">Buscas que encontraram oferta local.</p>
                             </div>
-
-                            <!-- Vitrines abertas -->
-                            <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex flex-col justify-center h-full">
+                            <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
                                 <div class="flex items-center justify-between mb-2">
-                                    <h4 class="text-sm font-semibold text-slate-500 uppercase tracking-wide">Vitrines Abertas</h4>
+                                    <h4 class="text-xs font-semibold text-slate-500 uppercase tracking-wide">Vitrines Abertas</h4>
                                     <div class="w-8 h-8 rounded-full bg-blue-50 flex items-center justify-center text-blue-500"><i data-lucide="layout-template" class="w-4 h-4"></i></div>
                                 </div>
                                 <div class="text-3xl font-extrabold text-slate-900" id="imp-vitrines">0</div>
+                                <p class="text-xs text-slate-400 mt-2 font-medium" id="imp-vitrines-sub">-</p>
                             </div>
-
-                            <!-- Taxa de Descoberta -->
-                            <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex flex-col justify-center h-full">
+                            <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
                                 <div class="flex items-center justify-between mb-2">
-                                    <h4 class="text-sm font-semibold text-slate-500 uppercase tracking-wide">Taxa de Descoberta</h4>
+                                    <h4 class="text-xs font-semibold text-slate-500 uppercase tracking-wide">Taxa de Descoberta</h4>
                                     <div class="w-8 h-8 rounded-full bg-brand-50 flex items-center justify-center text-brand-500"><i data-lucide="eye" class="w-4 h-4"></i></div>
                                 </div>
                                 <div class="text-3xl font-extrabold text-brand-600" id="imp-taxa-descoberta">0%</div>
-                                <p class="text-xs text-slate-400 mt-2 font-medium">Buscas atendidas que evoluíram para visualização de uma vitrine.</p>
+                                <p class="text-xs text-slate-400 mt-2 font-medium">Buscas atendidas que viraram visualização.</p>
                             </div>
-
-                            <!-- Ações de contato -->
-                            <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex flex-col justify-center h-full">
+                            <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
                                 <div class="flex items-center justify-between mb-2">
-                                    <h4 class="text-sm font-semibold text-slate-500 uppercase tracking-wide">Ações de Contato</h4>
+                                    <h4 class="text-xs font-semibold text-slate-500 uppercase tracking-wide">Ações de Contato</h4>
                                     <div class="w-8 h-8 rounded-full bg-purple-50 flex items-center justify-center text-purple-500"><i data-lucide="message-circle" class="w-4 h-4"></i></div>
                                 </div>
                                 <div class="text-3xl font-extrabold text-slate-900" id="imp-contatos">0</div>
+                                <p class="text-xs text-slate-400 mt-2 font-medium" id="imp-contatos-sub">WhatsApp + ligação</p>
                             </div>
-
-                            <!-- Taxa de intenção de contato -->
-                            <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex flex-col justify-center h-full">
+                            <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
                                 <div class="flex items-center justify-between mb-2">
-                                    <h4 class="text-sm font-semibold text-slate-500 uppercase tracking-wide">Taxa de Intenção de Contato</h4>
+                                    <h4 class="text-xs font-semibold text-slate-500 uppercase tracking-wide">Taxa de Intenção de Contato</h4>
                                     <div class="w-8 h-8 rounded-full bg-accent-50 flex items-center justify-center text-accent-500"><i data-lucide="phone-forwarded" class="w-4 h-4"></i></div>
                                 </div>
                                 <div class="text-3xl font-extrabold text-accent-600" id="imp-taxa-contato">0%</div>
-                                <p class="text-xs text-slate-400 mt-2 font-medium">Ações de WhatsApp, ligação ou rota após visualização da vitrine.</p>
+                                <p class="text-xs text-slate-400 mt-2 font-medium">Contatos por vitrine aberta.</p>
+                            </div>
+                            <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
+                                <div class="flex items-center justify-between mb-2">
+                                    <h4 class="text-xs font-semibold text-slate-500 uppercase tracking-wide">Cliques em Rota</h4>
+                                    <div class="w-8 h-8 rounded-full bg-cyan-50 flex items-center justify-center text-cyan-500"><i data-lucide="map-pin" class="w-4 h-4"></i></div>
+                                </div>
+                                <div class="text-3xl font-extrabold text-slate-900" id="imp-rotas">0</div>
+                                <p class="text-xs text-slate-400 mt-2 font-medium">Deslocamento até o negócio local.</p>
+                            </div>
+                            <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
+                                <div class="flex items-center justify-between mb-2">
+                                    <h4 class="text-xs font-semibold text-slate-500 uppercase tracking-wide">Buscas sem Oferta</h4>
+                                    <div class="w-8 h-8 rounded-full bg-amber-50 flex items-center justify-center text-amber-500"><i data-lucide="alert-triangle" class="w-4 h-4"></i></div>
+                                </div>
+                                <div class="text-3xl font-extrabold text-amber-600" id="imp-sem-oferta">0</div>
+                                <p class="text-xs text-slate-400 mt-2 font-medium">Oportunidades territoriais no período.</p>
                             </div>
                         </div>
 
+                        <!-- FUNIL + EVOLUÇÃO -->
                         <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
-                            <!-- Local Economy Card -->
                             <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6">
-                                <div class="flex items-center gap-2 mb-4"><div class="w-8 h-8 rounded-lg bg-indigo-50 text-indigo-600 flex items-center justify-center"><i data-lucide="shopping-cart" class="w-4 h-4"></i></div><h4 class="font-bold text-slate-900">Economia Local e Compras Públicas</h4></div>
-                                <p class="text-xs text-slate-500 mb-6">Participação estimada de fornecedores locais nas demandas públicas mapeadas.</p>
-                                <div class="space-y-4">
-                                    <div class="flex justify-between items-center border-b border-slate-100 pb-2"><span class="text-sm text-slate-600">Demandas Analisadas</span><span class="font-bold text-slate-900" id="imp-demand-count">0</span></div>
-                                    <div class="flex justify-between items-center border-b border-slate-100 pb-2"><span class="text-sm text-slate-600">Demandas com Oferta Local</span><span class="font-bold text-emerald-600" id="imp-demand-matched">0</span></div>
-                                    <div class="flex justify-between items-center border-b border-slate-100 pb-2"><span class="text-sm text-slate-600">Negócios Locais Aptos a Atender</span><span class="font-bold text-brand-600" id="imp-biz-matched">0</span></div>
-                                </div>
-                            </div>
-                            <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6">
-                                <h4 class="font-bold text-slate-900 mb-6 text-center">Funil de Geração de Negócios</h4>
-                                <div class="flex flex-col gap-3 relative">
-                                    <div class="flex justify-between items-center p-3 bg-slate-50 rounded-xl border border-slate-100"><span class="text-xs font-bold text-slate-500 uppercase">Buscas Feitas</span><span class="text-lg font-extrabold text-slate-800" id="imp-funil-buscas">0</span></div>
-                                    <div class="flex justify-between items-center p-3 bg-brand-50 rounded-xl border border-brand-100 ml-4"><span class="text-xs font-bold text-brand-500 uppercase">Com Resultado</span><span class="text-lg font-extrabold text-brand-700" id="imp-funil-resultado">0</span></div>
+                                <h4 class="font-bold text-slate-900 mb-1">Funil de Uso</h4>
+                                <p class="text-xs text-slate-500 mb-5">Da intenção de busca até o contato com o negócio local.</p>
+                                <div class="flex flex-col gap-3">
+                                    <div class="flex justify-between items-center p-3 bg-slate-50 rounded-xl border border-slate-100"><span class="text-xs font-bold text-slate-500 uppercase">Buscas Realizadas</span><span class="text-lg font-extrabold text-slate-800" id="imp-funil-buscas">0</span></div>
+                                    <div class="flex justify-between items-center p-3 bg-brand-50 rounded-xl border border-brand-100 ml-4"><span class="text-xs font-bold text-brand-500 uppercase">Buscas com Resultado</span><span class="text-lg font-extrabold text-brand-700" id="imp-funil-resultado">0</span></div>
                                     <div class="flex justify-between items-center p-3 bg-blue-50 rounded-xl border border-blue-100 ml-8"><span class="text-xs font-bold text-blue-500 uppercase">Vitrines Abertas</span><span class="text-lg font-extrabold text-blue-700" id="imp-funil-vitrines">0</span></div>
                                     <div class="flex justify-between items-center p-3 bg-emerald-50 rounded-xl border border-emerald-200 ml-12 shadow-sm"><span class="text-xs font-bold text-emerald-600 uppercase">Ações de Contato</span><span class="text-xl font-extrabold text-emerald-700" id="imp-funil-contatos">0</span></div>
                                 </div>
+                                <p class="text-[11px] text-slate-500 mt-4 leading-relaxed border-t border-slate-100 pt-3">Indicadores agregados de intenção. A VITRYX não intermedeia nem confirma a contratação privada.</p>
+                            </div>
+
+                            <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6">
+                                <h4 class="font-bold text-slate-900 mb-1">Evolução no Período</h4>
+                                <p class="text-xs text-slate-500 mb-4" id="imp-evolucao-sub">-</p>
+                                <div id="imp-evolucao" class="flex items-end gap-1 h-40 border-b border-slate-200 pb-1"></div>
+                                <div id="imp-evolucao-labels" class="flex gap-1 mt-2"></div>
+                                <div class="flex items-center gap-4 mt-4 pt-3 border-t border-slate-100">
+                                    <span class="flex items-center gap-1.5 text-[11px] font-semibold text-slate-600"><span class="w-2.5 h-2.5 rounded-sm bg-slate-400"></span> Buscas</span>
+                                    <span class="flex items-center gap-1.5 text-[11px] font-semibold text-slate-600"><span class="w-2.5 h-2.5 rounded-sm bg-blue-500"></span> Aberturas</span>
+                                    <span class="flex items-center gap-1.5 text-[11px] font-semibold text-slate-600"><span class="w-2.5 h-2.5 rounded-sm bg-emerald-500"></span> Contatos</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- DESEMPENHO POR VITRINE -->
+                        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm mb-6 overflow-hidden">
+                            <div class="px-6 py-4 border-b border-slate-100">
+                                <h4 class="font-bold text-slate-900">Desempenho por Vitrine</h4>
+                                <p class="text-xs text-slate-500 mt-1">Ordenado pelas vitrines com mais interações no recorte.</p>
+                            </div>
+                            <div class="overflow-x-auto">
+                                <table class="w-full text-sm">
+                                    <thead class="bg-slate-50 text-[11px] uppercase text-slate-500 font-bold">
+                                        <tr>
+                                            <th class="px-6 py-3 text-left">Vitrine</th>
+                                            <th class="px-6 py-3 text-left">Segmento</th>
+                                            <th class="px-6 py-3 text-center">Aberturas</th>
+                                            <th class="px-6 py-3 text-center">WhatsApp</th>
+                                            <th class="px-6 py-3 text-center">Ligações</th>
+                                            <th class="px-6 py-3 text-center">Rotas</th>
+                                            <th class="px-6 py-3 text-center">Total</th>
+                                            <th class="px-6 py-3 text-right">Intenção de contato</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="imp-vitrines-table" class="divide-y divide-slate-100"></tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <!-- SEGMENTOS -->
+                        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6 mb-6">
+                            <h4 class="font-bold text-slate-900 mb-1">Desempenho por Segmento</h4>
+                            <p class="text-xs text-slate-500 mb-5">Participação de cada segmento nas interações do período.</p>
+                            <div id="imp-segmentos" class="space-y-4"></div>
+                        </div>
+
+                        <!-- TERMOS E LACUNAS -->
+                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+                            <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6">
+                                <h4 class="font-bold text-slate-900 mb-1">Termos Mais Pesquisados</h4>
+                                <p class="text-xs text-slate-500 mb-4">O que a população procurou no período.</p>
+                                <div class="overflow-x-auto">
+                                    <table class="w-full text-sm">
+                                        <thead class="text-[11px] uppercase text-slate-500 font-bold border-b border-slate-100">
+                                            <tr><th class="py-2 text-left">Termo</th><th class="py-2 text-center">Buscas</th><th class="py-2 text-center">Resultados</th><th class="py-2 text-center">Aberturas</th></tr>
+                                        </thead>
+                                        <tbody id="imp-termos" class="divide-y divide-slate-50"></tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6">
+                                <h4 class="font-bold text-slate-900 mb-1">Buscas sem Oferta Local</h4>
+                                <p class="text-xs text-slate-500 mb-4">Demanda existente que o município ainda não atende.</p>
+                                <div class="overflow-x-auto">
+                                    <table class="w-full text-sm">
+                                        <thead class="text-[11px] uppercase text-slate-500 font-bold border-b border-slate-100">
+                                            <tr><th class="py-2 text-left">Termo</th><th class="py-2 text-center">Buscas</th><th class="py-2 text-center">Última</th><th class="py-2 text-right">Status</th></tr>
+                                        </thead>
+                                        <tbody id="imp-lacunas" class="divide-y divide-slate-50"></tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- COMPRAS PÚBLICAS -->
+                        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6">
+                            <div class="flex items-center gap-2 mb-1"><div class="w-8 h-8 rounded-lg bg-indigo-50 text-indigo-600 flex items-center justify-center"><i data-lucide="shopping-cart" class="w-4 h-4"></i></div><h4 class="font-bold text-slate-900">Compras Públicas no Período</h4></div>
+                            <p class="text-xs text-slate-500 mb-5">Contratações efetivamente registradas. <span id="imp-compras-recorte" class="font-semibold text-slate-700"></span></p>
+
+                            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3 mb-5">
+                                <div class="bg-slate-50 border border-slate-100 rounded-xl p-4">
+                                    <p class="text-[11px] font-bold text-slate-500 uppercase mb-1">Total contratado</p>
+                                    <p class="text-lg font-extrabold text-slate-900" id="imp-compras-total">R$ 0,00</p>
+                                </div>
+                                <div class="bg-emerald-50 border border-emerald-100 rounded-xl p-4">
+                                    <p class="text-[11px] font-bold text-emerald-600 uppercase mb-1">Com fornecedor local</p>
+                                    <p class="text-lg font-extrabold text-emerald-700" id="imp-compras-local">R$ 0,00</p>
+                                </div>
+                                <div class="bg-brand-50 border border-brand-100 rounded-xl p-4">
+                                    <p class="text-[11px] font-bold text-brand-600 uppercase mb-1">% para local</p>
+                                    <p class="text-lg font-extrabold text-brand-700" id="imp-compras-pct">0%</p>
+                                </div>
+                                <div class="bg-slate-50 border border-slate-100 rounded-xl p-4">
+                                    <p class="text-[11px] font-bold text-slate-500 uppercase mb-1">Fornecedores locais</p>
+                                    <p class="text-lg font-extrabold text-slate-900" id="imp-compras-fornecedores">0</p>
+                                </div>
+                                <div class="bg-amber-50 border border-amber-100 rounded-xl p-4">
+                                    <p class="text-[11px] font-bold text-amber-600 uppercase mb-1">Saiu do município</p>
+                                    <p class="text-lg font-extrabold text-amber-700" id="imp-compras-externo">R$ 0,00</p>
+                                </div>
+                            </div>
+
+                            <div class="bg-slate-50 border border-slate-200 rounded-xl p-4 text-[11px] text-slate-600 leading-relaxed space-y-1">
+                                <p><b class="text-slate-800">Demanda mapeada não significa contratação.</b> O cruzamento entre demanda pública e oferta local é indicativo de planejamento.</p>
+                                <p><b class="text-slate-800">Fornecedor potencial não significa fornecedor contratado.</b> Aparecer como apto a atender não cria vínculo nem preferência.</p>
+                                <p><b class="text-slate-800">Estes indicadores usam apenas compras efetivamente registradas</b> em Compras Públicas, e não estimativas.</p>
                             </div>
                         </div>
                     </div>
@@ -2352,7 +2516,8 @@
                     <div class="text-center border-b-2 border-slate-800 pb-4 mb-6">
                         <h1 class="text-2xl font-bold text-slate-900 uppercase">Inteligência Econômica Territorial</h1>
                         <h2 class="text-lg text-slate-600 mt-1">Município de Medianeira - PR</h2>
-                        <p class="text-sm text-slate-400 mt-2">Referência: Últimos 30 dias</p>
+                        <p class="text-sm text-slate-400 mt-2">Referência: <span id="rep-periodo">-</span></p>
+                        <p class="text-xs text-slate-400 mt-1" id="rep-filtros">-</p>
                     </div>
                     <div class="space-y-6 text-slate-800 text-sm leading-relaxed">
                         <section>
@@ -2361,11 +2526,17 @@
                         </section>
                         <section>
                             <h3 class="font-bold text-base border-b border-slate-200 pb-1 mb-2">2. Descoberta e Fomento (Funil)</h3>
-                            <p>A busca municipal processou <b id="rep-buscas">0</b> buscas, convertendo em <b id="rep-vitrines">0</b> aberturas de vitrines públicas. Isso gerou <b id="rep-contatos">0</b> contatos diretos, impulsionando o comércio local organicamente.</p>
+                            <p>No período analisado a busca municipal processou <b id="rep-buscas">0</b> buscas, com taxa de atendimento de <b id="rep-atendimento">0%</b>. Foram <b id="rep-vitrines">0</b> aberturas de vitrines públicas, que geraram <b id="rep-contatos">0</b> ações de contato — taxa de intenção de contato de <b id="rep-intencao">0%</b>.</p>
+                            <p class="text-xs text-slate-500 mt-2 italic">Indicadores agregados de intenção. A VITRYX não intermedeia nem confirma a contratação privada.</p>
                         </section>
                         <section>
-                            <h3 class="font-bold text-base border-b border-slate-200 pb-1 mb-2">3. Lacunas de Oferta (Oportunidades)</h3>
-                            <p>Foram identificadas necessidades de consumo sem oferta correspondente na base atual. As principais são: <b id="rep-gaps">...</b>.</p>
+                            <h3 class="font-bold text-base border-b border-slate-200 pb-1 mb-2">3. Termos Pesquisados e Lacunas</h3>
+                            <p>Os termos mais procurados com oferta local foram: <b id="rep-termos">...</b>. Foram identificadas necessidades de consumo sem oferta correspondente na base atual: <b id="rep-gaps">...</b>.</p>
+                        </section>
+                        <section>
+                            <h3 class="font-bold text-base border-b border-slate-200 pb-1 mb-2">4. Compras Públicas no Período</h3>
+                            <p>Foram registradas <b id="rep-compras-qtd">0</b> contratações, somando <b id="rep-compras-total">R$ 0,00</b>. Destes, <b id="rep-compras-local">R$ 0,00</b> foram destinados a fornecedores locais, o equivalente a <b id="rep-compras-pct">0%</b> do valor contratado.</p>
+                            <p class="text-xs text-slate-500 mt-2 italic">Considera apenas compras efetivamente registradas. Demanda mapeada não significa contratação, e fornecedor potencial não significa fornecedor contratado.</p>
                         </section>
                     </div>
                 </div>
@@ -2836,7 +3007,7 @@
 
         // Versão do MODELO de dados. Diferente de SEED_VERSION: subir esta constante
         // acrescenta campos e coleções sem apagar nada do que o usuário já criou.
-        const DATA_MODEL_VERSION = 4;
+        const DATA_MODEL_VERSION = 5;
 
         // ---------------------------------------------------------------------
         // USUÁRIOS DEMONSTRATIVOS
@@ -3091,6 +3262,14 @@
                 appData.purchases = appData.purchases.map(c => novaCompra(c));
             }
 
+            // v5 — Eventos de uso. Mesma regra da v4: a massa demonstrativa entra
+            // só na subida de versão e só se ainda não houver evento algum. Quem já
+            // navegou (ou já tem massa gerada) não recebe nada por cima, então
+            // recarregar a página nunca duplica.
+            if (versaoGravada < 5 && appData.usageEvents.length === 0) {
+                appData.usageEvents = gerarEventosDemonstrativos();
+            }
+
             if (versaoGravada !== DATA_MODEL_VERSION) {
                 localStorage.setItem('vitryx_data_model_version', String(DATA_MODEL_VERSION));
             }
@@ -3195,7 +3374,7 @@
                 appData.metrics = JSON.parse(JSON.stringify(seedMetrics));
                 appData.history = [ { date: new Date().toISOString(), user: 'Sistema', action: 'Importação Inicial', detail: 'Base carregada com sucesso.' } ];
                 appData.demands = JSON.parse(JSON.stringify(initialDemands));
-                appData.usageEvents = [];
+                appData.usageEvents = gerarEventosDemonstrativos();
                 appData.purchases = seedPurchases.map(c => novaCompra(c));
                 appData.auditEvents = [];
                 appData.users = [];
@@ -3234,8 +3413,157 @@
             if (appData.auditEvents.length > 300) appData.auditEvents.length = 300;
         }
 
+        // ---------------------------------------------------------------------
+        // EVENTOS DE USO — base do Painel de Impacto (Etapa 3)
+        //
+        // PRIVACIDADE: o evento descreve O QUE aconteceu, nunca QUEM fez. Não há
+        // nome, CPF/CNPJ, telefone, IP, cookie, geolocalização nem qualquer
+        // identificador do cidadão. O que se mede é intenção agregada.
+        //
+        // ESCOPO: só entra aqui ação feita no portal público. Abertura de vitrine
+        // pelo gestor (`viewProfileFromManager`) ou preview do empreendedor
+        // (`viewMyProfilePublicly`) não são uso do cidadão e ficam de fora — do
+        // contrário o próprio município inflaria o indicador que ele apresenta.
+        // ---------------------------------------------------------------------
+        const TIPOS_EVENTO_USO = ['search', 'storefront_open', 'whatsapp_click', 'call_click', 'route_click'];
+        const TIPOS_CONTATO = ['whatsapp_click', 'call_click'];
+
+        function registrarEventoUso(dados) {
+            const d = dados || {};
+            if (TIPOS_EVENTO_USO.indexOf(d.type) === -1) return null;
+
+            const evento = {
+                id: 'ev-' + Date.now() + '-' + Math.random().toString(36).slice(2, 7),
+                type: d.type,
+                occurredAt: d.occurredAt || new Date().toISOString(),
+                businessId: d.businessId != null ? d.businessId : null,
+                category: d.category || null,
+                term: d.term ? String(d.term).trim() : null,
+                resultCount: d.resultCount != null ? Number(d.resultCount) : null,
+                channel: d.channel || null,
+                source: d.source || 'portal_publico'
+            };
+
+            if (!Array.isArray(appData.usageEvents)) appData.usageEvents = [];
+            appData.usageEvents.push(evento);
+            return evento;
+        }
+
+        // ---------------------------------------------------------------------
+        // MASSA DEMONSTRATIVA DE EVENTOS
+        //
+        // Gerada por função, não escrita à mão: cenários compactos + gerador
+        // pseudoaleatório de semente fixa. Recarregar produz exatamente a mesma
+        // massa, o que mantém a demonstração estável entre gravações do vídeo.
+        //
+        // O funil nasce coerente por construção: contato só existe depois de
+        // abertura, e abertura só depois de busca com resultado.
+        // ---------------------------------------------------------------------
+        const seedUsageScenarios = [
+            // termo, negócio atendido, segmento, nº de resultados da busca, peso diário
+            { term: 'marcenaria',                    businessId: 6,  category: 'Casa e Manutenção', resultCount: 2, peso: 3 },
+            { term: 'reparo de carteira escolar',    businessId: 6,  category: 'Casa e Manutenção', resultCount: 1, peso: 2 },
+            { term: 'hortaliças',                    businessId: 4,  category: 'Rural',             resultCount: 2, peso: 3 },
+            { term: 'eletricista',                   businessId: 5,  category: 'Serviços',          resultCount: 1, peso: 3 },
+            { term: 'conserto de celular',           businessId: 8,  category: 'Tecnologia',        resultCount: 1, peso: 4 },
+            { term: 'manicure',                      businessId: 1,  category: 'Beleza',            resultCount: 1, peso: 4 },
+            { term: 'salgados',                      businessId: 7,  category: 'Alimentação',       resultCount: 1, peso: 3 },
+            { term: 'diarista',                      businessId: 2,  category: 'Casa e Manutenção', resultCount: 1, peso: 2 },
+            { term: 'mecânico',                      businessId: 3,  category: 'Automotivo',        resultCount: 1, peso: 2 },
+            { term: 'queijo colonial',               businessId: 9,  category: 'Rural',             resultCount: 1, peso: 1 },
+            { term: 'uniforme escolar',              businessId: 10, category: 'Comércio',          resultCount: 1, peso: 1 },
+            // Sem oferta local: alimenta o bloco de lacunas e derruba a taxa de
+            // atendimento de propósito. Coerente com appData.gaps.
+            { term: 'instalador de ar-condicionado', businessId: null, category: null,              resultCount: 0, peso: 3 },
+            { term: 'conserto de projetor',          businessId: null, category: null,              resultCount: 0, peso: 2 },
+            { term: 'manutenção de elevador',        businessId: null, category: null,              resultCount: 0, peso: 1 }
+        ];
+
+        // Gerador linear congruente: determinístico e suficiente para massa de demonstração.
+        function prngDemonstrativo(semente) {
+            let s = semente >>> 0;
+            return function () {
+                s = (Math.imul(s, 1664525) + 1013904223) >>> 0;
+                return s / 4294967296;
+            };
+        }
+
+        function gerarEventosDemonstrativos() {
+            const rand = prngDemonstrativo(20260821);
+            const eventos = [];
+            const hoje = new Date();
+            hoje.setHours(0, 0, 0, 0);
+
+            const push = (diasAtras, hora, dados) => {
+                const d = new Date(hoje);
+                d.setDate(d.getDate() - diasAtras);
+                d.setHours(hora, Math.floor(rand() * 60), Math.floor(rand() * 60), 0);
+                eventos.push(Object.assign({
+                    id: 'ev-seed-' + diasAtras + '-' + eventos.length,
+                    occurredAt: d.toISOString(),
+                    businessId: null, category: null, term: null, resultCount: null,
+                    channel: null, source: 'portal_publico'
+                }, dados));
+            };
+
+            // 90 dias até ontem. O dia de hoje fica livre para o que for feito ao vivo
+            // na demonstração, sem se misturar à massa.
+            for (let dia = 90; dia >= 1; dia--) {
+                // Volume cresce ao se aproximar de hoje (adoção da plataforma) e cai
+                // no fim de semana — dá forma reconhecível ao gráfico de evolução.
+                const data = new Date(hoje); data.setDate(data.getDate() - dia);
+                const fimDeSemana = data.getDay() === 0 || data.getDay() === 6;
+                const maturidade = 0.45 + (90 - dia) / 90 * 0.55;
+                // DENSIDADE mantém a massa compacta: volume suficiente para os
+                // gráficos terem forma, sem inchar o localStorage do navegador.
+                const DENSIDADE = 0.42;
+                const fator = maturidade * DENSIDADE * (fimDeSemana ? 0.45 : 1);
+
+                seedUsageScenarios.forEach(cen => {
+                    const buscas = Math.round(cen.peso * fator * (0.6 + rand() * 0.8));
+                    for (let i = 0; i < buscas; i++) {
+                        const hora = 8 + Math.floor(rand() * 12);
+                        push(dia, hora, {
+                            type: 'search', term: cen.term,
+                            resultCount: cen.resultCount, category: cen.category
+                        });
+
+                        if (!cen.businessId) continue;
+
+                        // ~55% das buscas atendidas abrem a vitrine.
+                        if (rand() > 0.45) {
+                            push(dia, hora, {
+                                type: 'storefront_open', businessId: cen.businessId,
+                                category: cen.category, term: cen.term
+                            });
+
+                            // ~40% das aberturas viram intenção de contato.
+                            const sorteio = rand();
+                            if (sorteio > 0.60) {
+                                const canal = sorteio > 0.85 ? 'call_click' : 'whatsapp_click';
+                                push(dia, hora, {
+                                    type: canal, businessId: cen.businessId, category: cen.category,
+                                    channel: canal === 'call_click' ? 'telefone' : 'whatsapp'
+                                });
+                            } else if (sorteio > 0.50) {
+                                push(dia, hora, {
+                                    type: 'route_click', businessId: cen.businessId,
+                                    category: cen.category, channel: 'rota'
+                                });
+                            }
+                        }
+                    }
+                });
+            }
+
+            eventos.sort((a, b) => a.occurredAt.localeCompare(b.occurredAt));
+            return eventos;
+        }
+
         const app = {
             currentPersona: 'citizen', currentLayout: 'public', currentView: 'landing', currentSearchTerm: '', radarFilter: 'all',
+            // Contexto da última vitrine aberta: define se a ação conta como uso público.
+            perfilContexto: 'portal_publico',
             mobileMapVisible: false, leafletMap: null, mapMarkers: [], mgrLeafletMap: null,
             // Sem sessão e sem negócio vinculado até alguém entrar ou concluir o cadastro.
             sessao: null, loggedInBusinessId: null, usuarioAtual: null,
@@ -4360,7 +4688,16 @@
                 if(rSearch) rSearch.value = term;
                 
                 const results = this.searchEngine(term);
-                if(term) { appData.metrics.buscas = (appData.metrics.buscas || 0) + 1; storage.save(); }
+                if(term) {
+                    // Contador antigo preservado por compatibilidade; o Painel de
+                    // Impacto passou a calcular tudo a partir de usageEvents.
+                    appData.metrics.buscas = (appData.metrics.buscas || 0) + 1;
+                    registrarEventoUso({
+                        type: 'search', term: term, resultCount: results.length,
+                        category: results.length ? results[0].category : null
+                    });
+                    storage.save();
+                }
                 if(term && results.length === 0) {
                     this.addGapToManager(term);
                 } else {
@@ -4778,12 +5115,24 @@
                 return (produtos.length + servicos.length) > 0;
             },
 
-            openProfile(id) {
+            // `contexto` diz de onde a vitrine foi aberta. Só 'portal_publico' conta
+            // como uso do cidadão; gestor e preview do empreendedor não entram nos
+            // indicadores públicos.
+            openProfile(id, contexto) {
                 const b = appData.businesses.find(x => x.id === id);
                 if(!b) return;
 
                 if(b.stats) { b.stats.opens = (b.stats.opens || 0) + 1; storage.save(); }
                 this.perfilAtual = b;
+                this.perfilContexto = contexto || 'portal_publico';
+
+                if(this.perfilContexto === 'portal_publico') {
+                    registrarEventoUso({
+                        type: 'storefront_open', businessId: b.id, category: b.category,
+                        term: this.currentSearchTerm || null
+                    });
+                    storage.save();
+                }
 
                 // --- Cabeçalho (comum aos dois modos) ---
                 this.ativarFallback(document.getElementById('profile-cover-img'), b, b.coverImage);
@@ -5187,9 +5536,20 @@
                 if(typeof lucide !== 'undefined') lucide.createIcons();
             },
 
-            actionWhatsApp() { this.showToast("Demonstração: Abrindo WhatsApp...", "success"); },
-            actionCall() { this.showToast("Demonstração: Iniciando chamada...", "success"); },
-            actionRoute() { this.showToast("Demonstração: Abrindo Rota...", "success"); },
+            // Intenção de contato: o sinal mais forte de fomento que a plataforma
+            // consegue medir com honestidade. Registrada só quando a vitrine foi
+            // aberta pelo portal público — e nunca com identificação de quem clicou.
+            registrarContato(tipo, canal) {
+                if(this.perfilContexto !== 'portal_publico') return;
+                const b = this.perfilAtual;
+                if(!b) return;
+                registrarEventoUso({ type: tipo, businessId: b.id, category: b.category, channel: canal });
+                storage.save();
+            },
+
+            actionWhatsApp() { this.registrarContato('whatsapp_click', 'whatsapp'); this.showToast("Demonstração: Abrindo WhatsApp...", "success"); },
+            actionCall() { this.registrarContato('call_click', 'telefone'); this.showToast("Demonstração: Iniciando chamada...", "success"); },
+            actionRoute() { this.registrarContato('route_click', 'rota'); this.showToast("Demonstração: Abrindo Rota...", "success"); },
             shareProfile() {
                 if(navigator.share) navigator.share({ title: 'Vitryx', url: window.location.href }).catch(console.error);
                 else this.showToast("Link copiado para a área de transferência!", "success");
@@ -5198,7 +5558,7 @@
             viewMyProfilePublicly() {
                 if (this.loggedInBusinessId) {
                     this.switchPersona('citizen');
-                    this.openProfile(this.loggedInBusinessId);
+                    this.openProfile(this.loggedInBusinessId, 'preview_empreendedor');
                     if(typeof vitoriaAssistant !== 'undefined') vitoriaAssistant.close();
                 } else this.showToast('Nenhuma empresa vinculada ao seu perfil.', 'error');
             },
@@ -5721,7 +6081,7 @@
 
             viewProfileFromManager(id) {
                 this.switchPersona('citizen');
-                this.openProfile(id);
+                this.openProfile(id, 'gestor');
             },
 
             // =================================================================
@@ -6413,56 +6773,486 @@
                 }).join('');
             },
 
-            renderImpact() {
-                const bs = appData.businesses;
-                const publicos = bs.filter(b => b.validationStatus === 'validado' && b.hasVitrine !== false);
-                const soma = campo => publicos.reduce((t, b) => t + ((b.stats && b.stats[campo]) || 0), 0);
+            // =================================================================
+            // PAINEL DE IMPACTO — tudo derivado de appData.usageEvents
+            //
+            // Nenhum número desta tela é fixo. Um mesmo recorte alimenta KPIs,
+            // funil, tabelas, segmentos, termos, evolução e compras públicas,
+            // para que os blocos nunca contem histórias diferentes.
+            // =================================================================
 
-                // Funil: uma única grandeza semeada (buscas). O resto sai da base.
-                const buscas = appData.metrics.buscas || 0;
-                const semResultado = appData.gaps.reduce((t, g) => t + (g.count || 0), 0);
-                const comResultado = Math.max(buscas - semResultado, 0);
-                const vitrines = soma('opens');
-                const contatos = soma('contacts');
-
-                const taxa = (parte, todo) => todo ? (Math.round((parte / todo) * 1000) / 10).toString().replace('.', ',') + '%' : '0%';
-                const nf = n => n.toLocaleString('pt-BR');
-
-                document.getElementById('imp-buscas').innerText = nf(buscas);
-                document.getElementById('imp-taxa-atendimento').innerText = taxa(comResultado, buscas);
-                document.getElementById('imp-vitrines').innerText = nf(vitrines);
-                document.getElementById('imp-taxa-descoberta').innerText = taxa(vitrines, comResultado);
-                document.getElementById('imp-contatos').innerText = nf(contatos);
-                document.getElementById('imp-taxa-contato').innerText = taxa(contatos, vitrines);
-
-                document.getElementById('imp-funil-buscas').innerText = nf(buscas);
-                document.getElementById('imp-funil-resultado').innerText = nf(comResultado);
-                document.getElementById('imp-funil-vitrines').innerText = nf(vitrines);
-                document.getElementById('imp-funil-contatos').innerText = nf(contatos);
-
-                // Cruzamento demanda pública x oferta local (informativo, não contrata).
-                // Mesma regra usada nos cards de Demandas Públicas: app.demandMatches.
-                const comOferta = appData.demands.filter(d => bs.some(b => this.demandMatches(b, d)));
-                const aptos = bs.filter(b => appData.demands.some(d => this.demandMatches(b, d)));
-
-                document.getElementById('imp-demand-count').innerText = appData.demands.length;
-                document.getElementById('imp-demand-matched').innerText = comOferta.length;
-                document.getElementById('imp-biz-matched').innerText = aptos.length;
+            // Datas de exibição saem SEMPRE dos componentes locais. Passar por
+            // toISOString() desloca o dia em fuso negativo: 23:59 em Sao_Paulo
+            // vira 02:59 do dia seguinte em UTC, e o rótulo mostrava amanhã.
+            dataLocalISO(d) {
+                return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
             },
 
+            dataLocalBR(valor) {
+                const d = valor instanceof Date ? valor : new Date(valor);
+                return isNaN(d) ? '-' : d.toLocaleDateString('pt-BR');
+            },
+
+            // Recorte de datas do filtro. Devolve limites e um rótulo legível.
+            periodoImpacto() {
+                const sel = (document.getElementById('imp-filter-period') || {}).value || '30';
+                const fim = new Date(); fim.setHours(23, 59, 59, 999);
+                const ini = new Date(); ini.setHours(0, 0, 0, 0);
+
+                if (sel === 'custom') {
+                    const de = (document.getElementById('imp-date-start') || {}).value;
+                    const ate = (document.getElementById('imp-date-end') || {}).value;
+                    if (de) { ini.setTime(new Date(de + 'T00:00:00').getTime()); }
+                    else { ini.setDate(ini.getDate() - 29); }
+                    if (ate) { const f = new Date(ate + 'T23:59:59'); fim.setTime(f.getTime()); }
+                    // Datas invertidas: troca em vez de devolver lista vazia sem explicação.
+                    // Reancorar as bordas do dia depois da troca é essencial — senão o
+                    // início herda 23:59 e o fim herda 00:00, comendo as pontas do recorte.
+                    if (ini > fim) { const t = ini.getTime(); ini.setTime(fim.getTime()); fim.setTime(t); }
+                    ini.setHours(0, 0, 0, 0);
+                    fim.setHours(23, 59, 59, 999);
+                    return { ini, fim, rotulo: `${this.dataLocalBR(ini)} a ${this.dataLocalBR(fim)}`, curto: 'Personalizado', frase: 'no período selecionado' };
+                }
+
+                if (sel === '1') {
+                    ini.setDate(ini.getDate() - 1);
+                    fim.setDate(fim.getDate() - 1); fim.setHours(23, 59, 59, 999);
+                    return { ini, fim, rotulo: 'Ontem (' + this.dataLocalBR(ini) + ')', curto: 'Ontem', frase: 'ontem' };
+                }
+
+                const dias = Number(sel) || 30;
+                ini.setDate(ini.getDate() - (dias - 1));
+                return { ini, fim, rotulo: `Últimos ${dias} dias (${this.dataLocalBR(ini)} a ${this.dataLocalBR(fim)})`, curto: `Últimos ${dias} dias`, frase: `nos últimos ${dias} dias` };
+            },
+
+            // Eventos do recorte. `ignorarTipo` serve aos blocos que precisam do
+            // universo completo (funil, termos) mesmo com filtro de interação ativo.
+            //
+            // Atribuição de busca a uma vitrine: um evento `search` não tem dono —
+            // a pessoa procurou "marcenaria", não procurou um CNPJ. Ao filtrar por
+            // vitrine, contamos como dela as buscas cujo termo levou a uma abertura
+            // daquela vitrine no mesmo período. Sem isso o funil ficaria absurdo
+            // (zero buscas gerando dezenas de aberturas).
+            eventosImpacto(ignorarTipo) {
+                const per = this.periodoImpacto();
+                const negocio = (document.getElementById('imp-filter-business') || {}).value || '';
+                const segmento = (document.getElementById('imp-filter-category') || {}).value || '';
+                const tipo = (document.getElementById('imp-filter-type') || {}).value || '';
+
+                const noPeriodo = (appData.usageEvents || []).filter(e => {
+                    const d = new Date(e.occurredAt);
+                    return !isNaN(d) && d >= per.ini && d <= per.fim;
+                });
+
+                let termosDaVitrine = null;
+                if (negocio) {
+                    termosDaVitrine = new Set(
+                        noPeriodo
+                            .filter(e => e.type === 'storefront_open' && String(e.businessId) === String(negocio) && e.term)
+                            .map(e => this.normalize(e.term))
+                    );
+                }
+
+                return noPeriodo.filter(e => {
+                    if (negocio) {
+                        if (e.type === 'search') {
+                            if (!e.term || !termosDaVitrine.has(this.normalize(e.term))) return false;
+                        } else if (String(e.businessId) !== String(negocio)) return false;
+                    }
+                    if (segmento && e.category !== segmento) return false;
+                    if (!ignorarTipo && tipo) {
+                        if (tipo === 'contact') return TIPOS_CONTATO.indexOf(e.type) !== -1;
+                        return e.type === tipo;
+                    }
+                    return true;
+                });
+            },
+
+            plural(n, singular, plural) {
+                return n + ' ' + (n === 1 ? singular : plural);
+            },
+
+            taxaImpacto(parte, todo) {
+                if (!todo) return '0%';
+                return (Math.round((parte / todo) * 1000) / 10).toString().replace('.', ',') + '%';
+            },
+
+            nomeNegocio(id) {
+                const b = appData.businesses.find(x => String(x.id) === String(id));
+                return b ? b.name : 'Negócio removido';
+            },
+
+            onImpactPeriodChange() {
+                const custom = (document.getElementById('imp-filter-period') || {}).value === 'custom';
+                const wrap = document.getElementById('imp-custom-range');
+                if (wrap) wrap.classList.toggle('hidden', !custom);
+                if (custom) {
+                    // Pré-preenche com os últimos 30 dias para o campo nunca abrir vazio.
+                    const de = document.getElementById('imp-date-start');
+                    const ate = document.getElementById('imp-date-end');
+                    if (de && !de.value) { const d = new Date(); d.setDate(d.getDate() - 29); de.value = this.dataLocalISO(d); }
+                    if (ate && !ate.value) ate.value = this.dataLocalISO(new Date());
+                }
+                this.renderImpact();
+            },
+
+            limparFiltrosImpacto() {
+                const per = document.getElementById('imp-filter-period'); if (per) per.value = '30';
+                ['imp-filter-business', 'imp-filter-category', 'imp-filter-type', 'imp-date-start', 'imp-date-end'].forEach(id => {
+                    const el = document.getElementById(id); if (el) el.value = '';
+                });
+                const wrap = document.getElementById('imp-custom-range'); if (wrap) wrap.classList.add('hidden');
+                this.renderImpact();
+            },
+
+            // Popula vitrine/segmento a partir da base, preservando a seleção atual.
+            atualizarFiltrosImpacto() {
+                const selNeg = document.getElementById('imp-filter-business');
+                if (selNeg) {
+                    const atual = selNeg.value;
+                    const comEvento = new Set((appData.usageEvents || []).map(e => e.businessId).filter(v => v != null).map(String));
+                    const lista = appData.businesses
+                        .filter(b => comEvento.has(String(b.id)))
+                        .sort((a, b) => a.name.localeCompare(b.name, 'pt-BR'));
+                    selNeg.innerHTML = '<option value="">Todas as vitrines</option>' +
+                        lista.map(b => `<option value="${b.id}">${this.escapeHtml(b.name)}</option>`).join('');
+                    selNeg.value = atual;
+                }
+                const selCat = document.getElementById('imp-filter-category');
+                if (selCat) {
+                    const atual = selCat.value;
+                    const cats = [...new Set((appData.usageEvents || []).map(e => e.category).filter(Boolean))].sort((a, b) => a.localeCompare(b, 'pt-BR'));
+                    selCat.innerHTML = '<option value="">Todos os segmentos</option>' +
+                        cats.map(c => `<option value="${this.escapeHtml(c)}">${this.escapeHtml(c)}</option>`).join('');
+                    selCat.value = atual;
+                }
+            },
+
+            renderImpact() {
+                this.atualizarFiltrosImpacto();
+
+                const per = this.periodoImpacto();
+                const eventos = this.eventosImpacto();          // respeita o filtro de interação
+                const universo = this.eventosImpacto(true);     // ignora o filtro de interação
+                const nf = n => n.toLocaleString('pt-BR');
+
+                document.getElementById('imp-periodo-badge').innerHTML = `<i data-lucide="calendar" class="w-4 h-4 text-slate-400"></i> ${this.escapeHtml(per.curto)}`;
+                document.getElementById('imp-periodo-texto').innerText = per.rotulo;
+                document.getElementById('imp-eventos-total').innerText = nf(eventos.length);
+
+                // ---- KPIs (sobre o universo, para as taxas continuarem comparáveis) ----
+                const buscas = universo.filter(e => e.type === 'search');
+                const comResultado = buscas.filter(e => (e.resultCount || 0) > 0);
+                const semResultado = buscas.length - comResultado.length;
+                const aberturas = universo.filter(e => e.type === 'storefront_open');
+                const contatos = universo.filter(e => TIPOS_CONTATO.indexOf(e.type) !== -1);
+                const rotas = universo.filter(e => e.type === 'route_click');
+
+                document.getElementById('imp-buscas').innerText = nf(buscas.length);
+                document.getElementById('imp-buscas-sub').innerText = `${nf(comResultado.length)} com oferta local`;
+                document.getElementById('imp-taxa-atendimento').innerText = this.taxaImpacto(comResultado.length, buscas.length);
+                document.getElementById('imp-vitrines').innerText = nf(aberturas.length);
+                document.getElementById('imp-vitrines-sub').innerText = `${new Set(aberturas.map(e => e.businessId)).size} vitrines diferentes`;
+                document.getElementById('imp-taxa-descoberta').innerText = this.taxaImpacto(aberturas.length, comResultado.length);
+                document.getElementById('imp-contatos').innerText = nf(contatos.length);
+                document.getElementById('imp-contatos-sub').innerText = `${nf(contatos.filter(e => e.type === 'whatsapp_click').length)} WhatsApp · ${nf(contatos.filter(e => e.type === 'call_click').length)} ligações`;
+                document.getElementById('imp-taxa-contato').innerText = this.taxaImpacto(contatos.length, aberturas.length);
+                document.getElementById('imp-rotas').innerText = nf(rotas.length);
+                document.getElementById('imp-sem-oferta').innerText = nf(semResultado);
+
+                // ---- Funil ----
+                document.getElementById('imp-funil-buscas').innerText = nf(buscas.length);
+                document.getElementById('imp-funil-resultado').innerText = nf(comResultado.length);
+                document.getElementById('imp-funil-vitrines').innerText = nf(aberturas.length);
+                document.getElementById('imp-funil-contatos').innerText = nf(contatos.length);
+
+                this.renderImpactEvolucao(universo, per);
+                this.renderImpactVitrines(universo);
+                this.renderImpactSegmentos(universo);
+                this.renderImpactTermos(buscas, aberturas);
+                this.renderImpactCompras(per);
+
+                if (typeof lucide !== 'undefined') lucide.createIcons();
+            },
+
+            // Evolução diária em CSS puro. Períodos longos são agrupados em blocos
+            // para não virar uma parede de colunas de 1px.
+            renderImpactEvolucao(eventos, per) {
+                const wrap = document.getElementById('imp-evolucao');
+                const labels = document.getElementById('imp-evolucao-labels');
+                if (!wrap || !labels) return;
+
+                const umDia = 86400000;
+                const inicio = new Date(per.ini); inicio.setHours(0, 0, 0, 0);
+                const fim = new Date(per.fim); fim.setHours(0, 0, 0, 0);
+                const dias = Math.max(1, Math.round((fim - inicio) / umDia) + 1);
+
+                // No máximo 30 colunas: acima disso, agrupa em blocos de N dias.
+                const tamanhoBloco = Math.ceil(dias / 30);
+                const totalBlocos = Math.ceil(dias / tamanhoBloco);
+
+                const baldes = Array.from({ length: totalBlocos }, () => ({ buscas: 0, aberturas: 0, contatos: 0 }));
+                eventos.forEach(e => {
+                    const d = new Date(e.occurredAt); d.setHours(0, 0, 0, 0);
+                    const idx = Math.floor(Math.round((d - inicio) / umDia) / tamanhoBloco);
+                    if (idx < 0 || idx >= totalBlocos) return;
+                    if (e.type === 'search') baldes[idx].buscas++;
+                    else if (e.type === 'storefront_open') baldes[idx].aberturas++;
+                    else if (TIPOS_CONTATO.indexOf(e.type) !== -1) baldes[idx].contatos++;
+                });
+
+                const maximo = Math.max(1, ...baldes.map(b => Math.max(b.buscas, b.aberturas, b.contatos)));
+                const alturaPct = v => Math.max(v > 0 ? 4 : 0, Math.round((v / maximo) * 100));
+
+                const dataDoBloco = i => { const d = new Date(inicio); d.setDate(d.getDate() + i * tamanhoBloco); return d; };
+
+                document.getElementById('imp-evolucao-sub').innerText = tamanhoBloco === 1
+                    ? `${totalBlocos} ${totalBlocos === 1 ? 'dia' : 'dias'} · pico de ${maximo} interações`
+                    : `${totalBlocos} blocos de ${tamanhoBloco} dias · pico de ${maximo} interações`;
+
+                wrap.innerHTML = baldes.map((b, i) => {
+                    const d = dataDoBloco(i);
+                    const titulo = `${this.dataLocalBR(d)} — ${b.buscas} buscas, ${b.aberturas} aberturas, ${b.contatos} contatos`;
+                    return `<div class="flex-1 flex items-end justify-center gap-[1px] h-full" title="${titulo}">
+                        <div class="w-1/3 bg-slate-400 rounded-t-sm" style="height:${alturaPct(b.buscas)}%"></div>
+                        <div class="w-1/3 bg-blue-500 rounded-t-sm" style="height:${alturaPct(b.aberturas)}%"></div>
+                        <div class="w-1/3 bg-emerald-500 rounded-t-sm" style="height:${alturaPct(b.contatos)}%"></div>
+                    </div>`;
+                }).join('') || '<p class="text-xs text-slate-400 m-auto">Nenhuma interação no período.</p>';
+
+                // Rótulos posicionados por porcentagem, não por célula: com 30 colunas
+                // cada célula tem ~11px e qualquer data seria cortada no meio.
+                const passo = Math.ceil(totalBlocos / 6);
+                const marcas = [];
+                for (let i = 0; i < totalBlocos; i += passo) marcas.push(i);
+                if (marcas[marcas.length - 1] !== totalBlocos - 1) marcas.push(totalBlocos - 1);
+
+                labels.className = 'relative h-4 mt-2';
+                labels.innerHTML = marcas.map(i => {
+                    const d = dataDoBloco(i);
+                    const pos = totalBlocos > 1 ? (i / (totalBlocos - 1)) * 100 : 0;
+                    const alinhamento = i === 0 ? 'left:0;' : (i === totalBlocos - 1 ? 'right:0;' : `left:${pos}%; transform:translateX(-50%);`);
+                    return `<span class="absolute top-0 text-[9px] text-slate-400 font-medium whitespace-nowrap" style="${alinhamento}">${d.toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit' })}</span>`;
+                }).join('');
+            },
+
+            // Tabela por vitrine. Só interações — nenhum dado cadastral sensível.
+            renderImpactVitrines(eventos) {
+                const tbody = document.getElementById('imp-vitrines-table');
+                if (!tbody) return;
+
+                const porNegocio = {};
+                eventos.forEach(e => {
+                    if (e.businessId == null || e.type === 'search') return;
+                    const k = String(e.businessId);
+                    if (!porNegocio[k]) porNegocio[k] = { id: e.businessId, category: e.category, opens: 0, whats: 0, calls: 0, rotas: 0 };
+                    if (e.category && !porNegocio[k].category) porNegocio[k].category = e.category;
+                    if (e.type === 'storefront_open') porNegocio[k].opens++;
+                    else if (e.type === 'whatsapp_click') porNegocio[k].whats++;
+                    else if (e.type === 'call_click') porNegocio[k].calls++;
+                    else if (e.type === 'route_click') porNegocio[k].rotas++;
+                });
+
+                const linhas = Object.values(porNegocio)
+                    .map(r => Object.assign(r, { total: r.opens + r.whats + r.calls + r.rotas }))
+                    .sort((a, b) => b.total - a.total);
+
+                tbody.innerHTML = linhas.map(r => `
+                    <tr class="hover:bg-slate-50/50">
+                        <td class="px-6 py-3 font-bold text-slate-900">${this.escapeHtml(this.nomeNegocio(r.id))}</td>
+                        <td class="px-6 py-3 text-slate-500 text-xs">${this.escapeHtml(r.category || '-')}</td>
+                        <td class="px-6 py-3 text-center text-slate-700">${r.opens}</td>
+                        <td class="px-6 py-3 text-center text-slate-700">${r.whats}</td>
+                        <td class="px-6 py-3 text-center text-slate-700">${r.calls}</td>
+                        <td class="px-6 py-3 text-center text-slate-700">${r.rotas}</td>
+                        <td class="px-6 py-3 text-center font-bold text-slate-900">${r.total}</td>
+                        <td class="px-6 py-3 text-right font-bold text-emerald-600">${this.taxaImpacto(r.whats + r.calls, r.opens)}</td>
+                    </tr>`).join('') || `
+                    <tr><td colspan="8" class="px-6 py-10 text-center">
+                        <div class="w-12 h-12 bg-slate-100 rounded-full flex items-center justify-center mx-auto mb-3 text-slate-400"><i data-lucide="bar-chart-2" class="w-6 h-6"></i></div>
+                        <p class="text-sm font-bold text-slate-700">Nenhuma interação com vitrines no recorte</p>
+                        <p class="text-xs text-slate-500 mt-1">Amplie o período ou limpe os filtros.</p>
+                    </td></tr>`;
+            },
+
+            renderImpactSegmentos(eventos) {
+                const wrap = document.getElementById('imp-segmentos');
+                if (!wrap) return;
+
+                const porSeg = {};
+                eventos.forEach(e => {
+                    if (!e.category) return;
+                    if (!porSeg[e.category]) porSeg[e.category] = { buscas: 0, aberturas: 0, contatos: 0, total: 0 };
+                    const s = porSeg[e.category];
+                    if (e.type === 'search') s.buscas++;
+                    else if (e.type === 'storefront_open') { s.aberturas++; s.total++; }
+                    else if (TIPOS_CONTATO.indexOf(e.type) !== -1) { s.contatos++; s.total++; }
+                    else s.total++;
+                });
+
+                const totalInteracoes = Object.values(porSeg).reduce((t, s) => t + s.total, 0);
+                const lista = Object.entries(porSeg).sort((a, b) => b[1].total - a[1].total);
+
+                wrap.innerHTML = lista.map(([nome, s]) => {
+                    const pct = totalInteracoes ? Math.round((s.total / totalInteracoes) * 1000) / 10 : 0;
+                    return `
+                    <div>
+                        <div class="flex justify-between items-baseline mb-1.5">
+                            <span class="text-sm font-bold text-slate-800">${this.escapeHtml(nome)}</span>
+                            <span class="text-xs font-bold text-slate-500">${String(pct).replace('.', ',')}%</span>
+                        </div>
+                        <div class="h-2.5 bg-slate-100 rounded-full overflow-hidden">
+                            <div class="h-full bg-brand-500 rounded-full" style="width:${pct}%"></div>
+                        </div>
+                        <p class="text-[11px] text-slate-500 mt-1.5">${this.plural(s.buscas, 'busca', 'buscas')} · ${this.plural(s.aberturas, 'abertura', 'aberturas')} · ${this.plural(s.contatos, 'contato', 'contatos')}</p>
+                    </div>`;
+                }).join('') || '<p class="text-xs text-slate-400">Nenhuma interação por segmento no recorte.</p>';
+            },
+
+            // Termos e lacunas saem dos eventos `search`, não de appData.gaps:
+            // é o que permite recortar por período.
+            renderImpactTermos(buscas, aberturas) {
+                const tbTermos = document.getElementById('imp-termos');
+                const tbLacunas = document.getElementById('imp-lacunas');
+                if (!tbTermos || !tbLacunas) return;
+
+                const porTermo = {};
+                buscas.forEach(e => {
+                    const t = (e.term || '').trim();
+                    if (!t) return;
+                    const k = this.normalize(t);
+                    if (!porTermo[k]) porTermo[k] = { termo: t, buscas: 0, resultados: 0, semResultado: 0, ultima: e.occurredAt };
+                    const r = porTermo[k];
+                    r.buscas++;
+                    r.resultados = Math.max(r.resultados, e.resultCount || 0);
+                    if (!(e.resultCount > 0)) r.semResultado++;
+                    if (e.occurredAt > r.ultima) r.ultima = e.occurredAt;
+                });
+
+                // Aberturas atribuídas ao termo que originou a busca.
+                const aberturasPorTermo = {};
+                aberturas.forEach(e => {
+                    if (!e.term) return;
+                    const k = this.normalize(e.term);
+                    aberturasPorTermo[k] = (aberturasPorTermo[k] || 0) + 1;
+                });
+
+                const todos = Object.entries(porTermo);
+
+                tbTermos.innerHTML = todos
+                    .sort((a, b) => b[1].buscas - a[1].buscas)
+                    .slice(0, 8)
+                    .map(([k, r]) => `
+                        <tr>
+                            <td class="py-2.5 font-semibold text-slate-800">${this.escapeHtml(r.termo)}</td>
+                            <td class="py-2.5 text-center text-slate-700 font-bold">${r.buscas}</td>
+                            <td class="py-2.5 text-center text-slate-500">${r.resultados}</td>
+                            <td class="py-2.5 text-center text-blue-600 font-semibold">${aberturasPorTermo[k] || 0}</td>
+                        </tr>`).join('') || '<tr><td colspan="4" class="py-6 text-center text-xs text-slate-400">Nenhuma busca no recorte.</td></tr>';
+
+                tbLacunas.innerHTML = todos
+                    .filter(([, r]) => r.semResultado > 0)
+                    .sort((a, b) => b[1].semResultado - a[1].semResultado)
+                    .slice(0, 8)
+                    .map(([, r]) => `
+                        <tr>
+                            <td class="py-2.5 font-semibold text-slate-800">${this.escapeHtml(r.termo)}</td>
+                            <td class="py-2.5 text-center text-amber-600 font-bold">${r.semResultado}</td>
+                            <td class="py-2.5 text-center text-slate-500 text-xs">${this.dataLocalBR(r.ultima)}</td>
+                            <td class="py-2.5 text-right"><span class="text-amber-700 bg-amber-50 px-2 py-1 rounded text-[10px] font-bold border border-amber-100">Oportunidade territorial</span></td>
+                        </tr>`).join('') || '<tr><td colspan="4" class="py-6 text-center text-xs text-slate-400">Toda busca do recorte encontrou oferta local.</td></tr>';
+            },
+
+            // Compras do período. Com vitrine selecionada, só as compras dela —
+            // o bloco passa a responder "quanto este fornecedor recebeu".
+            renderImpactCompras(per) {
+                const negocio = (document.getElementById('imp-filter-business') || {}).value || '';
+
+                let lista = (appData.purchases || []).filter(c => {
+                    const d = new Date(String(c.purchaseDate).slice(0, 10) + 'T12:00:00');
+                    return !isNaN(d) && d >= per.ini && d <= per.fim;
+                });
+                if (negocio) lista = lista.filter(c => String(c.supplierBusinessId) === String(negocio));
+
+                const total = lista.reduce((t, c) => t + (Number(c.value) || 0), 0);
+                const locais = lista.filter(c => c.isLocalSupplier);
+                const valorLocal = locais.reduce((t, c) => t + (Number(c.value) || 0), 0);
+                const fornecedores = new Set(locais.map(c => c.supplierBusinessId != null ? 'b' + c.supplierBusinessId : 'n' + this.normalize(c.supplierName || '')));
+
+                document.getElementById('imp-compras-total').innerText = this.formatarMoeda(total);
+                document.getElementById('imp-compras-local').innerText = this.formatarMoeda(valorLocal);
+                document.getElementById('imp-compras-pct').innerText = this.taxaImpacto(valorLocal, total);
+                document.getElementById('imp-compras-fornecedores').innerText = fornecedores.size;
+                document.getElementById('imp-compras-externo').innerText = this.formatarMoeda(total - valorLocal);
+                document.getElementById('imp-compras-recorte').innerText =
+                    `${lista.length} ${lista.length === 1 ? 'contratação' : 'contratações'} ${per.frase}` +
+                    (negocio ? ` · apenas ${this.nomeNegocio(negocio)}` : '');
+            },
+
+            // Relatório executivo: espelha exatamente o recorte que está na tela.
+            // Se o gestor filtrou por 7 dias e um segmento, é isso que o relatório diz.
             openExecutiveReport() {
+                const per = this.periodoImpacto();
+                const universo = this.eventosImpacto(true);
+                const nf = n => n.toLocaleString('pt-BR');
+
+                const buscas = universo.filter(e => e.type === 'search');
+                const comResultado = buscas.filter(e => (e.resultCount || 0) > 0);
+                const aberturas = universo.filter(e => e.type === 'storefront_open');
+                const contatos = universo.filter(e => TIPOS_CONTATO.indexOf(e.type) !== -1);
+
+                // Panorama da base (não depende do período).
                 document.getElementById('rep-total').innerText = appData.businesses.length;
-                document.getElementById('rep-urban').innerText = appData.businesses.filter(b=>b.type==='urban').length;
-                document.getElementById('rep-rural').innerText = appData.businesses.filter(b=>b.type!=='urban').length;
+                document.getElementById('rep-urban').innerText = appData.businesses.filter(b => b.type === 'urban').length;
+                document.getElementById('rep-rural').innerText = appData.businesses.filter(b => b.type !== 'urban').length;
                 const geoTotal = appData.businesses.length;
                 const geoOk = appData.businesses.filter(b => b.lat != null && b.lng != null).length;
-                document.getElementById('rep-geo').innerText = (geoTotal ? Math.round((geoOk/geoTotal)*100) : 0) + '%';
-                const pub = appData.businesses.filter(b => b.validationStatus === 'validado' && b.hasVitrine !== false);
-                const somaRep = campo => pub.reduce((t, b) => t + ((b.stats && b.stats[campo]) || 0), 0);
-                document.getElementById('rep-buscas').innerText = (appData.metrics.buscas || 0).toLocaleString('pt-BR');
-                document.getElementById('rep-vitrines').innerText = somaRep('opens').toLocaleString('pt-BR');
-                document.getElementById('rep-contatos').innerText = somaRep('contacts').toLocaleString('pt-BR');
-                document.getElementById('rep-gaps').innerText = appData.gaps.slice(0,3).map(g=>g.term).join(', ') || 'Nenhuma';
+                document.getElementById('rep-geo').innerText = (geoTotal ? Math.round((geoOk / geoTotal) * 100) : 0) + '%';
+
+                // Recorte analisado.
+                document.getElementById('rep-periodo').innerText = per.rotulo;
+                const negocio = (document.getElementById('imp-filter-business') || {}).value || '';
+                const segmento = (document.getElementById('imp-filter-category') || {}).value || '';
+                const recortes = [];
+                if (negocio) recortes.push('vitrine: ' + this.nomeNegocio(negocio));
+                if (segmento) recortes.push('segmento: ' + segmento);
+                const filtroEl = document.getElementById('rep-filtros');
+                filtroEl.innerText = recortes.length ? 'Filtros aplicados — ' + recortes.join(' · ') : 'Sem filtros adicionais (município inteiro).';
+
+                document.getElementById('rep-buscas').innerText = nf(buscas.length);
+                document.getElementById('rep-atendimento').innerText = this.taxaImpacto(comResultado.length, buscas.length);
+                document.getElementById('rep-vitrines').innerText = nf(aberturas.length);
+                document.getElementById('rep-contatos').innerText = nf(contatos.length);
+                document.getElementById('rep-intencao').innerText = this.taxaImpacto(contatos.length, aberturas.length);
+
+                // Termos e lacunas do próprio recorte.
+                const conta = (lista, filtro) => {
+                    const m = {};
+                    lista.filter(filtro).forEach(e => {
+                        const t = (e.term || '').trim(); if (!t) return;
+                        m[t] = (m[t] || 0) + 1;
+                    });
+                    return Object.entries(m).sort((a, b) => b[1] - a[1]).slice(0, 3).map(([t, n]) => `${t} (${n})`);
+                };
+                const topTermos = conta(buscas, e => (e.resultCount || 0) > 0);
+                const topLacunas = conta(buscas, e => !(e.resultCount > 0));
+                document.getElementById('rep-termos').innerText = topTermos.join(', ') || 'Nenhum termo no período';
+                document.getElementById('rep-gaps').innerText = topLacunas.join(', ') || 'Nenhuma lacuna no período';
+
+                // Compras públicas efetivamente registradas no mesmo período.
+                let compras = (appData.purchases || []).filter(c => {
+                    const d = new Date(String(c.purchaseDate).slice(0, 10) + 'T12:00:00');
+                    return !isNaN(d) && d >= per.ini && d <= per.fim;
+                });
+                if (negocio) compras = compras.filter(c => String(c.supplierBusinessId) === String(negocio));
+                const totalC = compras.reduce((t, c) => t + (Number(c.value) || 0), 0);
+                const valorLocal = compras.filter(c => c.isLocalSupplier).reduce((t, c) => t + (Number(c.value) || 0), 0);
+
+                document.getElementById('rep-compras-total').innerText = this.formatarMoeda(totalC);
+                document.getElementById('rep-compras-local').innerText = this.formatarMoeda(valorLocal);
+                document.getElementById('rep-compras-pct').innerText = this.taxaImpacto(valorLocal, totalC);
+                document.getElementById('rep-compras-qtd').innerText = compras.length;
+
                 this.openModal('modal-executive-report');
             },
 
