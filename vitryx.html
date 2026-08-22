@@ -965,20 +965,21 @@
                             <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
                                 <div>
                                     <h3 class="text-xl font-bold text-slate-900">Base Econômica Local</h3>
-                                    <p class="text-sm text-slate-500 mt-1">Gestão de todas as empresas e profissionais cadastrados.</p>
+                                    <p class="text-sm text-slate-500 mt-1">Registro único do município: empresas, MEIs, profissionais autônomos e produtores rurais — com ou sem vitrine pública.</p>
                                 </div>
-                                <div class="flex items-center gap-3">
+                                <div class="flex flex-wrap items-center gap-3">
                                     <div class="text-sm font-bold text-slate-600 bg-slate-100 px-3 py-1.5 rounded-lg border border-slate-200">
                                         <span id="mgr-base-count">0</span> registros encontrados
                                     </div>
-                                    <button onclick="app.openNewBusiness()" class="bg-brand-600 text-white px-4 py-2 rounded-xl font-bold text-sm hover:bg-brand-700 transition shadow-sm">+ Cadastrar Empresa</button>
+                                    <button onclick="app.openImportModal()" class="bg-white border border-slate-300 text-slate-700 px-4 py-2 rounded-xl font-bold text-sm hover:bg-slate-50 transition shadow-sm flex items-center gap-2"><i data-lucide="upload" class="w-4 h-4"></i> Importar base</button>
+                                    <button onclick="app.openNewBusiness()" class="bg-brand-600 text-white px-4 py-2 rounded-xl font-bold text-sm hover:bg-brand-700 transition shadow-sm">Adicionar cadastro</button>
                                 </div>
                             </div>
                             <!-- Filtros -->
                             <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3 pt-4 border-t border-slate-100">
-                                <div class="relative w-full">
+                                <div class="relative w-full md:col-span-2">
                                     <i data-lucide="search" class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400"></i>
-                                    <input type="text" id="mgr-base-search" class="w-full pl-9 pr-4 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm focus:bg-white focus:border-brand-500 outline-none transition-all" placeholder="Buscar empresa, CNAE..." onkeyup="app.renderBaseTable()">
+                                    <input type="text" id="mgr-base-search" class="w-full pl-9 pr-4 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm focus:bg-white focus:border-brand-500 outline-none transition-all" placeholder="Nome, CNAE, responsável, endereço ou documento..." onkeyup="app.renderBaseTable()">
                                 </div>
                                 <select id="mgr-filter-category" onchange="app.renderBaseTable()" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm focus:bg-white focus:border-brand-500 outline-none transition-all">
                                     <option value="">Todas as Categorias</option><option value="Beleza">Beleza</option><option value="Casa e Manutenção">Casa e Manutenção</option><option value="Serviços">Serviços</option><option value="Automotivo">Automotivo</option><option value="Tecnologia">Tecnologia</option><option value="Alimentação">Alimentação</option><option value="Comércio">Comércio</option><option value="Rural">Rural</option>
@@ -989,13 +990,25 @@
                                 <select id="mgr-filter-status" onchange="app.renderBaseTable()" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm focus:bg-white focus:border-brand-500 outline-none transition-all">
                                     <option value="">Todos os Status</option><option value="validado">Validado</option><option value="pendente">Pendente / Aguardando</option><option value="ajuste">Ajuste Solicitado</option>
                                 </select>
+                                <select id="mgr-filter-origin" onchange="app.renderBaseTable()" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm focus:bg-white focus:border-brand-500 outline-none transition-all">
+                                    <option value="">Todas as Origens</option><option value="Cadastro do Empreendedor">Cadastro do Empreendedor</option><option value="Base Importada">Base Importada</option><option value="Sincronizado">Sincronizado</option>
+                                </select>
+                                <select id="mgr-filter-vitrine" onchange="app.renderBaseTable()" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm focus:bg-white focus:border-brand-500 outline-none transition-all">
+                                    <option value="">Vitrine: todas as situações</option><option value="publicada">Publicada</option><option value="aguardando">Aguardando validação</option><option value="sem">Sem vitrine</option>
+                                </select>
+                                <select id="mgr-filter-completude" onchange="app.renderBaseTable()" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm focus:bg-white focus:border-brand-500 outline-none transition-all">
+                                    <option value="">Completude: todas</option><option value="completo">Completo (80-100%)</option><option value="atencao">Atenção (50-79%)</option><option value="incompleto">Incompleto (&lt; 50%)</option>
+                                </select>
+                                <div class="flex items-center">
+                                    <button onclick="app.limparFiltrosBase()" class="w-full px-3 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg text-xs font-bold transition flex items-center justify-center gap-2"><i data-lucide="rotate-ccw" class="w-3.5 h-3.5"></i> Limpar filtros</button>
+                                </div>
                             </div>
                         </div>
                         <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
                             <div class="overflow-x-auto">
                                 <table class="w-full text-sm text-left whitespace-nowrap">
                                     <thead class="bg-slate-50 text-slate-500 text-xs uppercase font-semibold border-b border-slate-200">
-                                        <tr><th class="px-6 py-4">Negócio</th><th class="px-6 py-4">CPF / CNPJ</th><th class="px-6 py-4">Categoria</th><th class="px-6 py-4">Tipo/Porte</th><th class="px-6 py-4">Origem do Dado</th><th class="px-6 py-4">Status</th><th class="px-6 py-4 text-center">Ações</th></tr>
+                                        <tr><th class="px-6 py-4">Negócio</th><th class="px-6 py-4">CPF / CNPJ</th><th class="px-6 py-4">Categoria</th><th class="px-6 py-4">Tipo/Porte</th><th class="px-6 py-4">Origem do Dado</th><th class="px-6 py-4">Status</th><th class="px-6 py-4">Completude</th><th class="px-6 py-4 text-center">Ações</th></tr>
                                     </thead>
                                     <tbody class="divide-y divide-slate-100" id="mgr-base-table"></tbody>
                                 </table>
@@ -1009,6 +1022,16 @@
                                 <i data-lucide="activity" class="w-4 h-4 text-slate-400"></i>
                             </div>
                             <p class="text-xs text-slate-500 mb-4">Completude dos registros da base econômica municipal.</p>
+                            <div class="mb-5 p-4 bg-slate-50 border border-slate-200 rounded-xl">
+                                <div class="flex justify-between items-baseline mb-2">
+                                    <span class="text-xs font-bold text-slate-600 uppercase tracking-wide">Completude média da base</span>
+                                    <span class="text-2xl font-extrabold text-slate-900" id="mgr-dq-completude">0%</span>
+                                </div>
+                                <div class="h-2.5 bg-slate-200 rounded-full overflow-hidden">
+                                    <div class="h-full bg-brand-500 rounded-full transition-all" id="mgr-dq-completude-bar" style="width:0%"></div>
+                                </div>
+                                <p class="text-[11px] text-slate-500 mt-2" id="mgr-dq-completude-sub">&nbsp;</p>
+                            </div>
                             <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
                                 <div>
                                     <div class="text-2xl font-extrabold text-slate-800" id="mgr-dq-geo">0%</div>
@@ -1084,11 +1107,32 @@
                     <!-- VIEW: MGR MAPA -->
                     <div id="view-mgr-map" class="app-view max-w-6xl mx-auto" style="height: calc(100vh - 160px); min-height: 500px;">
                         <div class="flex flex-col h-full">
-                            <div class="mb-4 bg-white p-4 rounded-2xl border border-slate-200 shadow-sm flex-shrink-0 flex justify-between items-center">
-                                <div><h3 class="text-lg font-bold text-slate-900">Mapa Territorial</h3><p class="text-xs text-slate-500">Visão georreferenciada de Medianeira.</p></div>
-                                <div class="flex gap-2">
-                                    <span class="text-xs font-bold text-slate-600 flex items-center gap-1"><div class="w-3 h-3 bg-brand-600 rounded-full"></div> Urbano</span>
-                                    <span class="text-xs font-bold text-slate-600 flex items-center gap-1"><div class="w-3 h-3 bg-emerald-600 rounded-full"></div> Rural/Autônomo</span>
+                            <div class="mb-4 bg-white p-4 rounded-2xl border border-slate-200 shadow-sm flex-shrink-0 flex flex-col gap-4">
+                                <div class="flex flex-col sm:flex-row justify-between sm:items-center gap-3">
+                                    <div><h3 class="text-lg font-bold text-slate-900">Mapa Territorial</h3><p class="text-xs text-slate-500">Visão georreferenciada dos cadastros de Medianeira.</p></div>
+                                    <div class="flex flex-wrap items-center gap-3">
+                                        <span class="text-xs font-bold text-slate-600 flex items-center gap-1"><span class="w-3 h-3 bg-brand-600 rounded-full"></span> Urbano</span>
+                                        <span class="text-xs font-bold text-slate-600 flex items-center gap-1"><span class="w-3 h-3 bg-emerald-600 rounded-full"></span> Rural/Autônomo</span>
+                                        <span class="text-sm font-bold text-slate-600 bg-slate-100 px-3 py-1.5 rounded-lg border border-slate-200"><span id="mgr-map-count">0</span> no mapa</span>
+                                    </div>
+                                </div>
+                                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3 pt-3 border-t border-slate-100">
+                                    <div class="relative w-full lg:col-span-2">
+                                        <i data-lucide="search" class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400"></i>
+                                        <input type="text" id="mgr-map-search" onkeyup="app.renderMgrMapMarkers()" class="w-full pl-9 pr-4 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm focus:bg-white focus:border-brand-500 outline-none transition-all" placeholder="Buscar por nome...">
+                                    </div>
+                                    <select id="mgr-map-category" onchange="app.renderMgrMapMarkers()" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm focus:bg-white focus:border-brand-500 outline-none transition-all">
+                                        <option value="">Todas as Categorias</option><option value="Beleza">Beleza</option><option value="Casa e Manutenção">Casa e Manutenção</option><option value="Serviços">Serviços</option><option value="Automotivo">Automotivo</option><option value="Tecnologia">Tecnologia</option><option value="Alimentação">Alimentação</option><option value="Comércio">Comércio</option><option value="Rural">Rural</option>
+                                    </select>
+                                    <select id="mgr-map-type" onchange="app.renderMgrMapMarkers()" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm focus:bg-white focus:border-brand-500 outline-none transition-all">
+                                        <option value="">Todos os Tipos/Zonas</option><option value="urban">Urbana (Empresas)</option><option value="professional">Autônomos (Domicílio)</option><option value="rural">Rural (Produtores)</option>
+                                    </select>
+                                    <div class="flex gap-2">
+                                        <select id="mgr-map-origin" onchange="app.renderMgrMapMarkers()" class="flex-grow px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm focus:bg-white focus:border-brand-500 outline-none transition-all">
+                                            <option value="">Todas as Origens</option><option value="Cadastro do Empreendedor">Cadastro do Empreendedor</option><option value="Base Importada">Base Importada</option><option value="Sincronizado">Sincronizado</option>
+                                        </select>
+                                        <button onclick="app.limparFiltrosMapa()" class="px-3 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg text-xs font-bold transition flex items-center gap-1.5 flex-shrink-0" title="Limpar filtros"><i data-lucide="rotate-ccw" class="w-3.5 h-3.5"></i></button>
+                                    </div>
                                 </div>
                             </div>
                             <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden flex-grow relative z-0">
@@ -1965,6 +2009,102 @@
     </div>
 
     <!-- Modal: Detalhes da Base (Gestor) -->
+    <!-- Modal: Importar Base Econômica (Etapa 4) -->
+    <div id="modal-import" class="modal-overlay">
+        <div class="bg-white w-full max-w-4xl rounded-2xl shadow-2xl flex flex-col overflow-hidden max-h-[90vh] transform scale-95 transition-transform duration-200" id="modal-import-content">
+            <div class="px-6 py-4 border-b border-slate-200 flex justify-between items-center bg-slate-50">
+                <div class="flex items-center gap-3">
+                    <div class="w-9 h-9 rounded-lg bg-brand-50 text-brand-600 flex items-center justify-center"><i data-lucide="upload" class="w-5 h-5"></i></div>
+                    <div>
+                        <h3 class="font-bold text-slate-900">Importar Base Econômica</h3>
+                        <p class="text-xs text-slate-500" id="imp-step-label">Passo 1 de 3 — selecionar arquivo</p>
+                    </div>
+                </div>
+                <button onclick="app.closeModal('modal-import')" class="text-slate-400 hover:text-slate-600 bg-white p-1 rounded-full shadow-sm"><i data-lucide="x" class="w-5 h-5"></i></button>
+            </div>
+
+            <div class="flex-grow overflow-y-auto">
+                <!-- ESTADO 1: seleção -->
+                <div id="import-step-1" class="p-6 space-y-5">
+                    <label for="import-file" class="border-2 border-dashed border-slate-300 rounded-xl bg-slate-50 p-8 text-center cursor-pointer hover:bg-slate-100 transition block">
+                        <i data-lucide="file-spreadsheet" class="w-8 h-8 text-slate-400 mx-auto mb-3"></i>
+                        <span class="text-sm font-bold text-brand-600 block">Selecionar arquivo CSV</span>
+                        <span class="text-xs text-slate-500 block mt-1">Até 500 KB · separador vírgula ou ponto e vírgula · UTF-8</span>
+                        <input type="file" id="import-file" accept=".csv,text/csv" class="hidden" onchange="app.lerArquivoImportacao(this)">
+                    </label>
+
+                    <div class="flex items-center gap-3">
+                        <div class="flex-grow h-px bg-slate-200"></div>
+                        <span class="text-[11px] font-bold text-slate-400 uppercase">ou</span>
+                        <div class="flex-grow h-px bg-slate-200"></div>
+                    </div>
+
+                    <button onclick="app.usarArquivoDemonstrativo()" class="w-full px-4 py-3 bg-white border border-brand-200 text-brand-700 rounded-xl text-sm font-bold hover:bg-brand-50 transition flex items-center justify-center gap-2">
+                        <i data-lucide="sparkles" class="w-4 h-4"></i> Usar arquivo demonstrativo
+                    </button>
+                    <p class="text-[11px] text-slate-500 text-center -mt-2">Simulação demonstrativa: amostra fictícia embutida na página, equivalente a um CSV real. Nenhum arquivo é enviado para fora do navegador.</p>
+
+                    <div class="border border-slate-200 rounded-xl overflow-hidden">
+                        <div class="px-4 py-2.5 bg-slate-50 border-b border-slate-200"><h4 class="text-xs font-bold text-slate-700 uppercase tracking-wide">Colunas reconhecidas</h4></div>
+                        <div class="max-h-52 overflow-y-auto">
+                            <table class="w-full text-xs">
+                                <thead class="text-[10px] uppercase text-slate-500 font-bold bg-white border-b border-slate-100"><tr><th class="px-4 py-2 text-left">Coluna no CSV</th><th class="px-4 py-2 text-left">Campo na VITRYX</th><th class="px-4 py-2 text-center">Obrigatória</th></tr></thead>
+                                <tbody id="import-legend" class="divide-y divide-slate-50"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <p class="text-[11px] text-slate-500">O arquivo é lido apenas na memória do navegador. Nada é enviado para servidor e o arquivo original não é guardado.</p>
+                </div>
+
+                <!-- ESTADO 2: prévia -->
+                <div id="import-step-2" class="hidden p-6 space-y-4">
+                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                        <div class="bg-slate-50 border border-slate-200 rounded-xl p-3"><p class="text-[10px] font-bold text-slate-500 uppercase">Linhas</p><p class="text-xl font-extrabold text-slate-900" id="import-kpi-total">0</p></div>
+                        <div class="bg-emerald-50 border border-emerald-100 rounded-xl p-3"><p class="text-[10px] font-bold text-emerald-600 uppercase">Novos</p><p class="text-xl font-extrabold text-emerald-700" id="import-kpi-novos">0</p></div>
+                        <div class="bg-blue-50 border border-blue-100 rounded-xl p-3"><p class="text-[10px] font-bold text-blue-600 uppercase">Atualizações</p><p class="text-xl font-extrabold text-blue-700" id="import-kpi-updates">0</p></div>
+                        <div class="bg-red-50 border border-red-100 rounded-xl p-3"><p class="text-[10px] font-bold text-red-600 uppercase">Com erro</p><p class="text-xl font-extrabold text-red-700" id="import-kpi-erros">0</p></div>
+                    </div>
+                    <p class="text-xs text-slate-500" id="import-preview-nota">-</p>
+                    <div class="border border-slate-200 rounded-xl overflow-hidden">
+                        <div class="overflow-x-auto max-h-80 overflow-y-auto">
+                            <table class="w-full text-xs whitespace-nowrap">
+                                <thead class="text-[10px] uppercase text-slate-500 font-bold bg-slate-50 border-b border-slate-200 sticky top-0"><tr><th class="px-4 py-2 text-left">#</th><th class="px-4 py-2 text-left">Situação</th><th class="px-4 py-2 text-left">Nome</th><th class="px-4 py-2 text-left">Categoria</th><th class="px-4 py-2 text-left">Documento</th><th class="px-4 py-2 text-left">Coordenadas</th><th class="px-4 py-2 text-left">Observação</th></tr></thead>
+                                <tbody id="import-preview" class="divide-y divide-slate-50"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ESTADO 3: resultado -->
+                <div id="import-step-3" class="hidden p-6 space-y-5">
+                    <div class="text-center py-4">
+                        <div class="w-14 h-14 rounded-full bg-emerald-50 text-emerald-600 flex items-center justify-center mx-auto mb-3"><i data-lucide="check-circle" class="w-7 h-7"></i></div>
+                        <h4 class="font-bold text-slate-900 text-lg">Importação concluída</h4>
+                        <p class="text-sm text-slate-500 mt-1" id="import-result-sub">-</p>
+                    </div>
+                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                        <div class="bg-emerald-50 border border-emerald-100 rounded-xl p-3 text-center"><p class="text-[10px] font-bold text-emerald-600 uppercase">Criados</p><p class="text-xl font-extrabold text-emerald-700" id="import-res-criados">0</p></div>
+                        <div class="bg-blue-50 border border-blue-100 rounded-xl p-3 text-center"><p class="text-[10px] font-bold text-blue-600 uppercase">Atualizados</p><p class="text-xl font-extrabold text-blue-700" id="import-res-atualizados">0</p></div>
+                        <div class="bg-red-50 border border-red-100 rounded-xl p-3 text-center"><p class="text-[10px] font-bold text-red-600 uppercase">Rejeitados</p><p class="text-xl font-extrabold text-red-700" id="import-res-rejeitados">0</p></div>
+                        <div class="bg-slate-50 border border-slate-200 rounded-xl p-3 text-center"><p class="text-[10px] font-bold text-slate-500 uppercase">Processadas</p><p class="text-xl font-extrabold text-slate-900" id="import-res-total">0</p></div>
+                    </div>
+                    <div class="bg-slate-50 border border-slate-200 rounded-xl p-4 text-[11px] text-slate-600 leading-relaxed">
+                        Cadastros importados entram como <b>Base Importada</b>, <b>sem vitrine pública</b> e aguardando validação municipal. Não são publicados automaticamente no portal do cidadão.
+                    </div>
+                </div>
+            </div>
+
+            <div class="px-6 py-4 border-t border-slate-200 bg-white flex justify-between gap-3">
+                <button id="import-btn-voltar" onclick="app.voltarImportacao()" class="hidden px-4 py-2.5 text-sm font-semibold text-slate-600 hover:bg-slate-100 rounded-xl transition">Voltar</button>
+                <div class="flex gap-3 ml-auto">
+                    <button id="import-btn-fechar" onclick="app.closeModal('modal-import')" class="px-4 py-2.5 text-sm font-semibold text-slate-600 hover:bg-slate-100 rounded-xl transition">Fechar</button>
+                    <button id="import-btn-confirmar" onclick="app.confirmarImportacao()" class="hidden px-6 py-2.5 bg-brand-600 hover:bg-brand-700 text-white rounded-xl text-sm font-bold shadow-md transition-colors">Confirmar importação</button>
+                    <button id="import-btn-ver" onclick="app.verRegistrosImportados()" class="hidden px-6 py-2.5 bg-slate-900 hover:bg-slate-800 text-white rounded-xl text-sm font-bold shadow-md transition-colors">Ver registros importados</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div id="modal-base-details" class="modal-overlay">
         <div class="bg-white w-full max-w-2xl rounded-2xl shadow-2xl flex flex-col overflow-hidden max-h-[85vh] transform scale-95 transition-transform duration-200" id="modal-base-details-content">
             <div class="px-6 py-4 border-b border-slate-100 flex justify-between items-center bg-slate-50">
@@ -1994,6 +2134,18 @@
                         <div><span class="text-slate-500 block text-xs">Última Atualização</span><span class="font-medium text-slate-900" id="bd-updated">-</span></div>
                     </div>
                     <p class="text-[11px] text-slate-400 mt-3">Dados administrativos de acesso restrito ao painel da Gestão. O documento completo exige ação explícita e a consulta fica registrada na trilha de auditoria. Nada disso aparece na vitrine pública.</p>
+
+                    <div class="mt-4 p-3 bg-slate-50 border border-slate-200 rounded-xl">
+                        <div class="flex justify-between items-center mb-2">
+                            <span class="text-xs font-bold text-slate-600 uppercase tracking-wide">Completude do cadastro</span>
+                            <div class="flex items-center gap-2">
+                                <span class="text-sm font-extrabold text-slate-900" id="bd-completude-pct">0%</span>
+                                <span id="bd-completude-selo" class="text-[10px] font-bold border rounded px-2 py-0.5">-</span>
+                            </div>
+                        </div>
+                        <div class="h-2 bg-slate-200 rounded-full overflow-hidden"><div class="h-full bg-brand-500 rounded-full" id="bd-completude-bar" style="width:0%"></div></div>
+                        <p class="text-[11px] text-slate-500 mt-2" id="bd-completude-falta">-</p>
+                    </div>
                 </div>
 
                 <div>
@@ -2953,7 +3105,7 @@
         // nunca aparecem no portal público.
         // ---------------------------------------------------------------------
         const seedPurchases = [
-            { processNumber: '2026/0412', purchaseDate: '2026-08-12', object: 'Reparo de 40 carteiras e mesas escolares', category: 'Serviços',     department: 'Sec. Educação',        supplierName: 'Marcenaria Medianeira',        supplierDocument: '12345678000199', supplierBusinessId: 6,    isLocalSupplier: true,  value: 18400.00, demandId: 1,    source: 'Registro manual' },
+            { processNumber: '2026/0412', purchaseDate: '2026-08-12', object: 'Reparo de 40 carteiras e mesas escolares', category: 'Serviços',     department: 'Sec. Educação',        supplierName: 'Marcenaria Medianeira',        supplierDocument: '44555666000181', supplierBusinessId: 6,    isLocalSupplier: true,  value: 18400.00, demandId: 1,    source: 'Registro manual' },
             { processNumber: '2026/0398', purchaseDate: '2026-08-05', object: 'Hortaliças e legumes para merenda escolar (PNAE)', category: 'Alimentação', department: 'Sec. Educação',   supplierName: 'Sítio Águas Claras',           supplierDocument: '98765432000155', supplierBusinessId: 4,    isLocalSupplier: true,  value: 12750.50, demandId: 2,    source: 'Registro manual' },
             { processNumber: '2026/0387', purchaseDate: '2026-07-28', object: 'Manutenção elétrica preditiva em prédios públicos', category: 'Serviços', department: 'Sec. Administração', supplierName: 'EletroRápido Manutenção',      supplierDocument: '11222333000144', supplierBusinessId: 5,    isLocalSupplier: true,  value: 9600.00,  demandId: null, source: 'Registro manual' },
             { processNumber: '2026/0361', purchaseDate: '2026-07-15', object: 'Uniformes escolares para rede municipal',     category: 'Comércio',    department: 'Sec. Educação',        supplierName: 'Malharia Ponto Certo',         supplierDocument: '44555666000177', supplierBusinessId: 10,   isLocalSupplier: true,  value: 34200.00, demandId: null, source: 'Registro manual' },
@@ -3217,6 +3369,53 @@
         // MIGRAÇÃO VERSIONADA E NÃO DESTRUTIVA
         // Acrescenta o que falta; nunca remove nem duplica o que já existe.
         // ---------------------------------------------------------------------
+        /**
+         * Alinha o documento das compras LOCAIS ao cadastro da Base Econômica.
+         *
+         * Fornecedor local é definido pelo vínculo com um negócio; o cadastro é a
+         * fonte de verdade do documento dele. Uma compra que aponta para o negócio
+         * mas guarda outro CPF/CNPJ é dado inconsistente — e foi o que existiu em
+         * bases gravadas antes deste patch.
+         *
+         * Idempotente por construção: só toca em compra local, com vínculo, cujo
+         * documento esteja ausente ou reprovado por `docUtils`. Depois de corrigido
+         * o documento passa a ser válido, então a carga seguinte não altera nada.
+         * Compra externa (sem vínculo) nunca é tocada: o fornecedor de fora não tem
+         * cadastro no município para servir de referência.
+         */
+        function normalizarDocumentosDeCompras() {
+            let corrigidas = 0;
+
+            (appData.purchases || []).forEach(c => {
+                if (!c.isLocalSupplier || c.supplierBusinessId == null) return;
+
+                const atual = docUtils.somenteDigitos(c.supplierDocument);
+                if (atual && docUtils.validar(atual)) return;
+
+                const negocio = (appData.businesses || []).find(b => Number(b.id) === Number(c.supplierBusinessId));
+                const doCadastro = negocio && negocio.legal ? docUtils.somenteDigitos(negocio.legal.documento) : '';
+                if (!doCadastro) return;
+
+                c.supplierDocument = doCadastro;
+                c.supplierDocumentMasked = docUtils.mascarar(doCadastro);
+                c.updatedAt = new Date().toISOString();
+                corrigidas++;
+            });
+
+            // Auditoria só quando houve correção, e apenas com a contagem:
+            // o documento completo jamais entra na trilha.
+            if (corrigidas > 0) {
+                registrarAuditoria({
+                    acao: 'Normalização de documentos de compras', modulo: 'Compras Públicas',
+                    entidade: 'purchase', entidadeId: null,
+                    descricao: `${corrigidas} ${corrigidas === 1 ? 'compra local teve' : 'compras locais tiveram'} o documento alinhado ao cadastro da Base Econômica.`,
+                    dadosPosteriores: { corrigidas: corrigidas }
+                });
+            }
+
+            return corrigidas;
+        }
+
         function ensureDataModelVersion() {
             const versaoGravada = Number(localStorage.getItem('vitryx_data_model_version') || 0);
 
@@ -3269,6 +3468,11 @@
             if (versaoGravada < 5 && appData.usageEvents.length === 0) {
                 appData.usageEvents = gerarEventosDemonstrativos();
             }
+
+            // Consistência de documento em compras locais (patch da Etapa 4).
+            // Roda em toda carga, sem depender de versão de modelo: bases já
+            // gravadas no navegador podem ter documento divergente do cadastro.
+            normalizarDocumentosDeCompras();
 
             if (versaoGravada !== DATA_MODEL_VERSION) {
                 localStorage.setItem('vitryx_data_model_version', String(DATA_MODEL_VERSION));
@@ -3559,6 +3763,131 @@
             eventos.sort((a, b) => a.occurredAt.localeCompare(b.occurredAt));
             return eventos;
         }
+
+        // ---------------------------------------------------------------------
+        // COMPLETUDE CADASTRAL
+        //
+        // Sempre CALCULADA, nunca gravada no objeto: se o percentual virasse
+        // campo persistido, ficaria mentindo no instante seguinte a qualquer
+        // edição ou importação. Dez campos, peso igual, 0 a 100.
+        // ---------------------------------------------------------------------
+        const CAMPOS_COMPLETUDE = [
+            { chave: 'nome',        rotulo: 'Nome',            tem: b => !!(b.name || '').trim() },
+            { chave: 'categoria',   rotulo: 'Categoria',       tem: b => !!(b.category || '').trim() },
+            { chave: 'zona',        rotulo: 'Tipo / zona',     tem: b => !!(b.type || '').trim() },
+            { chave: 'porte',       rotulo: 'Porte',           tem: b => !!(b.porte || '').trim() },
+            { chave: 'cnae',        rotulo: 'CNAE',            tem: b => !!String(b.cnae || '').trim() },
+            { chave: 'endereco',    rotulo: 'Endereço',        tem: b => !!(b.address || '').trim() },
+            { chave: 'documento',   rotulo: 'CPF / CNPJ',      tem: b => !!((b.legal && b.legal.documento) || '').trim() },
+            { chave: 'responsavel', rotulo: 'Responsável',     tem: b => !!((b.legal && b.legal.responsavelNome) || '').trim() },
+            { chave: 'contato',     rotulo: 'Contato',         tem: b => !!((b.whatsapp || b.phone || (b.legal && (b.legal.telefone || b.legal.email)) || '')).toString().trim() },
+            { chave: 'coordenadas', rotulo: 'Coordenadas',     tem: b => b.lat != null && b.lng != null }
+        ];
+
+        function calcularCompletudeCadastro(business) {
+            if (!business || typeof business !== 'object') return 0;
+            const preenchidos = CAMPOS_COMPLETUDE.filter(c => {
+                try { return !!c.tem(business); } catch (e) { return false; }
+            }).length;
+            return Math.round((preenchidos / CAMPOS_COMPLETUDE.length) * 100);
+        }
+
+        function faltantesCompletude(business) {
+            return CAMPOS_COMPLETUDE.filter(c => { try { return !c.tem(business); } catch (e) { return true; } })
+                                    .map(c => c.rotulo);
+        }
+
+        function nivelCompletude(pct) {
+            if (pct >= 80) return { chave: 'completo',   rotulo: 'Completo',   classe: 'text-emerald-700 bg-emerald-50 border-emerald-100' };
+            if (pct >= 50) return { chave: 'atencao',    rotulo: 'Atenção',    classe: 'text-amber-700 bg-amber-50 border-amber-100' };
+            return              { chave: 'incompleto', rotulo: 'Incompleto', classe: 'text-red-700 bg-red-50 border-red-100' };
+        }
+
+        // ---------------------------------------------------------------------
+        // IMPORTAÇÃO CSV
+        //
+        // Parser próprio, sem biblioteca: aceita vírgula ou ponto e vírgula,
+        // campos entre aspas (com aspas duplas escapadas) e quebras de linha
+        // dentro de aspas. O arquivo original NUNCA é guardado — só as linhas
+        // já convertidas em cadastro entram no localStorage.
+        // ---------------------------------------------------------------------
+        const COLUNAS_IMPORTACAO = [
+            { coluna: 'nome',       destino: 'Nome do negócio',           obrigatoria: true },
+            { coluna: 'documento',  destino: 'CPF / CNPJ (validado)',     obrigatoria: false },
+            { coluna: 'responsavel',destino: 'Responsável pelo cadastro', obrigatoria: false },
+            { coluna: 'email',      destino: 'E-mail de contato',         obrigatoria: false },
+            { coluna: 'telefone',   destino: 'Telefone / WhatsApp',       obrigatoria: false },
+            { coluna: 'categoria',  destino: 'Categoria da vitrine',      obrigatoria: true },
+            { coluna: 'porte',      destino: 'Porte',                     obrigatoria: false },
+            { coluna: 'cnae',       destino: 'CNAE',                      obrigatoria: false },
+            { coluna: 'endereco',   destino: 'Endereço',                  obrigatoria: false },
+            { coluna: 'zona',       destino: 'Tipo / zona',               obrigatoria: false },
+            { coluna: 'latitude',   destino: 'Coordenada (lat)',          obrigatoria: false },
+            { coluna: 'longitude',  destino: 'Coordenada (lng)',          obrigatoria: false }
+        ];
+
+        const LIMITE_CSV_BYTES = 500 * 1024;
+
+        // Detecta o separador pela primeira linha fora de aspas.
+        function detectarSeparadorCSV(texto) {
+            const primeira = texto.split(/\r?\n/)[0] || '';
+            let virgulas = 0, pontosVirgula = 0, dentroAspas = false;
+            for (let i = 0; i < primeira.length; i++) {
+                const c = primeira[i];
+                if (c === '"') dentroAspas = !dentroAspas;
+                else if (!dentroAspas && c === ',') virgulas++;
+                else if (!dentroAspas && c === ';') pontosVirgula++;
+            }
+            return pontosVirgula > virgulas ? ';' : ',';
+        }
+
+        function parseCSV(texto, separador) {
+            const sep = separador || detectarSeparadorCSV(texto);
+            // BOM do Excel em UTF-8 quebraria o nome da primeira coluna.
+            const limpo = texto.replace(/^﻿/, '');
+            const linhas = [];
+            let campo = '', linha = [], dentroAspas = false;
+
+            for (let i = 0; i < limpo.length; i++) {
+                const c = limpo[i];
+                if (dentroAspas) {
+                    if (c === '"') {
+                        if (limpo[i + 1] === '"') { campo += '"'; i++; }
+                        else dentroAspas = false;
+                    } else campo += c;
+                } else if (c === '"') {
+                    dentroAspas = true;
+                } else if (c === sep) {
+                    linha.push(campo); campo = '';
+                } else if (c === '\n') {
+                    linha.push(campo); linhas.push(linha); linha = []; campo = '';
+                } else if (c !== '\r') {
+                    campo += c;
+                }
+            }
+            if (campo.length || linha.length) { linha.push(campo); linhas.push(linha); }
+
+            // Descarta linhas totalmente vazias (rodapé de planilha, linha final).
+            return { separador: sep, linhas: linhas.filter(l => l.some(v => String(v).trim() !== '')) };
+        }
+
+        // Amostra equivalente a um CSV real, embutida para a demonstração não
+        // depender de arquivo externo. Usa ponto e vírgula e campos entre aspas
+        // de propósito, para exercitar o parser no vídeo.
+        const CSV_DEMONSTRATIVO = [
+            'nome;documento;responsavel;email;telefone;categoria;porte;cnae;endereco;zona;latitude;longitude',
+            '"Serralheria Portal do Oeste";11444777000161;"Jonas Kruger";serralheria@portaloeste.demo;"(45) 99612-0031";"Casa e Manutenção";"Microempresa (ME)";2512-8/00;"Rua das Palmeiras, 820 - Bairro Ipê";urban;-25.2941;-54.0871',
+            '"Doceria Vovó Alzira";52998224725;"Alzira Menegotto";doceria@vovoalzira.demo;"(45) 99745-0032";"Alimentação";MEI;1091-1/01;"Av. Rio Grande do Sul, 145 - Centro";urban;-25.3012;-54.0955',
+            // Linha propositalmente esparsa: sem documento, CNAE, porte, endereço
+            // nem coordenadas. Entra válida (nome e categoria estão lá) mas cai em
+            // "Incompleto" — é o caso real de base municipal antiga.
+            '"Hortifruti Sabor da Terra";;;;"(45) 99880-0033";Rural;;;;rural;;',
+            // Documento igual ao do cadastro 6 já existente: casa por CPF/CNPJ e
+            // demonstra ATUALIZAÇÃO (endereço e coordenadas mudam; catálogo,
+            // evidências e estatísticas permanecem).
+            '"Marcenaria Medianeira";44555666000181;"Maria Aparecida";maria@marcenariamedianeira.com.br;"(45) 99823-0006";"Casa e Manutenção";"Microempresa (ME)";3101-2/00;"Rua Osvaldo Cruz, 1290 - Bairro Frimesa";urban;-25.2968;-54.0902',
+            ';;"Sem nome informado";;;"Comércio";MEI;;"Rua Sem Nome, 100";urban;abc;xyz'
+        ].join('\n');
 
         const app = {
             currentPersona: 'citizen', currentLayout: 'public', currentView: 'landing', currentSearchTerm: '', radarFilter: 'all',
@@ -5867,6 +6196,15 @@
                 dq('mgr-dq-cnae', 'mgr-dq-cnae-abs', r.cnaeN);
                 dq('mgr-dq-contato', 'mgr-dq-contato-abs', r.contatoN);
 
+                // Completude média: calculada na hora, sobre a base inteira.
+                const pcts = appData.businesses.map(b => calcularCompletudeCadastro(b));
+                const media = pcts.length ? Math.round(pcts.reduce((t, v) => t + v, 0) / pcts.length) : 0;
+                const contar = chave => pcts.filter(v => nivelCompletude(v).chave === chave).length;
+                document.getElementById('mgr-dq-completude').innerText = media + '%';
+                document.getElementById('mgr-dq-completude-bar').style.width = media + '%';
+                document.getElementById('mgr-dq-completude-sub').innerText =
+                    `${contar('completo')} completos · ${contar('atencao')} em atenção · ${contar('incompleto')} incompletos`;
+
                 document.getElementById('mgr-origin-entrepreneur').innerText = `${r.origem.empreendedor} · ${r.pct(r.origem.empreendedor)}%`;
                 document.getElementById('mgr-origin-imported').innerText = `${r.origem.importada} · ${r.pct(r.origem.importada)}%`;
                 document.getElementById('mgr-origin-sync').innerText = `${r.origem.sincronizado} · ${r.pct(r.origem.sincronizado)}%`;
@@ -6018,13 +6356,33 @@
                 }).join('') || '<div class="text-sm text-slate-500">Sem dados.</div>';
             },
 
+            // Situação da vitrine, derivada — não é campo do objeto.
+            // Publicada = tem vitrine E foi validada. Aguardando = tem vitrine mas
+            // ainda não passou pela Prefeitura. Sem vitrine = só base administrativa.
+            situacaoVitrine(b) {
+                if (b.hasVitrine === false) return 'sem';
+                return b.validationStatus === 'validado' ? 'publicada' : 'aguardando';
+            },
+
+            selosVitrine: {
+                publicada:  { rotulo: 'Publicada',            classe: 'text-brand-700 bg-brand-50 border-brand-100' },
+                aguardando: { rotulo: 'Aguardando validação', classe: 'text-amber-700 bg-amber-50 border-amber-100' },
+                sem:        { rotulo: 'Sem vitrine',          classe: 'text-slate-600 bg-slate-100 border-slate-200' }
+            },
+
             renderBaseTable() {
-                const search = document.getElementById('mgr-base-search').value.toLowerCase();
-                const cat = document.getElementById('mgr-filter-category').value;
-                const type = document.getElementById('mgr-filter-type').value;
-                const status = document.getElementById('mgr-filter-status').value;
+                const valor = id => (document.getElementById(id) || {}).value || '';
+                const search = this.normalize(valor('mgr-base-search'));
+                const cat = valor('mgr-filter-category');
+                const type = valor('mgr-filter-type');
+                const status = valor('mgr-filter-status');
+                const origem = valor('mgr-filter-origin');
+                const vitrine = valor('mgr-filter-vitrine');
+                const completude = valor('mgr-filter-completude');
                 const tbody = document.getElementById('mgr-base-table');
-                
+
+                // Parte da base INTEIRA: registro sem vitrine é cadastro municipal
+                // legítimo e não pode sumir da tela que existe para administrá-lo.
                 let filtered = appData.businesses;
                 if(cat) filtered = filtered.filter(b => b.category === cat);
                 if(type) filtered = filtered.filter(b => b.type === type);
@@ -6032,37 +6390,69 @@
                     if(status === 'ajuste') filtered = filtered.filter(b => appData.validations.some(v => v.businessId === b.id && v.status === 'adjustment_requested'));
                     else filtered = filtered.filter(b => b.validationStatus === status);
                 }
-                if(search) filtered = filtered.filter(b => b.name.toLowerCase().includes(search) || b.category.toLowerCase().includes(search) || (b.tags||[]).join(' ').toLowerCase().includes(search) || (b.cnae && b.cnae.includes(search)));
+                if(origem) filtered = filtered.filter(b => (b.origin || '') === origem);
+                if(vitrine) filtered = filtered.filter(b => this.situacaoVitrine(b) === vitrine);
+                if(completude) filtered = filtered.filter(b => nivelCompletude(calcularCompletudeCadastro(b)).chave === completude);
+
+                // Busca ampliada: o gestor procura pelo que tem em mãos — um ofício
+                // com o CNPJ, o nome do responsável, o endereço da rua.
+                if(search) {
+                    filtered = filtered.filter(b => {
+                        const legal = b.legal || {};
+                        // Busca no documento MASCARADO, nunca no completo: o número
+                        // inteiro só é revelado por ação explícita, que fica na trilha
+                        // de auditoria. Indexá-lo aqui viraria um oráculo silencioso
+                        // para confirmar um CPF/CNPJ sem deixar rastro.
+                        const campos = [
+                            b.name, b.category, b.cnae, b.address, b.porte,
+                            legal.responsavelNome, legal.documentoMascarado,
+                            legal.email, legal.telefone, b.whatsapp, b.phone,
+                            (b.tags || []).join(' ')
+                        ];
+                        return campos.some(c => c && this.normalize(String(c)).includes(search));
+                    });
+                }
 
                 document.getElementById('mgr-base-count').innerText = filtered.length;
 
                 tbody.innerHTML = filtered.map(b => {
-                    const semVitrine = b.hasVitrine === false;
-                    const etiquetaVitrine = semVitrine
-                        ? '<div class="text-[10px] font-bold text-slate-600 bg-slate-100 border border-slate-200 rounded px-1.5 py-0.5 mt-1 inline-block">Sem vitrine</div>'
-                        : '<div class="text-[10px] font-bold text-brand-700 bg-brand-50 border border-brand-100 rounded px-1.5 py-0.5 mt-1 inline-block">Com vitrine</div>';
-                    // Ações discretas: cinza por padrão, destaque só no hover.
+                    const sit = this.situacaoVitrine(b);
+                    const selo = this.selosVitrine[sit];
+                    const etiquetaVitrine = `<div class="text-[10px] font-bold ${selo.classe} border rounded px-1.5 py-0.5 mt-1 inline-block">${selo.rotulo}</div>`;
+
+                    const pct = calcularCompletudeCadastro(b);
+                    const nivel = nivelCompletude(pct);
+                    const faltam = faltantesCompletude(b);
+                    const tituloFalta = faltam.length ? `Falta: ${faltam.join(', ')}` : 'Cadastro completo';
+
                     // "Ver cadastro" existe para todo registro; "Ver vitrine" só para
                     // quem tem vitrine pública — desabilitado (e explicado) nos demais.
                     const acao = `
                         <div class="flex items-center justify-center gap-1">
                             <button onclick="app.openBaseDetails(${b.id})" class="text-slate-400 hover:text-slate-700 hover:bg-slate-100 p-2 rounded-lg transition-colors" title="Ver cadastro"><i data-lucide="file-text" class="w-4 h-4"></i></button>
-                            ${semVitrine
+                            ${sit === 'sem'
                                 ? `<span class="text-slate-300 p-2 rounded-lg cursor-not-allowed inline-flex" title="Sem vitrine pública"><i data-lucide="eye-off" class="w-4 h-4"></i></span>`
                                 : `<button onclick="app.viewProfileFromManager(${b.id})" class="text-slate-400 hover:text-slate-700 hover:bg-slate-100 p-2 rounded-lg transition-colors" title="Ver vitrine"><i data-lucide="eye" class="w-4 h-4"></i></button>`}
                         </div>`;
                     return `
                     <tr class="hover:bg-slate-50/50">
-                        <td class="px-6 py-4 cursor-pointer" onclick="app.openBaseDetails(${b.id})"><div class="font-bold text-slate-900 hover:text-brand-600">${b.name}</div><div class="text-xs text-slate-500">${b.cnae || 'S/ CNAE'}</div></td>
+                        <td class="px-6 py-4 cursor-pointer" onclick="app.openBaseDetails(${b.id})"><div class="font-bold text-slate-900 hover:text-brand-600">${this.escapeHtml(b.name)}</div><div class="text-xs text-slate-500">${this.escapeHtml(b.cnae || 'S/ CNAE')}</div></td>
                         <td class="px-6 py-4 text-slate-600 text-xs">${this.documentoProtegido(b)}</td>
-                        <td class="px-6 py-4 text-slate-600">${b.category}</td>
-                        <td class="px-6 py-4"><div class="text-sm font-medium text-slate-900">${b.type === 'urban'?'Urbano':'Rural/Autônomo'}</div><div class="text-xs text-slate-500">${b.porte}</div></td>
-                        <td class="px-6 py-4"><div class="text-sm text-slate-700">${b.origin || '-'}</div>${etiquetaVitrine}</td>
+                        <td class="px-6 py-4 text-slate-600">${this.escapeHtml(b.category)}</td>
+                        <td class="px-6 py-4"><div class="text-sm font-medium text-slate-900">${b.type === 'urban'?'Urbano':'Rural/Autônomo'}</div><div class="text-xs text-slate-500">${this.escapeHtml(b.porte || '-')}</div></td>
+                        <td class="px-6 py-4"><div class="text-sm text-slate-700">${this.escapeHtml(b.origin || '-')}</div>${etiquetaVitrine}</td>
                         <td class="px-6 py-4">${b.validationStatus === 'validado' ? '<span class="text-emerald-700 bg-emerald-50 px-2 py-1 rounded text-xs font-bold border border-emerald-100">Validado</span>' : '<span class="text-amber-700 bg-amber-50 px-2 py-1 rounded text-xs font-bold border border-amber-100">Pendente</span>'}</td>
+                        <td class="px-6 py-4" title="${this.escapeHtml(tituloFalta)}">
+                            <div class="flex items-center gap-2">
+                                <div class="w-14 h-1.5 bg-slate-200 rounded-full overflow-hidden flex-shrink-0"><div class="h-full bg-brand-500 rounded-full" style="width:${pct}%"></div></div>
+                                <span class="text-xs font-bold text-slate-700">${pct}%</span>
+                            </div>
+                            <div class="text-[10px] font-bold ${nivel.classe} border rounded px-1.5 py-0.5 mt-1 inline-block">${nivel.rotulo}</div>
+                        </td>
                         <td class="px-6 py-4 text-center">${acao}</td>
                     </tr>`;
                 }).join('') || `
-                    <tr><td colspan="7" class="px-6 py-12 text-center">
+                    <tr><td colspan="8" class="px-6 py-12 text-center">
                         <div class="w-12 h-12 bg-slate-100 rounded-full flex items-center justify-center mx-auto mb-3 text-slate-400"><i data-lucide="search-x" class="w-6 h-6"></i></div>
                         <p class="text-sm font-bold text-slate-700">Nenhum registro encontrado</p>
                         <p class="text-xs text-slate-500 mt-1">Nenhum negócio da base atende aos filtros selecionados.</p>
@@ -6071,11 +6461,305 @@
                 if(typeof lucide !== 'undefined') lucide.createIcons();
             },
 
+            // =================================================================
+            // IMPORTAÇÃO DE BASE (CSV)
+            //
+            // Estado vive só em memória (`this.importacao`). O arquivo original
+            // nunca vai para o localStorage — apenas os cadastros resultantes,
+            // depois de o gestor confirmar.
+            // =================================================================
+            importacao: null,
+
+            openImportModal() {
+                this.importacao = null;
+                const leg = document.getElementById('import-legend');
+                if(leg) leg.innerHTML = COLUNAS_IMPORTACAO.map(c => `
+                    <tr>
+                        <td class="px-4 py-2 font-mono text-slate-800">${c.coluna}</td>
+                        <td class="px-4 py-2 text-slate-600">${this.escapeHtml(c.destino)}</td>
+                        <td class="px-4 py-2 text-center">${c.obrigatoria
+                            ? '<span class="text-red-700 bg-red-50 border border-red-100 rounded px-1.5 py-0.5 text-[10px] font-bold">Sim</span>'
+                            : '<span class="text-slate-500">-</span>'}</td>
+                    </tr>`).join('');
+                const inp = document.getElementById('import-file'); if(inp) inp.value = '';
+                this.mostrarPassoImportacao(1);
+                this.openModal('modal-import');
+                if(typeof lucide !== 'undefined') lucide.createIcons();
+            },
+
+            mostrarPassoImportacao(passo) {
+                [1,2,3].forEach(n => {
+                    const el = document.getElementById('import-step-' + n);
+                    if(el) el.classList.toggle('hidden', n !== passo);
+                });
+                const rotulos = { 1: 'Passo 1 de 3 — selecionar arquivo', 2: 'Passo 2 de 3 — conferir a prévia', 3: 'Passo 3 de 3 — resultado' };
+                document.getElementById('imp-step-label').innerText = rotulos[passo];
+                document.getElementById('import-btn-voltar').classList.toggle('hidden', passo !== 2);
+                document.getElementById('import-btn-confirmar').classList.toggle('hidden', passo !== 2);
+                document.getElementById('import-btn-ver').classList.toggle('hidden', passo !== 3);
+            },
+
+            voltarImportacao() { this.importacao = null; this.mostrarPassoImportacao(1); },
+
+            lerArquivoImportacao(input) {
+                const arquivo = input && input.files && input.files[0];
+                if(!arquivo) return;
+                if(arquivo.size > LIMITE_CSV_BYTES) {
+                    input.value = '';
+                    return this.showToast(`Arquivo de ${Math.round(arquivo.size/1024)} KB excede o limite de 500 KB.`, 'error');
+                }
+                const leitor = new FileReader();
+                leitor.onload = e => this.prepararImportacao(String(e.target.result), arquivo.name);
+                leitor.onerror = () => this.showToast('Não foi possível ler o arquivo.', 'error');
+                leitor.readAsText(arquivo, 'UTF-8');
+            },
+
+            usarArquivoDemonstrativo() {
+                this.prepararImportacao(CSV_DEMONSTRATIVO, 'amostra-demonstrativa.csv (simulação)');
+            },
+
+            // Duplicidade: documento normalizado tem prioridade; sem documento,
+            // cai para nome + endereço normalizados. Um mesmo CNPJ nunca entra duas vezes.
+            acharExistente(dados) {
+                const doc = docUtils.somenteDigitos(dados.documento);
+                if(doc) {
+                    const porDoc = appData.businesses.find(b => b.legal && docUtils.somenteDigitos(b.legal.documento) === doc);
+                    if(porDoc) return porDoc;
+                }
+                const nome = this.normalize(dados.nome);
+                const end = this.normalize(dados.endereco);
+                if(!nome) return null;
+                return appData.businesses.find(b => this.normalize(b.name) === nome && this.normalize(b.address || '') === end) || null;
+            },
+
+            prepararImportacao(texto, nomeArquivo) {
+                const { separador, linhas } = parseCSV(texto);
+                if(linhas.length < 2) {
+                    return this.showToast('O arquivo não tem cabeçalho e ao menos uma linha de dados.', 'error');
+                }
+
+                const cabecalho = linhas[0].map(c => this.normalize(c));
+                const idx = {};
+                COLUNAS_IMPORTACAO.forEach(c => { idx[c.coluna] = cabecalho.indexOf(c.coluna); });
+                if(idx.nome === -1 || idx.categoria === -1) {
+                    return this.showToast('O cabeçalho precisa conter ao menos as colunas "nome" e "categoria".', 'error');
+                }
+
+                const pega = (linha, coluna) => idx[coluna] === -1 ? '' : String(linha[idx[coluna]] || '').trim();
+                // Set local: pega duplicata DENTRO do próprio arquivo, que não
+                // existiria ainda na base para acharExistente() encontrar.
+                const vistosNoArquivo = new Set();
+
+                const registros = linhas.slice(1).map((linha, i) => {
+                    const d = {
+                        nome: pega(linha,'nome'), documento: pega(linha,'documento'), responsavel: pega(linha,'responsavel'),
+                        email: pega(linha,'email'), telefone: pega(linha,'telefone'), categoria: pega(linha,'categoria'),
+                        porte: pega(linha,'porte'), cnae: pega(linha,'cnae'), endereco: pega(linha,'endereco'),
+                        zona: this.normalize(pega(linha,'zona')), latitude: pega(linha,'latitude'), longitude: pega(linha,'longitude')
+                    };
+                    const r = { linha: i + 2, dados: d, situacao: 'novo', motivo: '', alvo: null };
+
+                    const erros = [];
+                    if(!d.nome) erros.push('nome é obrigatório');
+                    if(!d.categoria) erros.push('categoria é obrigatória');
+                    if(d.documento && !docUtils.validar(docUtils.somenteDigitos(d.documento))) erros.push('CPF/CNPJ inválido');
+
+                    const temLat = d.latitude !== '', temLng = d.longitude !== '';
+                    if(temLat !== temLng) erros.push('latitude e longitude devem vir juntas');
+                    if(temLat && temLng) {
+                        const la = Number(String(d.latitude).replace(',', '.'));
+                        const lo = Number(String(d.longitude).replace(',', '.'));
+                        if(!isFinite(la) || !isFinite(lo) || Math.abs(la) > 90 || Math.abs(lo) > 180) erros.push('coordenadas inválidas');
+                        else { r.lat = la; r.lng = lo; }
+                    }
+
+                    if(erros.length) { r.situacao = 'rejeitado'; r.motivo = erros.join('; '); return r; }
+
+                    const chave = docUtils.somenteDigitos(d.documento) || (this.normalize(d.nome) + '|' + this.normalize(d.endereco));
+                    if(vistosNoArquivo.has(chave)) {
+                        r.situacao = 'rejeitado'; r.motivo = 'registro repetido dentro do próprio arquivo'; return r;
+                    }
+                    vistosNoArquivo.add(chave);
+
+                    const existente = this.acharExistente(d);
+                    if(existente) { r.situacao = 'atualizacao'; r.alvo = existente.id; r.motivo = `atualiza o cadastro #${existente.id}`; }
+                    return r;
+                });
+
+                const conta = sit => registros.filter(r => r.situacao === sit).length;
+                this.importacao = { arquivo: nomeArquivo, separador, registros };
+
+                document.getElementById('import-kpi-total').innerText = registros.length;
+                document.getElementById('import-kpi-novos').innerText = conta('novo');
+                document.getElementById('import-kpi-updates').innerText = conta('atualizacao');
+                document.getElementById('import-kpi-erros').innerText = conta('rejeitado');
+                document.getElementById('import-preview-nota').innerText =
+                    `${this.escapeHtml(nomeArquivo)} · separador "${separador}" · exibindo ${Math.min(20, registros.length)} de ${registros.length} linhas.`;
+
+                const selos = {
+                    novo:        '<span class="text-emerald-700 bg-emerald-50 border border-emerald-100 rounded px-1.5 py-0.5 text-[10px] font-bold">Novo</span>',
+                    atualizacao: '<span class="text-blue-700 bg-blue-50 border border-blue-100 rounded px-1.5 py-0.5 text-[10px] font-bold">Atualização</span>',
+                    rejeitado:   '<span class="text-red-700 bg-red-50 border border-red-100 rounded px-1.5 py-0.5 text-[10px] font-bold">Rejeitado</span>'
+                };
+                document.getElementById('import-preview').innerHTML = registros.slice(0, 20).map(r => `
+                    <tr class="${r.situacao === 'rejeitado' ? 'bg-red-50/40' : ''}">
+                        <td class="px-4 py-2 text-slate-400">${r.linha}</td>
+                        <td class="px-4 py-2">${selos[r.situacao]}</td>
+                        <td class="px-4 py-2 font-semibold text-slate-800">${this.escapeHtml(r.dados.nome || '(vazio)')}</td>
+                        <td class="px-4 py-2 text-slate-600">${this.escapeHtml(r.dados.categoria || '-')}</td>
+                        <td class="px-4 py-2 text-slate-500 font-mono">${this.escapeHtml(docUtils.mascarar(docUtils.somenteDigitos(r.dados.documento)) || '-')}</td>
+                        <td class="px-4 py-2 text-slate-500">${r.lat != null ? r.lat.toFixed(4) + ', ' + r.lng.toFixed(4) : '-'}</td>
+                        <td class="px-4 py-2 ${r.situacao === 'rejeitado' ? 'text-red-600 font-semibold' : 'text-slate-500'}">${this.escapeHtml(r.motivo || '-')}</td>
+                    </tr>`).join('');
+
+                const aplicaveis = registros.length - conta('rejeitado');
+                const btn = document.getElementById('import-btn-confirmar');
+                btn.disabled = aplicaveis === 0;
+                btn.classList.toggle('opacity-50', aplicaveis === 0);
+                btn.classList.toggle('cursor-not-allowed', aplicaveis === 0);
+                btn.innerText = aplicaveis === 0 ? 'Nenhuma linha válida' : `Confirmar importação (${aplicaveis})`;
+
+                this.mostrarPassoImportacao(2);
+                if(typeof lucide !== 'undefined') lucide.createIcons();
+            },
+
+            // Só sobrescreve o que veio preenchido no CSV. Catálogo, produtos,
+            // galeria, estatísticas, evidências e o id permanecem intocados —
+            // uma planilha administrativa não pode apagar a vitrine que o
+            // empreendedor montou.
+            aplicarAtualizacao(b, d, r) {
+                const set = (campo, valor) => { if(valor !== '' && valor != null) b[campo] = valor; };
+                set('name', d.nome);
+                set('category', d.categoria);
+                set('porte', d.porte);
+                set('cnae', d.cnae);
+                set('address', d.endereco);
+                if(['urban','rural','professional'].indexOf(d.zona) !== -1) b.type = d.zona;
+                if(r.lat != null) { b.lat = r.lat; b.lng = r.lng; }
+                if(d.telefone) b.phone = d.telefone;
+
+                b.legal = b.legal || novaIdentificacaoLegal({});
+                const doc = docUtils.somenteDigitos(d.documento);
+                if(doc) {
+                    b.legal.documento = doc;
+                    b.legal.documentoMascarado = docUtils.mascarar(doc);
+                    b.legal.tipoDocumento = docUtils.tipoDocumento(doc);
+                    b.legal.tipoPessoa = b.legal.tipoDocumento === 'CNPJ' ? 'PJ' : 'PF';
+                }
+                if(d.responsavel) b.legal.responsavelNome = d.responsavel;
+                if(d.email) b.legal.email = d.email;
+                if(d.telefone) b.legal.telefone = d.telefone;
+                b.legal.atualizadoEm = new Date().toISOString();
+
+                b.updatedAt = new Date().toISOString().split('T')[0];
+                normalizeBusiness(b);
+            },
+
+            criarPelaImportacao(d, r) {
+                // Id derivado do maior existente: evita colisão mesmo com vários
+                // cadastros criados no mesmo milissegundo.
+                const maior = appData.businesses.reduce((m, b) => Math.max(m, Number(b.id) || 0), 0);
+                const novo = normalizeBusiness({
+                    id: maior + 1,
+                    name: d.nome,
+                    category: d.categoria,
+                    // Campo vazio fica vazio: preencher com "Não informado" faria a
+                    // completude contar como preenchido algo que ninguém informou,
+                    // e o indicador de qualidade cadastral passaria a mentir.
+                    porte: d.porte || '',
+                    type: ['urban','rural','professional'].indexOf(d.zona) !== -1 ? d.zona : 'urban',
+                    cnae: d.cnae || '',
+                    address: d.endereco || '',
+                    phone: d.telefone || '',
+                    status: 'aberto', hours: null, description: '', catalog: [], tags: [], whatsapp: '',
+                    lat: r.lat != null ? r.lat : null, lng: r.lng != null ? r.lng : null,
+                    protectedLocation: false,
+                    // Importação alimenta a base administrativa, não o portal:
+                    // nasce sem vitrine e pendente de validação municipal.
+                    hasVitrine: false,
+                    origin: 'Base Importada',
+                    validationStatus: 'pendente',
+                    updatedAt: new Date().toISOString().split('T')[0],
+                    color: 'bg-slate-500', icon: 'building-2',
+                    stats: { views: 0, opens: 0, contacts: 0 },
+                    evidences: [],
+                    legal: novaIdentificacaoLegal({
+                        documento: d.documento,
+                        responsavelNome: d.responsavel,
+                        email: d.email,
+                        telefone: d.telefone,
+                        naturezaJuridica: naturezaPorPorte(d.porte),
+                        origemCadastro: 'Base Importada'
+                    })
+                });
+                appData.businesses.push(novo);
+                return novo;
+            },
+
+            confirmarImportacao() {
+                if(!this.importacao) return;
+                const registros = this.importacao.registros;
+                const aplicaveis = registros.filter(r => r.situacao !== 'rejeitado');
+                if(!aplicaveis.length) return this.showToast('Nenhuma linha válida para importar.', 'error');
+
+                let criados = 0, atualizados = 0;
+                const idsImportados = [];
+
+                aplicaveis.forEach(r => {
+                    if(r.situacao === 'atualizacao') {
+                        const b = appData.businesses.find(x => x.id === r.alvo);
+                        if(b) { this.aplicarAtualizacao(b, r.dados, r); atualizados++; idsImportados.push(b.id); }
+                    } else {
+                        const novo = this.criarPelaImportacao(r.dados, r);
+                        criados++; idsImportados.push(novo.id);
+                    }
+                });
+
+                const rejeitados = registros.length - aplicaveis.length;
+
+                // Auditoria com números e nomes — nunca com documento completo.
+                registrarAuditoria({
+                    acao: 'Importação de base econômica', modulo: 'Base Econômica',
+                    entidade: 'business', entidadeId: null,
+                    descricao: `Importação de "${this.importacao.arquivo}": ${criados} criados, ${atualizados} atualizados, ${rejeitados} rejeitados (${registros.length} linhas processadas).`,
+                    dadosPosteriores: { criados, atualizados, rejeitados, total: registros.length, ids: idsImportados }
+                });
+                this.addHistory('Importação de Base', `${criados} criados e ${atualizados} atualizados a partir de ${this.importacao.arquivo}`);
+                storage.save();
+
+                document.getElementById('import-res-criados').innerText = criados;
+                document.getElementById('import-res-atualizados').innerText = atualizados;
+                document.getElementById('import-res-rejeitados').innerText = rejeitados;
+                document.getElementById('import-res-total').innerText = registros.length;
+                document.getElementById('import-result-sub').innerText =
+                    `${this.escapeHtml(this.importacao.arquivo)} · ${registros.length} ${registros.length === 1 ? 'linha processada' : 'linhas processadas'}.`;
+
+                this.ultimosImportados = idsImportados;
+                this.mostrarPassoImportacao(3);
+
+                // Base, qualidade cadastral e mapa refletem a importação na hora.
+                this.renderBaseResumo();
+                this.renderBaseTable();
+                this.renderMgrMapMarkers();
+                this.showToast(`Importação concluída: ${criados} criados, ${atualizados} atualizados.`, 'success');
+                if(typeof lucide !== 'undefined') lucide.createIcons();
+            },
+
+            verRegistrosImportados() {
+                this.closeModal('modal-import');
+                this.navigate('manager', 'base');
+                this.limparFiltrosBase();
+                const sel = document.getElementById('mgr-filter-origin');
+                if(sel) sel.value = 'Base Importada';
+                this.renderBaseTable();
+                this.showToast('Filtrando a base por origem "Base Importada".', 'info');
+            },
+
             limparFiltrosBase() {
-                document.getElementById('mgr-base-search').value = '';
-                document.getElementById('mgr-filter-category').value = '';
-                document.getElementById('mgr-filter-type').value = '';
-                document.getElementById('mgr-filter-status').value = '';
+                ['mgr-base-search','mgr-filter-category','mgr-filter-type','mgr-filter-status',
+                 'mgr-filter-origin','mgr-filter-vitrine','mgr-filter-completude'].forEach(id => {
+                    const el = document.getElementById(id); if(el) el.value = '';
+                });
                 this.renderBaseTable();
             },
 
@@ -6346,6 +7030,19 @@
                 const semVitrine = b.hasVitrine === false;
                 document.getElementById('bd-vitrine-block').classList.toggle('hidden', semVitrine);
                 document.getElementById('bd-sem-vitrine-block').classList.toggle('hidden', !semVitrine);
+                // Completude do registro, com o que falta explicitado: é acionável
+                // para o gestor, diferente de um percentual solto.
+                const pct = calcularCompletudeCadastro(b);
+                const nivel = nivelCompletude(pct);
+                const faltam = faltantesCompletude(b);
+                document.getElementById('bd-completude-pct').innerText = pct + '%';
+                document.getElementById('bd-completude-bar').style.width = pct + '%';
+                document.getElementById('bd-completude-selo').className = `text-[10px] font-bold border rounded px-2 py-0.5 ${nivel.classe}`;
+                document.getElementById('bd-completude-selo').innerText = nivel.rotulo;
+                document.getElementById('bd-completude-falta').innerText = faltam.length
+                    ? 'Falta preencher: ' + faltam.join(', ')
+                    : 'Todos os campos essenciais estão preenchidos.';
+
                 let iconName = b.type === 'urban' ? 'store' : (b.type === 'rural' ? 'tractor' : 'user');
                 document.getElementById('bd-icon').innerHTML = `<i data-lucide="${iconName}" class="w-6 h-6"></i>`;
                 this.openModal('modal-base-details');
@@ -7310,28 +8007,114 @@
             initMgrMap() {
                 const el = document.getElementById('mgr-map');
                 if(!el || typeof L === 'undefined') return;
-                if(this.mgrLeafletMap) { this.mgrLeafletMap.invalidateSize(); return; }
+                // Mapa já criado: só reajusta e redesenha os pontos. Recriar a
+                // instância a cada visita duplicaria marcadores e vazaria memória.
+                if(this.mgrLeafletMap) { this.mgrLeafletMap.invalidateSize(); this.renderMgrMapMarkers(); return; }
                 if(el.offsetParent === null) return;
                 if(el.clientWidth === 0 || el.clientHeight === 0) { requestAnimationFrame(() => this.initMgrMap()); return; }
+
                 this.mgrLeafletMap = L.map('mgr-map', {zoomControl: false}).setView([-25.2983, -54.0933], 13);
                 L.control.zoom({ position: 'bottomleft' }).addTo(this.mgrLeafletMap);
                 L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', { attribution: '&copy; OSM', subdomains: 'abcd', maxZoom: 19 }).addTo(this.mgrLeafletMap);
 
-                appData.businesses.forEach(b => {
-                    if(b.lat == null || b.lng == null) return;
-                    let iconName = b.type === 'urban' ? 'store' : (b.type === 'rural' ? 'tractor' : 'user');
-                    if(!b.protectedLocation) {
-                        const customIcon = L.divIcon({
+                // Camada própria para os pontos: limpar e redesenhar sem tocar
+                // no mapa nem nos tiles.
+                this.mgrMarkerLayer = L.layerGroup().addTo(this.mgrLeafletMap);
+                this.renderMgrMapMarkers();
+            },
+
+            limparFiltrosMapa() {
+                ['mgr-map-search','mgr-map-category','mgr-map-type','mgr-map-origin'].forEach(id => {
+                    const el = document.getElementById(id); if(el) el.value = '';
+                });
+                this.renderMgrMapMarkers();
+            },
+
+            // Pop-up: miniatura administrativa da experiência do cidadão.
+            // Nunca expõe CPF/CNPJ, responsável, e-mail ou evidências — o gestor
+            // que precisar disso abre o cadastro interno, que fica auditado.
+            popupMapa(b) {
+                const sit = this.situacaoVitrine(b);
+                const selo = this.selosVitrine[sit];
+                const pct = calcularCompletudeCadastro(b);
+                const nivel = nivelCompletude(pct);
+                const icone = this.iconePorCategoria(b.category);
+                const validado = b.validationStatus === 'validado';
+
+                const local = b.protectedLocation
+                    ? `<span class="text-emerald-700 font-semibold">Área aproximada</span> · localização protegida`
+                    : this.escapeHtml(b.address || 'Endereço não informado');
+
+                const botaoVitrine = sit === 'sem'
+                    ? `<div class="text-[10px] text-slate-500 bg-slate-100 border border-slate-200 rounded px-2 py-1.5 text-center font-semibold">Somente cadastro municipal</div>`
+                    : `<button onclick="app.viewProfileFromManager(${b.id})" class="w-full bg-white border border-slate-300 text-slate-700 text-[11px] font-bold py-1.5 rounded-lg hover:bg-slate-50 transition">Ver vitrine pública</button>`;
+
+                return `
+                    <div class="p-1 min-w-[220px]">
+                        <div class="flex items-start gap-2.5 mb-2">
+                            <div class="w-9 h-9 ${b.color || 'bg-slate-500'} rounded-lg flex items-center justify-center text-white flex-shrink-0"><i data-lucide="${icone}" class="w-4 h-4"></i></div>
+                            <div class="min-w-0">
+                                <h4 class="font-bold text-slate-900 text-sm leading-tight">${this.escapeHtml(b.name)}</h4>
+                                <p class="text-[10px] font-bold text-slate-400 uppercase mt-0.5">${this.escapeHtml(b.category)} · ${this.escapeHtml(b.porte || 'Porte não informado')}</p>
+                            </div>
+                        </div>
+                        <div class="flex flex-wrap gap-1 mb-2">
+                            <span class="text-[10px] font-bold border rounded px-1.5 py-0.5 ${validado ? 'text-emerald-700 bg-emerald-50 border-emerald-100' : 'text-amber-700 bg-amber-50 border-amber-100'}">${validado ? 'Validado' : 'Pendente'}</span>
+                            <span class="text-[10px] font-bold border rounded px-1.5 py-0.5 ${selo.classe}">${selo.rotulo}</span>
+                            <span class="text-[10px] font-bold border rounded px-1.5 py-0.5 ${nivel.classe}">${pct}% cadastro</span>
+                        </div>
+                        <p class="text-[11px] text-slate-600 mb-2.5 leading-snug">${local}</p>
+                        <div class="flex flex-col gap-1.5">
+                            <button onclick="app.openBaseDetails(${b.id})" class="w-full bg-brand-600 hover:bg-brand-700 text-white text-[11px] font-bold py-1.5 rounded-lg transition">Ver cadastro interno</button>
+                            ${botaoVitrine}
+                        </div>
+                    </div>`;
+            },
+
+            // Redesenha SOMENTE os pontos, a partir dos filtros do mapa. Chamada
+            // ao entrar na tela, ao filtrar e depois de importar.
+            renderMgrMapMarkers() {
+                if(!this.mgrLeafletMap || !this.mgrMarkerLayer) return;
+                this.mgrMarkerLayer.clearLayers();
+
+                const valor = id => (document.getElementById(id) || {}).value || '';
+                const busca = this.normalize(valor('mgr-map-search'));
+                const cat = valor('mgr-map-category');
+                const tipo = valor('mgr-map-type');
+                const origem = valor('mgr-map-origin');
+
+                const lista = appData.businesses.filter(b => {
+                    if(b.lat == null || b.lng == null) return false;
+                    if(cat && b.category !== cat) return false;
+                    if(tipo && b.type !== tipo) return false;
+                    if(origem && (b.origin || '') !== origem) return false;
+                    if(busca && !this.normalize(b.name).includes(busca)) return false;
+                    return true;
+                });
+
+                lista.forEach(b => {
+                    const popup = this.popupMapa(b);
+                    if(b.protectedLocation) {
+                        // Localização protegida continua representada por área, não por ponto.
+                        L.circle([b.lat, b.lng], { color: '#10b981', fillColor: '#10b981', fillOpacity: 0.2, radius: 200, weight: 2 })
+                            .bindPopup(popup).addTo(this.mgrMarkerLayer);
+                    } else {
+                        const iconName = b.type === 'urban' ? 'store' : (b.type === 'rural' ? 'tractor' : 'user');
+                        const icone = L.divIcon({
                             className: 'custom-div-icon',
-                            html: `<div class="w-8 h-8 ${b.color} rounded-full flex items-center justify-center text-white shadow-md border-2 border-white"><i data-lucide="${iconName}" class="w-4 h-4"></i></div>`,
+                            html: `<div class="w-8 h-8 ${b.color || 'bg-slate-500'} rounded-full flex items-center justify-center text-white shadow-md border-2 border-white"><i data-lucide="${iconName}" class="w-4 h-4"></i></div>`,
                             iconSize: [32, 32], iconAnchor: [16, 32], popupAnchor: [0, -32]
                         });
-                        const marker = L.marker([b.lat, b.lng], {icon: customIcon}).addTo(this.mgrLeafletMap);
-                        marker.bindPopup(`<div class="p-2"><p class="text-[10px] font-bold text-slate-400 uppercase mb-1">${b.category}</p><h4 class="font-bold text-slate-900 text-sm">${b.name}</h4><button onclick="app.viewProfileFromManager(${b.id})" class="mt-2 text-brand-600 text-xs font-bold underline">Ver vitrine</button></div>`);
-                    } else {
-                        const circle = L.circle([b.lat, b.lng], { color: '#10b981', fillColor: '#10b981', fillOpacity: 0.2, radius: 200, weight: 2 }).addTo(this.mgrLeafletMap);
-                        circle.bindPopup(`<div class="p-2"><p class="text-[10px] font-bold text-slate-400 uppercase mb-1">${b.category}</p><h4 class="font-bold text-slate-900 text-sm">${b.name}</h4><p class="text-xs text-emerald-600 font-bold mt-1">Localização aproximada</p></div>`);
+                        L.marker([b.lat, b.lng], { icon: icone }).bindPopup(popup).addTo(this.mgrMarkerLayer);
                     }
+                });
+
+                const contador = document.getElementById('mgr-map-count');
+                if(contador) contador.innerText = lista.length;
+
+                // Ícones do Lucide dentro do popup só existem depois de ele abrir.
+                this.mgrLeafletMap.off('popupopen').on('popupopen', () => {
+                    if(typeof lucide !== 'undefined') lucide.createIcons();
                 });
                 setTimeout(() => { if(typeof lucide !== 'undefined') lucide.createIcons(); }, 50);
             },
