@@ -193,7 +193,7 @@
         .hide-scroll { -ms-overflow-style: none; scrollbar-width: none; }
         .hide-scroll::-webkit-scrollbar { display: none; }
 
-        .app-layout { display: none; height: 100vh; flex-direction: column; overflow: hidden; padding-top: 40px; }
+        .app-layout { display: none; height: 100vh; flex-direction: column; overflow: hidden; }
         .app-layout.active { display: flex; animation: fadeIn 0.3s ease-in-out; }
         /* Seletor com especificidade acima dos utilitários do Tailwind (.flex, .hidden):
            sem isso, uma view com class="app-view flex" fica visível mesmo inativa. */
@@ -214,7 +214,7 @@
 
         .sidebar-overlay { display: none; position: fixed; inset: 0; background: rgba(15, 23, 42, 0.5); z-index: 40; }
         .sidebar-overlay.active { display: block; animation: fadeIn 0.2s ease-out; }
-        .mobile-sidebar { transform: translateX(-100%); transition: transform 0.3s ease-in-out; position: fixed; top: 40px; left: 0; bottom: 0; z-index: 50; }
+        .mobile-sidebar { transform: translateX(-100%); transition: transform 0.3s ease-in-out; position: fixed; top: 0; left: 0; bottom: 0; z-index: 50; width: 272px; max-width: 88vw; }
         .mobile-sidebar.open { transform: translateX(0); }
         @media (min-width: 1024px) { .mobile-sidebar { position: static; transform: none; } .sidebar-overlay { display: none !important; } }
 
@@ -228,7 +228,145 @@
         .chat-bubble-user { background-color: #f1f5f9; color: #1e293b; border-bottom-right-radius: 4px; }
         .chat-bubble-bot { background-color: #eff6ff; color: #1d4ed8; border-bottom-left-radius: 4px; border: 1px solid #dbeafe; }
         
-        .demo-bar { position: fixed; top: 0; left: 0; right: 0; height: 40px; background: #0f172a; color: white; z-index: 10000; display: flex; align-items: center; justify-content: space-between; padding: 0 16px; font-size: 12px; }
+        /* =================================================================
+           SIDEBAR UNIFICADA (Etapa 6)
+           Empreendedor e Gestão passam a usar as mesmas classes semânticas.
+           Colunas fixas para ícone e badge: nome longo não desalinha a lista.
+           ================================================================= */
+        .vx-sidebar {
+            width: 272px; flex-shrink: 0; height: 100%;
+            display: flex; flex-direction: column;
+            background: var(--vx-surface);
+            border-right: 1px solid var(--vx-border);
+        }
+        .vx-sidebar-header {
+            height: 64px; flex-shrink: 0;
+            display: flex; align-items: center; justify-content: space-between;
+            gap: 12px; padding: 0 16px;
+            border-bottom: 1px solid var(--vx-border);
+        }
+        .vx-sidebar-nav { flex: 1 1 auto; overflow-y: auto; padding: 12px; }
+        .vx-sidebar-group + .vx-sidebar-group { margin-top: 18px; }
+        .vx-sidebar-group-title {
+            padding: 0 12px 6px;
+            font-size: 0.6875rem; font-weight: 700; letter-spacing: .06em;
+            text-transform: uppercase; color: var(--vx-text-muted);
+        }
+        .vx-sidebar-item {
+            position: relative; width: 100%;
+            display: grid; grid-template-columns: 20px 1fr auto;
+            align-items: center; gap: 12px;
+            min-height: 44px; padding: 10px 12px;
+            border-radius: 10px; border: 0; background: transparent;
+            font-size: 0.875rem; font-weight: 500; color: var(--vx-text-secondary);
+            text-align: left; cursor: pointer;
+            transition: background-color .15s ease, color .15s ease;
+        }
+        .vx-sidebar-item:hover { background: var(--vx-surface-muted); color: var(--vx-text); }
+        .vx-sidebar-item:focus-visible { outline: 2px solid var(--vx-primary); outline-offset: 2px; }
+        .vx-sidebar-item-icon { width: 20px; display: flex; align-items: center; justify-content: center; color: currentColor; }
+        .vx-sidebar-item-label { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+        .vx-sidebar-item-badge {
+            justify-self: end; min-width: 20px; padding: 1px 6px;
+            border-radius: 999px; font-size: 0.6875rem; font-weight: 700; line-height: 1.4;
+            background: var(--vx-danger); color: #fff;
+        }
+        /* Ativo: fundo azul-claro, texto azul e marcador lateral. */
+        .vx-sidebar-item.is-active {
+            background: var(--vx-primary-soft); color: var(--vx-primary); font-weight: 700;
+        }
+        .vx-sidebar-item.is-active::before {
+            content: ''; position: absolute; left: 0; top: 8px; bottom: 8px;
+            width: 3px; border-radius: 0 3px 3px 0; background: var(--vx-primary);
+        }
+        .vx-sidebar-footer {
+            flex-shrink: 0; padding: 12px; border-top: 1px solid var(--vx-border);
+            background: var(--vx-surface-muted);
+        }
+        .vx-sidebar-footer-btn {
+            display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+            min-height: 40px; padding: 8px 10px; border-radius: 8px;
+            font-size: 0.75rem; font-weight: 600; color: var(--vx-text-secondary);
+            background: var(--vx-surface); border: 1px solid var(--vx-border);
+            transition: background-color .15s ease, color .15s ease;
+        }
+        .vx-sidebar-footer-btn:hover { background: var(--vx-surface-muted); color: var(--vx-text); }
+        .vx-sidebar-footer-btn:focus-visible { outline: 2px solid var(--vx-primary); outline-offset: 2px; }
+
+        /* Cabeçalho de painel padronizado */
+        .vx-panel-topbar {
+            min-height: 64px; flex-shrink: 0;
+            display: flex; align-items: center; justify-content: space-between; gap: 12px;
+            padding: 12px 24px; background: var(--vx-surface);
+            border-bottom: 1px solid var(--vx-border);
+        }
+        @media (max-width: 640px) {
+            .vx-panel-topbar { flex-direction: column; align-items: stretch; gap: 8px; padding: 12px 16px; }
+        }
+
+        /* Alvo de toque mínimo em ações com ícone */
+        .vx-icon-btn {
+            display: inline-flex; align-items: center; justify-content: center;
+            min-width: 40px; min-height: 40px; border-radius: 8px;
+            color: var(--vx-text-muted); transition: background-color .15s ease, color .15s ease;
+        }
+        .vx-icon-btn:hover { background: var(--vx-surface-muted); color: var(--vx-text); }
+        .vx-icon-btn:focus-visible { outline: 2px solid var(--vx-primary); outline-offset: 2px; }
+
+        /* Foco visível consistente em toda a interface */
+        button:focus-visible, a:focus-visible, select:focus-visible,
+        input:focus-visible, textarea:focus-visible, summary:focus-visible {
+            outline: 2px solid var(--vx-primary); outline-offset: 2px;
+        }
+
+        /* O widget de acessibilidade é fixo na borda esquerda. Com a sidebar
+           agora branca, ele passava por cima dos itens do menu — deslocamos
+           para depois dela nos painéis, e só no desktop (no mobile a sidebar
+           é drawer e não ocupa a coluna). */
+        /* Alvo de toque de 44px nas ações de modal. O seletor de atributo pega
+           todos os botões de fechar sem precisar marcar cada modal na mão. */
+        .modal-overlay [onclick*="closeModal"] {
+            min-width: 44px; min-height: 44px;
+            display: inline-flex; align-items: center; justify-content: center;
+        }
+
+        /* Com o drawer aberto, o widget de acessibilidade fica por cima do menu
+           e não é utilizável de qualquer forma: sai de cena até o drawer fechar. */
+        body.vx-drawer-open .vx-a11y { display: none; }
+
+        /* Calha à direita nos painéis: o widget de acessibilidade é fixo, então
+           o conteúdo precisa reservar o espaço dele em vez de passar por baixo. */
+        @media (min-width: 1024px) {
+            /* Classe dobrada para vencer o `lg:p-8` do Tailwind sem !important. */
+            .vx-panel-content.vx-panel-content { padding-right: 76px; }
+        }
+
+        @media (min-width: 1024px) {
+            /* Nos painéis a coluna esquerda é da sidebar e o conteúdo começa logo
+               depois; encostamos o widget na borda DIREITA, onde sobra margem e
+               não há colisão com o botão da Vitória (que fica no rodapé). */
+            body[data-layout="manager"] .vx-a11y,
+            body[data-layout="entrepreneur"] .vx-a11y {
+                left: auto; right: 0;
+                border-radius: 0.75rem 0 0 0.75rem;
+                border-right: 0; border-left: 1px solid var(--vx-border);
+            }
+        }
+
+        /* Rodapé público: bloco expansível */
+        .vx-disclosure summary { list-style: none; cursor: pointer; }
+        .vx-disclosure summary::-webkit-details-marker { display: none; }
+        .vx-disclosure summary .vx-chevron { transition: transform .2s ease; }
+        .vx-disclosure[open] summary .vx-chevron { transform: rotate(180deg); }
+
+        /* Quem pediu menos movimento recebe menos movimento. */
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: .001ms !important; animation-iteration-count: 1 !important;
+                transition-duration: .001ms !important; scroll-behavior: auto !important;
+            }
+        }
+
         .step-content { display: none; animation: fadeIn 0.3s ease-in-out; }
         .step-content.active { display: block; }
 
@@ -244,25 +382,8 @@
 </head>
 <body class="bg-slate-50 text-slate-800 font-sans overflow-hidden transition-all duration-300" id="app-body">
 
-    <!-- BARRA DE SESSÃO (substitui a antiga barra de troca de persona) -->
-    <div class="demo-bar flex items-center">
-        <div class="flex items-center gap-3">
-            <span class="font-bold text-white tracking-tight flex items-center gap-1.5"><i data-lucide="layers" class="w-3.5 h-3.5 text-brand-400"></i> VITRYX</span>
-            <span class="text-slate-400 hidden sm:inline">| Medianeira — PR</span>
-        </div>
-        <div class="flex items-center gap-3">
-            <div id="session-info" class="flex items-center gap-2 text-slate-300">
-                <i data-lucide="user" class="w-3.5 h-3.5 text-slate-500"></i>
-                <span id="session-label" class="font-semibold">Visitante (acesso público)</span>
-            </div>
-            <button onclick="app.openLoginModal()" id="btn-session-login" class="px-3 py-1 rounded-lg text-xs font-bold bg-brand-600 hover:bg-brand-500 text-white transition flex items-center gap-1.5"><i data-lucide="log-in" class="w-3.5 h-3.5"></i> Entrar</button>
-            <button onclick="app.openLoginModal()" id="btn-session-switch" class="hidden px-3 py-1 rounded-lg text-xs font-semibold bg-slate-700 hover:bg-slate-600 text-white transition">Trocar perfil</button>
-            <button onclick="app.logout()" id="btn-session-logout" class="hidden px-3 py-1 rounded-lg text-xs font-semibold text-slate-400 hover:text-white transition">Sair</button>
-        </div>
-    </div>
-
     <!-- Accessibility Widget -->
-    <div class="fixed left-0 top-1/2 -translate-y-1/2 z-[9000] flex flex-col gap-1 bg-white border border-slate-200 shadow-md rounded-r-xl p-1">
+    <div class="vx-a11y fixed left-0 top-1/2 -translate-y-1/2 z-[9000] flex flex-col gap-1 bg-white border border-slate-200 shadow-md rounded-r-xl p-1">
         <button onclick="app.adjustFontSize(1)" class="w-8 h-8 flex items-center justify-center text-slate-600 hover:bg-slate-100 rounded-lg font-bold" title="Aumentar fonte">A+</button>
         <span class="text-[9px] font-bold text-slate-400 text-center leading-none" id="a11y-font-level">100%</span>
         <button onclick="app.adjustFontSize(-1)" class="w-8 h-8 flex items-center justify-center text-slate-600 hover:bg-slate-100 rounded-lg font-bold" title="Diminuir fonte">A-</button>
@@ -281,7 +402,7 @@
                     </div>
                     <div class="flex flex-col leading-none">
                         <span class="font-bold text-slate-900 text-[18px] tracking-tight">VITRYX</span>
-                        <span class="text-slate-500 font-semibold text-[9px] uppercase tracking-widest mt-0.5">Medianeira - PR</span>
+                        <span class="text-slate-500 font-semibold text-xs tracking-wide mt-0.5">Medianeira — PR</span>
                     </div>
                 </div>
                 <div class="h-5 w-px bg-slate-200 hidden md:block"></div>
@@ -291,9 +412,22 @@
                 </nav>
             </div>
             <div class="flex items-center gap-2 sm:gap-3">
-                <button onclick="app.startOnboarding()" class="hidden sm:flex items-center gap-2 text-sm font-medium text-slate-600 hover:text-slate-900 transition-colors bg-white border border-slate-200 px-4 py-2 rounded-lg shadow-sm hover:bg-slate-50">
+                <span class="hidden sm:inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-slate-100 border border-slate-200 text-xs font-semibold text-slate-600">
+                    <span class="w-1.5 h-1.5 rounded-full bg-amber-500"></span> Demonstração
+                </span>
+                <button onclick="app.startOnboarding()" class="hidden lg:flex items-center gap-2 text-sm font-medium text-slate-600 hover:text-slate-900 transition-colors bg-white border border-slate-200 px-4 py-2 rounded-lg shadow-sm hover:bg-slate-50">
                     <i data-lucide="store" class="w-4 h-4"></i> Sou Empreendedor
                 </button>
+
+                <!-- Sessão integrada ao header (antes era uma faixa preta separada) -->
+                <div class="h-5 w-px bg-slate-200 hidden sm:block"></div>
+                <div id="session-info" class="hidden md:flex items-center gap-1.5 text-slate-600 max-w-[220px]">
+                    <i data-lucide="user" class="w-4 h-4 text-slate-400 flex-shrink-0"></i>
+                    <span id="session-label" class="text-xs font-semibold truncate">Visitante (acesso público)</span>
+                </div>
+                <button onclick="app.openLoginModal()" id="btn-session-login" aria-label="Entrar na plataforma" class="inline-flex items-center gap-1.5 px-3 py-2 rounded-lg text-xs font-bold bg-brand-600 hover:bg-brand-700 text-white transition min-h-[40px]"><i data-lucide="log-in" class="w-4 h-4"></i> <span class="hidden sm:inline">Entrar</span></button>
+                <button onclick="app.openLoginModal()" id="btn-session-switch" aria-label="Trocar de perfil" class="hidden items-center gap-1.5 px-3 py-2 rounded-lg text-xs font-semibold bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-200 transition min-h-[40px]"><i data-lucide="repeat" class="w-4 h-4"></i> <span class="hidden sm:inline">Trocar perfil</span></button>
+                <button onclick="app.logout()" id="btn-session-logout" aria-label="Sair da sessão" class="hidden items-center gap-1.5 px-3 py-2 rounded-lg text-xs font-semibold text-slate-600 hover:bg-slate-100 transition min-h-[40px]"><i data-lucide="log-out" class="w-4 h-4"></i> <span class="hidden sm:inline">Sair</span></button>
             </div>
         </header>
 
@@ -354,29 +488,78 @@
                         <p class="text-xs text-slate-400 mt-5 text-center">Categorias sem negócio cadastrado viram oportunidade registrada para a Prefeitura.</p>
                     </div>
 
-                    <footer class="mt-12 border-t border-slate-200 pt-8 pb-4">
-                        <div class="max-w-4xl mx-auto px-4">
-                            <div class="flex flex-col sm:flex-row sm:items-center gap-3 mb-4">
-                                <span class="text-sm font-extrabold text-slate-900 tracking-tight">VITRYX CONECTA</span>
-                                <span class="text-xs text-slate-500">Plataforma pública de inteligência econômica territorial — Município de Medianeira/PR.</span>
+                    <footer class="mt-12 border-t border-slate-200 bg-white">
+                        <div class="max-w-5xl mx-auto px-4 py-8">
+                            <div class="grid grid-cols-1 md:grid-cols-[1.4fr_1fr_1fr_1fr] gap-6 mb-6">
+                                <div>
+                                    <div class="flex items-center gap-2 mb-2">
+                                        <div class="w-7 h-7 rounded-lg bg-brand-600 flex items-center justify-center text-white"><i data-lucide="layers" class="w-4 h-4"></i></div>
+                                        <span class="text-sm font-extrabold text-slate-900 tracking-tight">VITRYX CONECTA</span>
+                                    </div>
+                                    <p class="text-xs text-slate-500 leading-relaxed max-w-xs">Plataforma pública de inteligência econômica territorial do Município de Medianeira/PR. Conecta a demanda da população e do poder público à oferta de negócios locais.</p>
+                                </div>
+                                <div>
+                                    <h4 class="text-xs font-bold text-slate-900 mb-2">Privacidade</h4>
+                                    <ul class="space-y-1.5 text-xs text-slate-500">
+                                        <li>Busca sem cadastro e sem login</li>
+                                        <li>Sem rastreamento individual</li>
+                                        <li>CPF/CNPJ nunca exibido publicamente</li>
+                                        <li>Endereço residencial e rural protegido</li>
+                                    </ul>
+                                </div>
+                                <div>
+                                    <h4 class="text-xs font-bold text-slate-900 mb-2">Transparência dos dados</h4>
+                                    <ul class="space-y-1.5 text-xs text-slate-500">
+                                        <li>Origem de cada cadastro registrada</li>
+                                        <li>Validação municipal antes da publicação</li>
+                                        <li>Indicadores agregados e anônimos</li>
+                                        <li>Exportação em formato aberto</li>
+                                    </ul>
+                                </div>
+                                <div>
+                                    <h4 class="text-xs font-bold text-slate-900 mb-2">Sobre a plataforma</h4>
+                                    <ul class="space-y-1.5 text-xs text-slate-500">
+                                        <li><button onclick="app.openModal('modal-how-it-works')" class="hover:text-brand-600 transition-colors text-left">Como funciona</button></li>
+                                        <li><button onclick="app.navigate('public', 'radar')" class="hover:text-brand-600 transition-colors text-left">Mapa territorial</button></li>
+                                        <li><button onclick="app.startOnboarding()" class="hover:text-brand-600 transition-colors text-left">Cadastrar meu negócio</button></li>
+                                    </ul>
+                                </div>
                             </div>
-                            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-5">
-                                <div class="flex items-start gap-2">
-                                    <i data-lucide="activity" class="w-4 h-4 text-slate-400 flex-shrink-0 mt-0.5"></i>
-                                    <p class="text-[11px] text-slate-500 leading-relaxed">Operada com meta de disponibilidade de <strong class="text-slate-700">no mínimo 95%</strong>, com monitoramento e política de backup e restauração.</p>
+
+                            <!-- Bloco técnico recolhido: a informação continua toda aqui,
+                                 sem virar paredão na primeira dobra do rodapé. -->
+                            <details class="vx-disclosure border border-slate-200 rounded-xl bg-slate-50 mb-5">
+                                <summary class="flex items-center justify-between gap-3 px-4 py-3 min-h-[44px]">
+                                    <span class="flex items-center gap-2 text-xs font-bold text-slate-700"><i data-lucide="shield-check" class="w-4 h-4 text-slate-400"></i> Segurança, dados e transparência</span>
+                                    <i data-lucide="chevron-down" class="w-4 h-4 text-slate-400 vx-chevron"></i>
+                                </summary>
+                                <div class="px-4 pb-4 pt-1 border-t border-slate-200 space-y-4">
+                                    <div>
+                                        <p class="text-xs font-bold text-slate-700 mb-2">Protótipo atual (demonstração)</p>
+                                        <ul class="space-y-1.5 text-xs text-slate-500 leading-relaxed">
+                                            <li>• Aplicação em página única, executada no navegador, sem servidor.</li>
+                                            <li>• Dados demonstrativos e fictícios, guardados no <code class="text-slate-600">localStorage</code> do próprio dispositivo.</li>
+                                            <li>• Exportação em CSV, JSON e GeoJSON já funcional, com minimização de dados pessoais.</li>
+                                            <li>• Nenhum dado sai do navegador: não há envio para servidores externos.</li>
+                                        </ul>
+                                    </div>
+                                    <div>
+                                        <p class="text-xs font-bold text-slate-700 mb-2">Arquitetura prevista para o piloto</p>
+                                        <ul class="space-y-1.5 text-xs text-slate-500 leading-relaxed">
+                                            <li>• Meta de disponibilidade de no mínimo 95%, com monitoramento contínuo.</li>
+                                            <li>• Tráfego protegido por HTTPS/TLS em todas as requisições.</li>
+                                            <li>• Política de backup e restauração dos dados municipais.</li>
+                                            <li>• Reversibilidade garantida: a base é do município e pode ser levada a qualquer momento.</li>
+                                            <li>• Autenticação, políticas de senha e controle de sessão executados no backend.</li>
+                                        </ul>
+                                    </div>
+                                    <p class="text-xs text-slate-400 italic">Os itens de arquitetura descrevem o que será implantado no piloto. Não estão ativos nesta demonstração.</p>
                                 </div>
-                                <div class="flex items-start gap-2">
-                                    <i data-lucide="lock" class="w-4 h-4 text-slate-400 flex-shrink-0 mt-0.5"></i>
-                                    <p class="text-[11px] text-slate-500 leading-relaxed">Todo o tráfego é protegido por <strong class="text-slate-700">criptografia em trânsito (HTTPS/TLS)</strong>, com controle de acesso por perfil e registro de logs.</p>
-                                </div>
-                                <div class="flex items-start gap-2">
-                                    <i data-lucide="database" class="w-4 h-4 text-slate-400 flex-shrink-0 mt-0.5"></i>
-                                    <p class="text-[11px] text-slate-500 leading-relaxed">A base econômica é <strong class="text-slate-700">propriedade do Município</strong> e exportável a qualquer tempo em formato aberto, garantindo a reversibilidade dos dados.</p>
-                                </div>
-                            </div>
-                            <div class="border-t border-slate-100 pt-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
-                                <p class="text-[11px] text-slate-400">O cidadão não se cadastra e não é identificado: os dados de uso são anônimos e agregados (LGPD).</p>
-                                <p class="text-[11px] text-slate-400">Sem ranqueamento pago, patrocínio ou destaque comercial. A plataforma não realiza contratações.</p>
+                            </details>
+
+                            <div class="pt-4 border-t border-slate-200 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+                                <p class="text-xs text-slate-500">Acesso público sem cadastro • Sem ranqueamento pago • A VITRYX não intermedeia contratações.</p>
+                                <p class="text-xs text-slate-400">Demonstração — dados fictícios</p>
                             </div>
                         </div>
                     </footer>
@@ -574,41 +757,57 @@
         <div class="sidebar-overlay" id="ent-sidebar-overlay" onclick="app.toggleSidebar('ent')"></div>
         <div class="flex h-full w-full overflow-hidden relative">
             <!-- Sidebar -->
-            <div class="w-64 bg-white border-r border-slate-200 h-full flex flex-col flex-shrink-0 mobile-sidebar" id="ent-sidebar">
-                <div class="h-16 flex items-center px-6 border-b border-slate-200 justify-between">
-                    <div class="flex items-center">
-                        <div class="w-8 h-8 rounded-lg bg-brand-600 text-white flex items-center justify-center font-bold mr-3 shadow-sm"><i data-lucide="store" class="w-4 h-4"></i></div>
-                        <div class="leading-tight">
-                            <div class="font-bold text-slate-900 text-sm">Painel Lojista</div>
-                            <div class="text-[10px] text-slate-500 font-medium">Vitryx Medianeira</div>
+            <div class="vx-sidebar mobile-sidebar" id="ent-sidebar">
+                <div class="vx-sidebar-header">
+                    <div class="flex items-center gap-2.5 min-w-0">
+                        <div class="w-8 h-8 rounded-lg bg-brand-600 text-white flex items-center justify-center flex-shrink-0"><i data-lucide="store" class="w-4 h-4"></i></div>
+                        <div class="leading-tight min-w-0">
+                            <div class="font-bold text-slate-900 text-sm truncate">Painel do Empreendedor</div>
+                            <div class="text-xs text-slate-500 truncate">Vitryx Medianeira</div>
                         </div>
                     </div>
-                    <button class="lg:hidden text-slate-400 hover:text-slate-600" onclick="app.toggleSidebar('ent')"><i data-lucide="x" class="w-5 h-5"></i></button>
+                    <button class="lg:hidden vx-icon-btn" aria-label="Fechar menu" onclick="app.toggleSidebar('ent')"><i data-lucide="x" class="w-5 h-5"></i></button>
                 </div>
-                <div class="p-6 pb-2">
-                    <label class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2 block">Atuando como:</label>
-                    <select id="ent-business-selector" onchange="app.loginAs(this.value)" class="w-full bg-slate-50 border border-slate-200 rounded-lg p-2 text-sm font-semibold text-slate-800 outline-none focus:border-brand-500 cursor-pointer shadow-sm"></select>
+                <div class="px-3 pt-3">
+                    <label class="text-xs font-bold text-slate-500 mb-1.5 block" for="ent-business-selector">Atuando como</label>
+                    <select id="ent-business-selector" onchange="app.loginAs(this.value)" class="w-full bg-slate-50 border border-slate-200 rounded-lg p-2 text-sm font-semibold text-slate-800 outline-none focus:border-brand-500 transition"></select>
                 </div>
-                <nav class="px-4 space-y-1 flex-grow mt-4" id="nav-entrepreneur">
-                    <button onclick="app.navigate('entrepreneur', 'overview')" data-target="overview" class="w-full flex items-center gap-3 px-3 py-2.5 text-slate-600 rounded-lg font-medium text-sm hover:bg-slate-50 transition-colors"><i data-lucide="pie-chart" class="w-4 h-4"></i> Visão Geral</button>
-                    <button onclick="app.navigate('entrepreneur', 'vitrine')" data-target="vitrine" class="w-full flex items-center gap-3 px-3 py-2.5 text-slate-600 rounded-lg font-medium text-sm hover:bg-slate-50 transition-colors"><i data-lucide="layout-template" class="w-4 h-4"></i> Editar Vitrine</button>
-                    <button onclick="app.navigate('entrepreneur', 'products')" data-target="products" class="w-full flex items-center gap-3 px-3 py-2.5 text-slate-600 rounded-lg font-medium text-sm hover:bg-slate-50 transition-colors"><i data-lucide="package" class="w-4 h-4"></i> Catálogo</button>
+                <nav class="vx-sidebar-nav" id="nav-entrepreneur" aria-label="Navegação do Empreendedor">
+                    <div class="vx-sidebar-group">
+                        <p class="vx-sidebar-group-title">Minha vitrine</p>
+                        <button onclick="app.navigate('entrepreneur', 'overview')" data-target="overview" class="vx-sidebar-item"><span class="vx-sidebar-item-icon"><i data-lucide="layout-dashboard" class="w-[18px] h-[18px]"></i></span><span class="vx-sidebar-item-label">Visão Geral</span><span></span></button>
+                        <button onclick="app.navigate('entrepreneur', 'vitrine')" data-target="vitrine" class="vx-sidebar-item"><span class="vx-sidebar-item-icon"><i data-lucide="store" class="w-[18px] h-[18px]"></i></span><span class="vx-sidebar-item-label">Editar Vitrine</span><span></span></button>
+                        <button onclick="app.navigate('entrepreneur', 'products')" data-target="products" class="vx-sidebar-item"><span class="vx-sidebar-item-icon"><i data-lucide="package" class="w-[18px] h-[18px]"></i></span><span class="vx-sidebar-item-label">Catálogo</span><span></span></button>
+                    </div>
                 </nav>
+                <div class="vx-sidebar-footer">
+                    <div class="flex items-center gap-2.5 px-1 py-1.5">
+                        <div class="w-9 h-9 rounded-full bg-slate-200 text-slate-700 flex items-center justify-center text-xs font-bold flex-shrink-0" id="ent-user-initials">--</div>
+                        <div class="min-w-0 leading-tight">
+                            <div class="text-sm font-bold text-slate-900 truncate" id="ent-user-name">-</div>
+                            <div class="text-xs text-slate-500 truncate" id="ent-user-role">-</div>
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-2 gap-2 mt-2">
+                        <button onclick="app.openMinhaConta()" class="vx-sidebar-footer-btn"><i data-lucide="user-cog" class="w-4 h-4"></i> Minha conta</button>
+                        <button onclick="app.logout()" class="vx-sidebar-footer-btn"><i data-lucide="log-out" class="w-4 h-4"></i> Sair</button>
+                    </div>
+                </div>
             </div>
 
             <!-- Content Area -->
             <div class="flex-grow flex flex-col h-full overflow-hidden relative">
-                <div class="h-16 bg-white border-b border-slate-200 flex items-center justify-between px-6 flex-shrink-0 z-10">
-                    <div class="flex items-center gap-3">
-                        <button onclick="app.toggleSidebar('ent')" class="lg:hidden text-slate-500 hover:bg-slate-100 p-1.5 rounded-lg"><i data-lucide="menu" class="w-5 h-5"></i></button>
-                        <h2 class="font-bold text-slate-900 text-lg" id="ent-topbar-title">Visão Geral</h2>
+                <div class="vx-panel-topbar z-10">
+                    <div class="flex items-center gap-3 min-w-0">
+                        <button onclick="app.toggleSidebar('ent')" aria-label="Abrir menu" class="lg:hidden vx-icon-btn"><i data-lucide="menu" class="w-5 h-5"></i></button>
+                        <h2 class="font-bold text-slate-900 text-lg truncate" id="ent-topbar-title">Visão Geral</h2>
                     </div>
                     <div class="flex items-center gap-3">
                         <button onclick="app.viewMyProfilePublicly()" class="text-brand-600 text-sm font-semibold hover:underline flex items-center gap-1"><i data-lucide="external-link" class="w-4 h-4"></i> Ver Vitrine</button>
                     </div>
                 </div>
 
-                <div class="flex-grow overflow-y-auto p-4 sm:p-6 lg:p-8">
+                <div class="vx-panel-content flex-grow overflow-y-auto p-4 sm:p-6 lg:p-8">
                     <!-- VIEW: OVERVIEW -->
                     <div id="view-ent-overview" class="app-view active space-y-6 max-w-5xl mx-auto">
                         <!-- Cadastro enviado e ainda sem vitrine: painel em modo "em análise" -->
@@ -618,7 +817,7 @@
                             <p class="text-sm text-slate-600 mt-2 max-w-md mx-auto">Sua solicitação está na fila de validação da Administração Municipal. Assim que for aprovada, sua vitrine pública fica no ar e este painel passa a mostrar os indicadores de visitas e contatos.</p>
                             <div class="mt-6 inline-flex items-center gap-2 text-xs font-bold text-amber-700 bg-amber-50 border border-amber-200 px-3 py-1.5 rounded-full"><div class="w-2 h-2 rounded-full bg-amber-500"></div> Em análise pela Prefeitura</div>
                             <div class="mt-6 hidden text-left max-w-md mx-auto bg-slate-50 border border-slate-200 rounded-xl p-4" id="ent-pending-resumo"></div>
-                            <p class="text-[11px] text-slate-400 mt-6">Na demonstração, entre como Gestão Municipal e aprove o cadastro em "Validações" para ver a vitrine publicada.</p>
+                            <p class="text-xs text-slate-400 mt-6">Na demonstração, entre como Gestão Municipal e aprove o cadastro em "Validações" para ver a vitrine publicada.</p>
                         </div>
 
                         <div id="ent-active-state" class="space-y-6">
@@ -783,62 +982,69 @@
     <div id="layout-manager" class="app-layout bg-slate-100">
         <div class="sidebar-overlay" id="mgr-sidebar-overlay" onclick="app.toggleSidebar('mgr')"></div>
         <div class="flex h-full w-full overflow-hidden relative">
-            <!-- Sidebar Dark -->
-            <div class="w-64 bg-slate-900 text-slate-300 border-r border-slate-800 h-full flex flex-col flex-shrink-0 mobile-sidebar" id="mgr-sidebar">
-                <div class="h-16 flex items-center px-6 border-b border-slate-800 bg-slate-950 justify-between">
-                    <div class="flex items-center cursor-pointer" onclick="app.navigate('public', 'landing')">
-                        <div class="w-8 h-8 rounded bg-brand-600 text-white flex items-center justify-center font-bold mr-3"><i data-lucide="shield" class="w-4 h-4"></i></div>
-                        <div class="leading-tight">
-                            <div class="font-bold text-white text-sm">VITRYX Gestão</div>
-                            <div class="text-[10px] text-brand-400">Medianeira - PR</div>
+            <!-- Sidebar (unificada — Etapa 6) -->
+            <div class="vx-sidebar mobile-sidebar" id="mgr-sidebar">
+                <div class="vx-sidebar-header">
+                    <div class="flex items-center gap-2.5 cursor-pointer min-w-0" onclick="app.navigate('public', 'landing')">
+                        <div class="w-8 h-8 rounded-lg bg-brand-600 text-white flex items-center justify-center flex-shrink-0"><i data-lucide="shield" class="w-4 h-4"></i></div>
+                        <div class="leading-tight min-w-0">
+                            <div class="font-bold text-slate-900 text-sm truncate">VITRYX Gestão</div>
+                            <div class="text-xs text-slate-500 truncate">Medianeira — PR</div>
                         </div>
                     </div>
-                    <button class="lg:hidden text-slate-400 hover:text-white" onclick="app.toggleSidebar('mgr')"><i data-lucide="x" class="w-5 h-5"></i></button>
+                    <button class="lg:hidden vx-icon-btn" aria-label="Fechar menu" onclick="app.toggleSidebar('mgr')"><i data-lucide="x" class="w-5 h-5"></i></button>
                 </div>
-                <nav class="p-4 space-y-1 flex-grow overflow-y-auto hide-scroll" id="nav-manager">
-                    <p class="px-3 pt-4 pb-1 text-[10px] font-bold text-slate-500 uppercase tracking-wider">Inteligência Territorial</p>
-                    <button onclick="app.navigate('manager', 'overview')" data-target="overview" class="w-full flex items-center gap-3 px-3 py-2.5 text-slate-300 rounded-lg font-medium text-sm hover:bg-slate-800 hover:text-white transition-colors"><i data-lucide="globe" class="w-4 h-4"></i> Visão Territorial</button>
-                    <button onclick="app.navigate('manager', 'base')" data-target="base" class="w-full flex items-center gap-3 px-3 py-2.5 text-slate-300 rounded-lg font-medium text-sm hover:bg-slate-800 hover:text-white transition-colors"><i data-lucide="database" class="w-4 h-4"></i> Base Econômica</button>
-                    <button onclick="app.navigate('manager', 'map')" data-target="map" class="w-full flex items-center gap-3 px-3 py-2.5 text-slate-300 rounded-lg font-medium text-sm hover:bg-slate-800 hover:text-white transition-colors"><i data-lucide="map" class="w-4 h-4"></i> Mapa Territorial</button>
-                    <button onclick="app.navigate('manager', 'gaps')" data-target="gaps" class="w-full flex items-center gap-3 px-3 py-2.5 text-slate-300 rounded-lg font-medium text-sm hover:bg-slate-800 hover:text-white transition-colors"><i data-lucide="search-x" class="w-4 h-4"></i> Buscas e Oportunidades</button>
-                    <button onclick="app.navigate('manager', 'impact')" data-target="impact" class="w-full flex items-center gap-3 px-3 py-2.5 text-slate-300 rounded-lg font-medium text-sm hover:bg-slate-800 hover:text-white transition-colors"><i data-lucide="bar-chart-2" class="w-4 h-4"></i> Impacto e Resultados</button>
-                    <p class="px-3 pt-4 pb-1 text-[10px] font-bold text-slate-500 uppercase tracking-wider">Operação</p>
-                    <button onclick="app.navigate('manager', 'validations')" data-target="validations" class="w-full flex items-center gap-3 px-3 py-2.5 text-slate-300 rounded-lg font-medium text-sm hover:bg-slate-800 hover:text-white transition-colors"><i data-lucide="check-square" class="w-4 h-4"></i> Validações <span id="mgr-badge-val" class="ml-auto bg-accent-500 text-white text-[10px] px-1.5 py-0.5 rounded font-bold hidden">0</span></button>
-                    <button onclick="app.navigate('manager', 'demands')" data-target="demands" class="w-full flex items-center gap-3 px-3 py-2.5 text-slate-300 rounded-lg font-medium text-sm hover:bg-slate-800 hover:text-white transition-colors"><i data-lucide="clipboard-list" class="w-4 h-4"></i> Demandas Públicas</button>
-                    <button onclick="app.navigate('manager', 'purchases')" data-target="purchases" class="w-full flex items-center gap-3 px-3 py-2.5 text-slate-300 rounded-lg font-medium text-sm hover:bg-slate-800 hover:text-white transition-colors"><i data-lucide="shopping-cart" class="w-4 h-4"></i> Compras Públicas</button>
-                    <p class="px-3 pt-4 pb-1 text-[10px] font-bold text-slate-500 uppercase tracking-wider" id="nav-grupo-admin">Administração</p>
-                    <button onclick="app.navigate('manager', 'history')" data-target="history" class="w-full flex items-center gap-3 px-3 py-2.5 text-slate-300 rounded-lg font-medium text-sm hover:bg-slate-800 hover:text-white transition-colors"><i data-lucide="file-clock" class="w-4 h-4"></i> Auditoria</button>
-                    <div id="nav-admin-restrito">
-                    <button onclick="app.navigate('manager', 'users')" data-target="users" class="w-full flex items-center gap-3 px-3 py-2.5 text-slate-300 rounded-lg font-medium text-sm hover:bg-slate-800 hover:text-white transition-colors"><i data-lucide="users" class="w-4 h-4"></i> Usuários e Permissões</button>
-                    <button onclick="app.navigate('manager', 'settings')" data-target="settings" class="w-full flex items-center gap-3 px-3 py-2.5 text-slate-300 rounded-lg font-medium text-sm hover:bg-slate-800 hover:text-white transition-colors"><i data-lucide="settings" class="w-4 h-4"></i> Configurações</button>
+                <nav class="vx-sidebar-nav" id="nav-manager" aria-label="Navegação da Gestão Municipal">
+                    <div class="vx-sidebar-group">
+                        <p class="vx-sidebar-group-title">Inteligência Territorial</p>
+                        <button onclick="app.navigate('manager', 'overview')" data-target="overview" class="vx-sidebar-item"><span class="vx-sidebar-item-icon"><i data-lucide="globe" class="w-[18px] h-[18px]"></i></span><span class="vx-sidebar-item-label">Visão Territorial</span><span></span></button>
+                        <button onclick="app.navigate('manager', 'base')" data-target="base" class="vx-sidebar-item"><span class="vx-sidebar-item-icon"><i data-lucide="database" class="w-[18px] h-[18px]"></i></span><span class="vx-sidebar-item-label">Base Econômica</span><span></span></button>
+                        <button onclick="app.navigate('manager', 'map')" data-target="map" class="vx-sidebar-item"><span class="vx-sidebar-item-icon"><i data-lucide="map" class="w-[18px] h-[18px]"></i></span><span class="vx-sidebar-item-label">Mapa Territorial</span><span></span></button>
+                        <button onclick="app.navigate('manager', 'gaps')" data-target="gaps" class="vx-sidebar-item"><span class="vx-sidebar-item-icon"><i data-lucide="search-x" class="w-[18px] h-[18px]"></i></span><span class="vx-sidebar-item-label">Buscas e Oportunidades</span><span></span></button>
+                        <button onclick="app.navigate('manager', 'impact')" data-target="impact" class="vx-sidebar-item"><span class="vx-sidebar-item-icon"><i data-lucide="bar-chart-2" class="w-[18px] h-[18px]"></i></span><span class="vx-sidebar-item-label">Impacto e Resultados</span><span></span></button>
+                    </div>
+                    <div class="vx-sidebar-group">
+                        <p class="vx-sidebar-group-title">Operação</p>
+                        <button onclick="app.navigate('manager', 'validations')" data-target="validations" class="vx-sidebar-item"><span class="vx-sidebar-item-icon"><i data-lucide="check-square" class="w-[18px] h-[18px]"></i></span><span class="vx-sidebar-item-label">Validações</span><span id="mgr-badge-val" class="vx-sidebar-item-badge hidden">0</span></button>
+                        <button onclick="app.navigate('manager', 'demands')" data-target="demands" class="vx-sidebar-item"><span class="vx-sidebar-item-icon"><i data-lucide="clipboard-list" class="w-[18px] h-[18px]"></i></span><span class="vx-sidebar-item-label">Demandas Públicas</span><span></span></button>
+                        <button onclick="app.navigate('manager', 'purchases')" data-target="purchases" class="vx-sidebar-item"><span class="vx-sidebar-item-icon"><i data-lucide="shopping-cart" class="w-[18px] h-[18px]"></i></span><span class="vx-sidebar-item-label">Compras Públicas</span><span></span></button>
+                    </div>
+                    <div class="vx-sidebar-group">
+                        <p class="vx-sidebar-group-title">Administração</p>
+                        <button onclick="app.navigate('manager', 'history')" data-target="history" class="vx-sidebar-item"><span class="vx-sidebar-item-icon"><i data-lucide="file-clock" class="w-[18px] h-[18px]"></i></span><span class="vx-sidebar-item-label">Auditoria</span><span></span></button>
+                        <div id="nav-admin-restrito">
+                        <button onclick="app.navigate('manager', 'users')" data-target="users" class="vx-sidebar-item"><span class="vx-sidebar-item-icon"><i data-lucide="users" class="w-[18px] h-[18px]"></i></span><span class="vx-sidebar-item-label">Usuários e Permissões</span><span></span></button>
+                        <button onclick="app.navigate('manager', 'settings')" data-target="settings" class="vx-sidebar-item"><span class="vx-sidebar-item-icon"><i data-lucide="settings" class="w-[18px] h-[18px]"></i></span><span class="vx-sidebar-item-label">Configurações</span><span></span></button>
+                        </div>
                     </div>
                 </nav>
-                <div class="p-3 border-t border-slate-800 flex-shrink-0">
-                    <div class="flex items-center gap-3 px-2 py-2">
-                        <div class="w-8 h-8 rounded-full bg-slate-700 text-slate-200 flex items-center justify-center text-xs font-bold flex-shrink-0" id="mgr-user-initials">--</div>
+                <div class="vx-sidebar-footer">
+                    <div id="mgr-readonly-side" class="hidden mb-2 flex items-center gap-1.5 px-2.5 py-2 rounded-lg bg-indigo-50 border border-indigo-100 text-xs font-bold text-indigo-700"><i data-lucide="eye" class="w-3.5 h-3.5 flex-shrink-0"></i> Modo consulta</div>
+                    <div class="flex items-center gap-2.5 px-1 py-1.5">
+                        <div class="w-9 h-9 rounded-full bg-slate-200 text-slate-700 flex items-center justify-center text-xs font-bold flex-shrink-0" id="mgr-user-initials">--</div>
                         <div class="min-w-0 leading-tight">
-                            <div class="text-sm font-bold text-white truncate" id="mgr-user-name">-</div>
-                            <div class="text-[10px] text-slate-400 truncate" id="mgr-user-role">-</div>
+                            <div class="text-sm font-bold text-slate-900 truncate" id="mgr-user-name">-</div>
+                            <div class="text-xs text-slate-500 truncate" id="mgr-user-role">-</div>
                         </div>
                     </div>
-                    <div class="flex gap-2 mt-2">
-                        <button onclick="app.openMinhaConta()" class="flex-1 flex items-center justify-center gap-1.5 px-2 py-2 text-slate-300 rounded-lg text-xs font-semibold hover:bg-slate-800 hover:text-white transition-colors"><i data-lucide="user-cog" class="w-3.5 h-3.5"></i> Minha conta</button>
-                        <button onclick="app.logout()" class="flex-1 flex items-center justify-center gap-1.5 px-2 py-2 text-slate-300 rounded-lg text-xs font-semibold hover:bg-slate-800 hover:text-white transition-colors"><i data-lucide="log-out" class="w-3.5 h-3.5"></i> Sair</button>
+                    <div class="grid grid-cols-2 gap-2 mt-2">
+                        <button onclick="app.openMinhaConta()" class="vx-sidebar-footer-btn"><i data-lucide="user-cog" class="w-4 h-4"></i> Minha conta</button>
+                        <button onclick="app.logout()" class="vx-sidebar-footer-btn"><i data-lucide="log-out" class="w-4 h-4"></i> Sair</button>
                     </div>
                 </div>
             </div>
 
             <!-- Content Area -->
             <div class="flex-grow flex flex-col h-full overflow-hidden relative">
-                <div class="h-16 bg-white border-b border-slate-200 flex items-center justify-between px-6 flex-shrink-0 z-10 shadow-sm">
-                    <div class="flex items-center gap-3">
-                        <button onclick="app.toggleSidebar('mgr')" class="lg:hidden text-slate-500 hover:bg-slate-100 p-1.5 rounded-lg"><i data-lucide="menu" class="w-5 h-5"></i></button>
-                        <h2 class="font-bold text-slate-900 text-lg" id="mgr-topbar-title">Visão Territorial</h2>
+                <div class="vx-panel-topbar z-10">
+                    <div class="flex items-center gap-3 min-w-0">
+                        <button onclick="app.toggleSidebar('mgr')" aria-label="Abrir menu" class="lg:hidden vx-icon-btn"><i data-lucide="menu" class="w-5 h-5"></i></button>
+                        <h2 class="font-bold text-slate-900 text-lg truncate" id="mgr-topbar-title">Visão Territorial</h2>
                     </div>
-                    <div id="mgr-readonly-banner" class="hidden flex items-center gap-2 px-3 py-1.5 bg-indigo-50 border border-indigo-100 rounded-lg text-xs font-bold text-indigo-700"><i data-lucide="eye" class="w-3.5 h-3.5"></i> Acesso somente para consulta</div>
+                    <div id="mgr-readonly-banner" class="hidden items-center gap-2 px-3 py-1.5 bg-indigo-50 border border-indigo-100 rounded-lg text-xs font-bold text-indigo-700 flex-shrink-0"><i data-lucide="eye" class="w-4 h-4"></i> Acesso somente para consulta</div>
                 </div>
 
-                <div class="flex-grow overflow-y-auto p-4 sm:p-6 lg:p-8">
+                <div class="vx-panel-content flex-grow overflow-y-auto p-4 sm:p-6 lg:p-8">
                     <!-- VIEW: MGR OVERVIEW -->
                     <div id="view-mgr-overview" class="app-view active space-y-6 max-w-6xl mx-auto">
                         <!-- PANORAMA ECONÔMICO -->
@@ -856,7 +1062,7 @@
                             <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm border-b-4 border-b-slate-400">
                                 <div class="flex items-center justify-between mb-1">
                                     <div class="text-sm font-semibold text-slate-500 uppercase tracking-wide">Buscas Registradas</div>
-                                    <span class="text-[9px] font-bold uppercase tracking-wide text-slate-500 bg-slate-100 border border-slate-200 rounded px-1.5 py-0.5" title="A base ainda não guarda data por evento: este número é acumulado desde o início da demonstração.">Acumulado</span>
+                                    <span class="text-xs font-bold uppercase tracking-wide text-slate-500 bg-slate-100 border border-slate-200 rounded px-1.5 py-0.5" title="A base ainda não guarda data por evento: este número é acumulado desde o início da demonstração.">Acumulado</span>
                                 </div>
                                 <div class="text-3xl font-extrabold text-slate-900" id="mgr-stat-buscas">0</div>
                                 <div class="text-xs text-slate-400 mt-2" id="mgr-stat-buscas-sub">Sem recorte de período — filtro temporal na próxima etapa</div>
@@ -874,19 +1080,19 @@
                                 <div class="flex flex-wrap items-center gap-x-8 gap-y-3">
                                     <div>
                                         <div class="text-lg font-extrabold text-emerald-600" id="mgr-health-validated">0</div>
-                                        <div class="text-[10px] text-slate-500 uppercase font-bold tracking-wide">Validados</div>
+                                        <div class="text-xs text-slate-500 uppercase font-bold tracking-wide">Validados</div>
                                     </div>
                                     <div>
                                         <div class="text-lg font-extrabold text-amber-600" id="mgr-health-pending">0</div>
-                                        <div class="text-[10px] text-slate-500 uppercase font-bold tracking-wide">Aguardando validação</div>
+                                        <div class="text-xs text-slate-500 uppercase font-bold tracking-wide">Aguardando validação</div>
                                     </div>
                                     <div>
                                         <div class="text-lg font-extrabold text-slate-800" id="mgr-health-geo">0%</div>
-                                        <div class="text-[10px] text-slate-500 uppercase font-bold tracking-wide">Georreferenciados</div>
+                                        <div class="text-xs text-slate-500 uppercase font-bold tracking-wide">Georreferenciados</div>
                                     </div>
                                     <div>
                                         <div class="text-lg font-extrabold text-slate-800" id="mgr-health-updated">0%</div>
-                                        <div class="text-[10px] text-slate-500 uppercase font-bold tracking-wide">Atualizados (12m)</div>
+                                        <div class="text-xs text-slate-500 uppercase font-bold tracking-wide">Atualizados (12m)</div>
                                     </div>
                                 </div>
                                 <button onclick="app.navigate('manager', 'base')" class="text-xs font-bold text-brand-600 hover:underline flex items-center gap-1 flex-shrink-0">Detalhar na Base Econômica <i data-lucide="arrow-right" class="w-3 h-3"></i></button>
@@ -917,11 +1123,11 @@
                                     <div class="grid grid-cols-2 gap-3 mb-4">
                                         <div class="bg-slate-50 border border-slate-100 rounded-xl p-3">
                                             <div class="text-xl font-extrabold text-slate-800" id="mgr-do-buscas-lacuna">0</div>
-                                            <div class="text-[10px] text-slate-500 uppercase font-bold tracking-wide">Buscas sem oferta</div>
+                                            <div class="text-xs text-slate-500 uppercase font-bold tracking-wide">Buscas sem oferta</div>
                                         </div>
                                         <div class="bg-slate-50 border border-slate-100 rounded-xl p-3">
                                             <div class="text-xl font-extrabold text-slate-800" id="mgr-do-cobertura">0%</div>
-                                            <div class="text-[10px] text-slate-500 uppercase font-bold tracking-wide">Cobertura da demanda</div>
+                                            <div class="text-xs text-slate-500 uppercase font-bold tracking-wide">Cobertura da demanda</div>
                                         </div>
                                     </div>
                                     <div class="space-y-2" id="mgr-do-top-gaps"></div>
@@ -938,15 +1144,15 @@
                                     <div class="grid grid-cols-3 gap-3 mb-4">
                                         <div class="text-center bg-slate-50 border border-slate-100 rounded-xl p-3">
                                             <div class="text-xl font-extrabold text-brand-600" id="mgr-terr-urban">0</div>
-                                            <div class="text-[10px] text-slate-500 uppercase font-bold tracking-wide">Urbano</div>
+                                            <div class="text-xs text-slate-500 uppercase font-bold tracking-wide">Urbano</div>
                                         </div>
                                         <div class="text-center bg-slate-50 border border-slate-100 rounded-xl p-3">
                                             <div class="text-xl font-extrabold text-emerald-600" id="mgr-terr-rural">0</div>
-                                            <div class="text-[10px] text-slate-500 uppercase font-bold tracking-wide">Rural</div>
+                                            <div class="text-xs text-slate-500 uppercase font-bold tracking-wide">Rural</div>
                                         </div>
                                         <div class="text-center bg-slate-50 border border-slate-100 rounded-xl p-3">
                                             <div class="text-xl font-extrabold text-slate-700" id="mgr-terr-prof">0</div>
-                                            <div class="text-[10px] text-slate-500 uppercase font-bold tracking-wide">Autônomo</div>
+                                            <div class="text-xs text-slate-500 uppercase font-bold tracking-wide">Autônomo</div>
                                         </div>
                                     </div>
                                     <div class="flex items-center justify-between text-xs text-slate-600 bg-slate-50 border border-slate-100 rounded-xl px-3 py-2 mb-4">
@@ -1050,28 +1256,28 @@
                                 <div class="h-2.5 bg-slate-200 rounded-full overflow-hidden">
                                     <div class="h-full bg-brand-500 rounded-full transition-all" id="mgr-dq-completude-bar" style="width:0%"></div>
                                 </div>
-                                <p class="text-[11px] text-slate-500 mt-2" id="mgr-dq-completude-sub">&nbsp;</p>
+                                <p class="text-xs text-slate-500 mt-2" id="mgr-dq-completude-sub">&nbsp;</p>
                             </div>
                             <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
                                 <div>
                                     <div class="text-2xl font-extrabold text-slate-800" id="mgr-dq-geo">0%</div>
-                                    <div class="text-[10px] text-slate-500 uppercase font-bold tracking-wide">Georreferenciados</div>
-                                    <div class="text-[11px] text-slate-400 mt-0.5" id="mgr-dq-geo-abs">&nbsp;</div>
+                                    <div class="text-xs text-slate-500 uppercase font-bold tracking-wide">Georreferenciados</div>
+                                    <div class="text-xs text-slate-400 mt-0.5" id="mgr-dq-geo-abs">&nbsp;</div>
                                 </div>
                                 <div>
                                     <div class="text-2xl font-extrabold text-slate-800" id="mgr-dq-updated">0%</div>
-                                    <div class="text-[10px] text-slate-500 uppercase font-bold tracking-wide">Atualizados (12m)</div>
-                                    <div class="text-[11px] text-slate-400 mt-0.5" id="mgr-dq-updated-abs">&nbsp;</div>
+                                    <div class="text-xs text-slate-500 uppercase font-bold tracking-wide">Atualizados (12m)</div>
+                                    <div class="text-xs text-slate-400 mt-0.5" id="mgr-dq-updated-abs">&nbsp;</div>
                                 </div>
                                 <div>
                                     <div class="text-2xl font-extrabold text-slate-800" id="mgr-dq-cnae">0%</div>
-                                    <div class="text-[10px] text-slate-500 uppercase font-bold tracking-wide">Com CNAE</div>
-                                    <div class="text-[11px] text-slate-400 mt-0.5" id="mgr-dq-cnae-abs">&nbsp;</div>
+                                    <div class="text-xs text-slate-500 uppercase font-bold tracking-wide">Com CNAE</div>
+                                    <div class="text-xs text-slate-400 mt-0.5" id="mgr-dq-cnae-abs">&nbsp;</div>
                                 </div>
                                 <div>
                                     <div class="text-2xl font-extrabold text-slate-800" id="mgr-dq-contato">0%</div>
-                                    <div class="text-[10px] text-slate-500 uppercase font-bold tracking-wide">Com Contato</div>
-                                    <div class="text-[11px] text-slate-400 mt-0.5" id="mgr-dq-contato-abs">&nbsp;</div>
+                                    <div class="text-xs text-slate-500 uppercase font-bold tracking-wide">Com Contato</div>
+                                    <div class="text-xs text-slate-400 mt-0.5" id="mgr-dq-contato-abs">&nbsp;</div>
                                 </div>
                             </div>
                         </div>
@@ -1102,15 +1308,15 @@
                             <p class="text-xs text-slate-500 mb-5">Formato aberto, estruturado e interoperável. A base econômica é do Município e pode ser exportada a qualquer tempo, garantindo a reversibilidade dos dados.</p>
                             <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
                                 <button onclick="app.exportarBase('CSV')" class="flex items-center justify-between gap-3 p-4 bg-slate-50 hover:bg-white border border-slate-200 hover:border-brand-400 rounded-xl transition-all text-left group">
-                                    <div><div class="text-sm font-bold text-slate-900">CSV</div><div class="text-[11px] text-slate-500 mt-0.5">Planilha gerencial</div></div>
+                                    <div><div class="text-sm font-bold text-slate-900">CSV</div><div class="text-xs text-slate-500 mt-0.5">Planilha gerencial</div></div>
                                     <i data-lucide="table" class="w-5 h-5 text-slate-400 group-hover:text-brand-600 flex-shrink-0"></i>
                                 </button>
                                 <button onclick="app.exportarBase('JSON')" class="flex items-center justify-between gap-3 p-4 bg-slate-50 hover:bg-white border border-slate-200 hover:border-brand-400 rounded-xl transition-all text-left group">
-                                    <div><div class="text-sm font-bold text-slate-900">JSON</div><div class="text-[11px] text-slate-500 mt-0.5">Integração de sistemas</div></div>
+                                    <div><div class="text-sm font-bold text-slate-900">JSON</div><div class="text-xs text-slate-500 mt-0.5">Integração de sistemas</div></div>
                                     <i data-lucide="braces" class="w-5 h-5 text-slate-400 group-hover:text-brand-600 flex-shrink-0"></i>
                                 </button>
                                 <button onclick="app.exportarBase('GeoJSON')" class="flex items-center justify-between gap-3 p-4 bg-slate-50 hover:bg-white border border-slate-200 hover:border-brand-400 rounded-xl transition-all text-left group">
-                                    <div><div class="text-sm font-bold text-slate-900">GeoJSON</div><div class="text-[11px] text-slate-500 mt-0.5">Camada georreferenciada</div></div>
+                                    <div><div class="text-sm font-bold text-slate-900">GeoJSON</div><div class="text-xs text-slate-500 mt-0.5">Camada georreferenciada</div></div>
                                     <i data-lucide="map-pin" class="w-5 h-5 text-slate-400 group-hover:text-brand-600 flex-shrink-0"></i>
                                 </button>
                             </div>
@@ -1118,7 +1324,7 @@
                                 <i data-lucide="shield-check" class="w-5 h-5 text-emerald-600 flex-shrink-0 mt-0.5"></i>
                                 <div>
                                     <div class="text-xs font-bold text-emerald-900">Conformidade LGPD</div>
-                                    <p class="text-[11px] text-emerald-800 mt-0.5">A exportação aplica minimização de dados: documentos pessoais são omitidos e endereços de negócios com proteção de localização saem como área aproximada. Toda exportação fica registrada na trilha de auditoria.</p>
+                                    <p class="text-xs text-emerald-800 mt-0.5">A exportação aplica minimização de dados: documentos pessoais são omitidos e endereços de negócios com proteção de localização saem como área aproximada. Toda exportação fica registrada na trilha de auditoria.</p>
                                 </div>
                             </div>
                         </div>
@@ -1227,24 +1433,24 @@
                             <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm">
                                 <div class="flex items-center justify-between mb-1">
                                     <div class="text-xs font-semibold text-slate-500 uppercase tracking-wide">Buscas Registradas</div>
-                                    <span class="text-[9px] font-bold uppercase text-slate-500 bg-slate-100 border border-slate-200 rounded px-1.5 py-0.5" title="A base não guarda data por evento de busca: este número é acumulado desde o início da demonstração.">Acumulado</span>
+                                    <span class="text-xs font-bold uppercase text-slate-500 bg-slate-100 border border-slate-200 rounded px-1.5 py-0.5" title="A base não guarda data por evento de busca: este número é acumulado desde o início da demonstração.">Acumulado</span>
                                 </div>
                                 <div class="text-2xl font-extrabold text-slate-900" id="mgr-gaps-kpi-buscas">0</div>
                             </div>
                             <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm">
                                 <div class="text-xs font-semibold text-slate-500 mb-1 uppercase tracking-wide">Com Oferta Encontrada</div>
                                 <div class="text-2xl font-extrabold text-emerald-600" id="mgr-gaps-kpi-atendidas">0</div>
-                                <div class="text-[10px] text-slate-400 mt-1">Derivado: total menos buscas que registraram lacuna</div>
+                                <div class="text-xs text-slate-400 mt-1">Derivado: total menos buscas que registraram lacuna</div>
                             </div>
                             <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm">
                                 <div class="text-xs font-semibold text-slate-500 mb-1 uppercase tracking-wide">Sem Resultado</div>
                                 <div class="text-2xl font-extrabold text-accent-600" id="mgr-gaps-kpi-sem-resultado">0</div>
-                                <div class="text-[10px] text-slate-400 mt-1">Soma das buscas registradas como lacuna</div>
+                                <div class="text-xs text-slate-400 mt-1">Soma das buscas registradas como lacuna</div>
                             </div>
                             <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm">
                                 <div class="text-xs font-semibold text-slate-500 mb-1 uppercase tracking-wide">Possíveis Lacunas</div>
                                 <div class="text-2xl font-extrabold text-slate-900" id="mgr-gaps-kpi-lacunas">0</div>
-                                <div class="text-[10px] text-slate-400 mt-1">Termos distintos em acompanhamento</div>
+                                <div class="text-xs text-slate-400 mt-1">Termos distintos em acompanhamento</div>
                             </div>
                         </div>
 
@@ -1281,7 +1487,7 @@
                                 </select>
                             </div>
                             <div class="flex flex-wrap items-center justify-between gap-3">
-                                <div class="flex items-center gap-2 text-[11px] text-slate-400">
+                                <div class="flex items-center gap-2 text-xs text-slate-400">
                                     <i data-lucide="calendar-off" class="w-3.5 h-3.5"></i>
                                     <span>Filtro por período indisponível: a base ainda não registra data por evento de busca.</span>
                                 </div>
@@ -1307,7 +1513,7 @@
                             <button onclick="app.limparFiltrosGaps()" class="mt-5 px-4 py-2 bg-slate-900 hover:bg-slate-800 text-white rounded-lg text-xs font-bold transition hidden" id="mgr-gaps-empty-btn">Limpar filtros</button>
                         </div>
 
-                        <p class="text-[11px] text-slate-400 mt-4">Indicador gerado para apoiar a análise do gestor municipal. A classificação é derivada dos dados cadastrados na plataforma e não constitui decisão automática de política pública.</p>
+                        <p class="text-xs text-slate-400 mt-4">Indicador gerado para apoiar a análise do gestor municipal. A classificação é derivada dos dados cadastrados na plataforma e não constitui decisão automática de política pública.</p>
                     </div>
 
                     <!-- VIEW: MGR DEMANDS -->
@@ -1469,7 +1675,7 @@
                                 </table>
                             </div>
                         </div>
-                        <p class="text-[11px] text-slate-400 mt-3">Protótipo demonstrativo em HTML + localStorage. Na implantação do piloto, a trilha de auditoria é gravada no backend, somente-inserção.</p>
+                        <p class="text-xs text-slate-400 mt-3">Protótipo demonstrativo em HTML + localStorage. Na implantação do piloto, a trilha de auditoria é gravada no backend, somente-inserção.</p>
                     </div>
 
                     <!-- VIEW: USUÁRIOS E PERMISSÕES -->
@@ -1517,7 +1723,7 @@
                             <p class="text-xs text-slate-500 mb-4">O que cada perfil pode fazer na plataforma. As restrições principais já valem nesta demonstração.</p>
                             <div class="overflow-x-auto">
                                 <table class="w-full text-sm text-left">
-                                    <thead class="bg-slate-50 text-slate-500 text-[11px] uppercase font-semibold border-b border-slate-200">
+                                    <thead class="bg-slate-50 text-slate-500 text-xs uppercase font-semibold border-b border-slate-200">
                                         <tr><th class="px-4 py-3">Permissão</th><th class="px-4 py-3 text-center">Gestão Municipal</th><th class="px-4 py-3 text-center">Analista Municipal</th><th class="px-4 py-3 text-center">Empreendedor</th></tr>
                                     </thead>
                                     <tbody class="divide-y divide-slate-100" id="usr-matriz"></tbody>
@@ -1565,7 +1771,7 @@
                         <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6">
                             <h4 class="font-bold text-slate-900 mb-4 flex items-center gap-2"><i data-lucide="key-round" class="w-4 h-4 text-slate-400"></i> Sessão e segurança</h4>
                             <div id="set-sessao" class="space-y-2 text-sm"></div>
-                            <div class="mt-4 p-3 bg-amber-50 border border-amber-100 rounded-xl text-[11px] text-amber-800">Na implantação do piloto, autenticação, políticas de senha e controle de sessão serão executados no backend.</div>
+                            <div class="mt-4 p-3 bg-amber-50 border border-amber-100 rounded-xl text-xs text-amber-800">Na implantação do piloto, autenticação, políticas de senha e controle de sessão serão executados no backend.</div>
                             <div class="flex justify-end mt-4"><button onclick="app.logout()" class="px-5 py-2.5 bg-slate-900 hover:bg-slate-800 text-white rounded-xl text-sm font-bold transition flex items-center gap-2"><i data-lucide="log-out" class="w-4 h-4"></i> Encerrar sessão</button></div>
                         </div>
                     </div>
@@ -1591,7 +1797,7 @@
                             <div class="border-t border-slate-100 pt-4">
                                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
                                     <div>
-                                        <label class="block text-[11px] font-bold text-slate-500 uppercase tracking-wide mb-1">Período</label>
+                                        <label class="block text-xs font-bold text-slate-500 uppercase tracking-wide mb-1">Período</label>
                                         <select id="imp-filter-period" onchange="app.onImpactPeriodChange()" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm outline-none focus:border-brand-500 transition">
                                             <option value="1">Ontem</option>
                                             <option value="3">Últimos 3 dias</option>
@@ -1602,19 +1808,19 @@
                                         </select>
                                     </div>
                                     <div>
-                                        <label class="block text-[11px] font-bold text-slate-500 uppercase tracking-wide mb-1">Vitrine</label>
+                                        <label class="block text-xs font-bold text-slate-500 uppercase tracking-wide mb-1">Vitrine</label>
                                         <select id="imp-filter-business" onchange="app.renderImpact()" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm outline-none focus:border-brand-500 transition">
                                             <option value="">Todas as vitrines</option>
                                         </select>
                                     </div>
                                     <div>
-                                        <label class="block text-[11px] font-bold text-slate-500 uppercase tracking-wide mb-1">Segmento</label>
+                                        <label class="block text-xs font-bold text-slate-500 uppercase tracking-wide mb-1">Segmento</label>
                                         <select id="imp-filter-category" onchange="app.renderImpact()" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm outline-none focus:border-brand-500 transition">
                                             <option value="">Todos os segmentos</option>
                                         </select>
                                     </div>
                                     <div>
-                                        <label class="block text-[11px] font-bold text-slate-500 uppercase tracking-wide mb-1">Interação</label>
+                                        <label class="block text-xs font-bold text-slate-500 uppercase tracking-wide mb-1">Interação</label>
                                         <select id="imp-filter-type" onchange="app.renderImpact()" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm outline-none focus:border-brand-500 transition">
                                             <option value="">Todas as interações</option>
                                             <option value="search">Buscas</option>
@@ -1629,11 +1835,11 @@
 
                                 <div id="imp-custom-range" class="hidden grid grid-cols-1 sm:grid-cols-2 gap-3 mt-3">
                                     <div>
-                                        <label class="block text-[11px] font-bold text-slate-500 uppercase tracking-wide mb-1">Data inicial</label>
+                                        <label class="block text-xs font-bold text-slate-500 uppercase tracking-wide mb-1">Data inicial</label>
                                         <input type="date" id="imp-date-start" onchange="app.renderImpact()" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm outline-none focus:border-brand-500 transition">
                                     </div>
                                     <div>
-                                        <label class="block text-[11px] font-bold text-slate-500 uppercase tracking-wide mb-1">Data final</label>
+                                        <label class="block text-xs font-bold text-slate-500 uppercase tracking-wide mb-1">Data final</label>
                                         <input type="date" id="imp-date-end" onchange="app.renderImpact()" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm outline-none focus:border-brand-500 transition">
                                     </div>
                                 </div>
@@ -1724,7 +1930,7 @@
                                     <div class="flex justify-between items-center p-3 bg-blue-50 rounded-xl border border-blue-100 ml-8"><span class="text-xs font-bold text-blue-500 uppercase">Vitrines Abertas</span><span class="text-lg font-extrabold text-blue-700" id="imp-funil-vitrines">0</span></div>
                                     <div class="flex justify-between items-center p-3 bg-emerald-50 rounded-xl border border-emerald-200 ml-12 shadow-sm"><span class="text-xs font-bold text-emerald-600 uppercase">Ações de Contato</span><span class="text-xl font-extrabold text-emerald-700" id="imp-funil-contatos">0</span></div>
                                 </div>
-                                <p class="text-[11px] text-slate-500 mt-4 leading-relaxed border-t border-slate-100 pt-3">Indicadores agregados de intenção. A VITRYX não intermedeia nem confirma a contratação privada.</p>
+                                <p class="text-xs text-slate-500 mt-4 leading-relaxed border-t border-slate-100 pt-3">Indicadores agregados de intenção. A VITRYX não intermedeia nem confirma a contratação privada.</p>
                             </div>
 
                             <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6">
@@ -1733,9 +1939,9 @@
                                 <div id="imp-evolucao" class="flex items-end gap-1 h-40 border-b border-slate-200 pb-1"></div>
                                 <div id="imp-evolucao-labels" class="flex gap-1 mt-2"></div>
                                 <div class="flex items-center gap-4 mt-4 pt-3 border-t border-slate-100">
-                                    <span class="flex items-center gap-1.5 text-[11px] font-semibold text-slate-600"><span class="w-2.5 h-2.5 rounded-sm bg-slate-400"></span> Buscas</span>
-                                    <span class="flex items-center gap-1.5 text-[11px] font-semibold text-slate-600"><span class="w-2.5 h-2.5 rounded-sm bg-blue-500"></span> Aberturas</span>
-                                    <span class="flex items-center gap-1.5 text-[11px] font-semibold text-slate-600"><span class="w-2.5 h-2.5 rounded-sm bg-emerald-500"></span> Contatos</span>
+                                    <span class="flex items-center gap-1.5 text-xs font-semibold text-slate-600"><span class="w-2.5 h-2.5 rounded-sm bg-slate-400"></span> Buscas</span>
+                                    <span class="flex items-center gap-1.5 text-xs font-semibold text-slate-600"><span class="w-2.5 h-2.5 rounded-sm bg-blue-500"></span> Aberturas</span>
+                                    <span class="flex items-center gap-1.5 text-xs font-semibold text-slate-600"><span class="w-2.5 h-2.5 rounded-sm bg-emerald-500"></span> Contatos</span>
                                 </div>
                             </div>
                         </div>
@@ -1748,7 +1954,7 @@
                             </div>
                             <div class="overflow-x-auto">
                                 <table class="w-full text-sm">
-                                    <thead class="bg-slate-50 text-[11px] uppercase text-slate-500 font-bold">
+                                    <thead class="bg-slate-50 text-xs uppercase text-slate-500 font-bold">
                                         <tr>
                                             <th class="px-6 py-3 text-left">Vitrine</th>
                                             <th class="px-6 py-3 text-left">Segmento</th>
@@ -1779,7 +1985,7 @@
                                 <p class="text-xs text-slate-500 mb-4">O que a população procurou no período.</p>
                                 <div class="overflow-x-auto">
                                     <table class="w-full text-sm">
-                                        <thead class="text-[11px] uppercase text-slate-500 font-bold border-b border-slate-100">
+                                        <thead class="text-xs uppercase text-slate-500 font-bold border-b border-slate-100">
                                             <tr><th class="py-2 text-left">Termo</th><th class="py-2 text-center">Buscas</th><th class="py-2 text-center">Resultados</th><th class="py-2 text-center">Aberturas</th></tr>
                                         </thead>
                                         <tbody id="imp-termos" class="divide-y divide-slate-50"></tbody>
@@ -1792,7 +1998,7 @@
                                 <p class="text-xs text-slate-500 mb-4">Demanda existente que o município ainda não atende.</p>
                                 <div class="overflow-x-auto">
                                     <table class="w-full text-sm">
-                                        <thead class="text-[11px] uppercase text-slate-500 font-bold border-b border-slate-100">
+                                        <thead class="text-xs uppercase text-slate-500 font-bold border-b border-slate-100">
                                             <tr><th class="py-2 text-left">Termo</th><th class="py-2 text-center">Buscas</th><th class="py-2 text-center">Última</th><th class="py-2 text-right">Status</th></tr>
                                         </thead>
                                         <tbody id="imp-lacunas" class="divide-y divide-slate-50"></tbody>
@@ -1808,28 +2014,28 @@
 
                             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3 mb-5">
                                 <div class="bg-slate-50 border border-slate-100 rounded-xl p-4">
-                                    <p class="text-[11px] font-bold text-slate-500 uppercase mb-1">Total contratado</p>
+                                    <p class="text-xs font-bold text-slate-500 uppercase mb-1">Total contratado</p>
                                     <p class="text-lg font-extrabold text-slate-900" id="imp-compras-total">R$ 0,00</p>
                                 </div>
                                 <div class="bg-emerald-50 border border-emerald-100 rounded-xl p-4">
-                                    <p class="text-[11px] font-bold text-emerald-600 uppercase mb-1">Com fornecedor local</p>
+                                    <p class="text-xs font-bold text-emerald-600 uppercase mb-1">Com fornecedor local</p>
                                     <p class="text-lg font-extrabold text-emerald-700" id="imp-compras-local">R$ 0,00</p>
                                 </div>
                                 <div class="bg-brand-50 border border-brand-100 rounded-xl p-4">
-                                    <p class="text-[11px] font-bold text-brand-600 uppercase mb-1">% para local</p>
+                                    <p class="text-xs font-bold text-brand-600 uppercase mb-1">% para local</p>
                                     <p class="text-lg font-extrabold text-brand-700" id="imp-compras-pct">0%</p>
                                 </div>
                                 <div class="bg-slate-50 border border-slate-100 rounded-xl p-4">
-                                    <p class="text-[11px] font-bold text-slate-500 uppercase mb-1">Fornecedores locais</p>
+                                    <p class="text-xs font-bold text-slate-500 uppercase mb-1">Fornecedores locais</p>
                                     <p class="text-lg font-extrabold text-slate-900" id="imp-compras-fornecedores">0</p>
                                 </div>
                                 <div class="bg-amber-50 border border-amber-100 rounded-xl p-4">
-                                    <p class="text-[11px] font-bold text-amber-600 uppercase mb-1">Saiu do município</p>
+                                    <p class="text-xs font-bold text-amber-600 uppercase mb-1">Saiu do município</p>
                                     <p class="text-lg font-extrabold text-amber-700" id="imp-compras-externo">R$ 0,00</p>
                                 </div>
                             </div>
 
-                            <div class="bg-slate-50 border border-slate-200 rounded-xl p-4 text-[11px] text-slate-600 leading-relaxed space-y-1">
+                            <div class="bg-slate-50 border border-slate-200 rounded-xl p-4 text-xs text-slate-600 leading-relaxed space-y-1">
                                 <p><b class="text-slate-800">Demanda mapeada não significa contratação.</b> O cruzamento entre demanda pública e oferta local é indicativo de planejamento.</p>
                                 <p><b class="text-slate-800">Fornecedor potencial não significa fornecedor contratado.</b> Aparecer como apto a atender não cria vínculo nem preferência.</p>
                                 <p><b class="text-slate-800">Estes indicadores usam apenas compras efetivamente registradas</b> em Compras Públicas, e não estimativas.</p>
@@ -1900,7 +2106,7 @@
                         <div>
                             <label class="block text-sm font-bold text-slate-900 mb-1">CNPJ <span class="font-normal text-slate-400">(se tiver)</span></label>
                             <input type="text" id="ap-cnpj" oninput="app.maskCpfCnpj(this)" class="w-full px-4 py-2.5 bg-white border border-slate-200 rounded-lg text-sm outline-none" placeholder="00.000.000/0000-00">
-                            <p class="text-[11px] text-slate-400 mt-1">Sem CNPJ? Deixe em branco — o cadastro segue no seu CPF.</p>
+                            <p class="text-xs text-slate-400 mt-1">Sem CNPJ? Deixe em branco — o cadastro segue no seu CPF.</p>
                         </div>
                     </div>
                     <div class="bg-blue-50 border border-blue-100 p-3 rounded-lg text-xs text-blue-800 font-medium flex items-start gap-2">
@@ -1920,13 +2126,13 @@
                     <div>
                         <label class="block text-sm font-bold text-slate-900 mb-1">Seu e-mail <span class="text-red-500">*</span></label>
                         <input type="email" id="ap-email" class="w-full px-4 py-2.5 bg-white border border-slate-200 rounded-lg text-sm outline-none" placeholder="Digite o e-mail que você usa">
-                        <p class="text-[11px] text-slate-400 mt-1">Informe o seu e-mail: é com ele que você vai entrar na plataforma.</p>
+                        <p class="text-xs text-slate-400 mt-1">Informe o seu e-mail: é com ele que você vai entrar na plataforma.</p>
                     </div>
                     <div class="grid grid-cols-2 gap-4">
                         <div><label class="block text-sm font-bold text-slate-900 mb-1">Senha</label><input type="password" id="ap-senha" class="w-full px-4 py-2.5 bg-white border border-slate-200 rounded-lg text-sm outline-none" value="demo1234"></div>
                         <div><label class="block text-sm font-bold text-slate-900 mb-1">Confirmar senha</label><input type="password" id="ap-senha2" class="w-full px-4 py-2.5 bg-white border border-slate-200 rounded-lg text-sm outline-none" value="demo1234"></div>
                     </div>
-                    <p class="text-[11px] text-slate-400">Ambiente demonstrativo: a senha vem preenchida e nenhum dado real é enviado.</p>
+                    <p class="text-xs text-slate-400">Ambiente demonstrativo: a senha vem preenchida e nenhum dado real é enviado.</p>
                     <div class="flex justify-between pt-2">
                         <button onclick="app.assistidoVoltar('acesso')" class="px-4 py-2.5 text-sm font-bold text-slate-600 hover:bg-slate-200 rounded-xl transition">Voltar</button>
                         <button onclick="app.assistidoAvancar('acesso')" class="px-6 py-2.5 bg-brand-600 hover:bg-brand-700 text-white rounded-xl text-sm font-bold shadow-md transition flex items-center gap-2"><i data-lucide="log-in" class="w-4 h-4"></i> Entrar e montar minha vitrine</button>
@@ -1941,7 +2147,7 @@
                             <h4 class="font-bold text-slate-900 leading-tight">Vamos montar sua vitrine juntos</h4>
                             <p class="text-xs text-slate-500">A Vitória faz as perguntas e preenche o cadastro para você.</p>
                         </div>
-                        <div class="ml-auto text-[10px] font-bold text-slate-400 uppercase tracking-wide" id="gonb-progresso">1 de 5</div>
+                        <div class="ml-auto text-xs font-bold text-slate-400 uppercase tracking-wide" id="gonb-progresso">1 de 5</div>
                     </div>
 
                     <div id="gonb-messages" class="flex flex-col space-y-3 min-h-[240px] max-h-[45vh] overflow-y-auto pr-1 mb-4"></div>
@@ -1974,11 +2180,11 @@
 
                     <div class="grid grid-cols-2 gap-4">
                         <div>
-                            <label class="block text-sm font-bold text-slate-900 mb-1">Categoria <span class="text-[10px] font-bold text-brand-600 bg-brand-50 border border-brand-100 rounded px-1.5 py-0.5 ml-1">sugerida</span></label>
+                            <label class="block text-sm font-bold text-slate-900 mb-1">Categoria <span class="text-xs font-bold text-brand-600 bg-brand-50 border border-brand-100 rounded px-1.5 py-0.5 ml-1">sugerida</span></label>
                             <select id="gonb-category" class="w-full px-4 py-2.5 bg-white border border-slate-200 rounded-lg text-sm outline-none"><option>Serviços</option><option>Beleza</option><option>Alimentação</option><option>Casa e Manutenção</option><option>Tecnologia</option><option>Automotivo</option><option>Rural</option><option>Comércio</option></select>
                         </div>
                         <div>
-                            <label class="block text-sm font-bold text-slate-900 mb-1">Zona <span class="text-[10px] font-bold text-brand-600 bg-brand-50 border border-brand-100 rounded px-1.5 py-0.5 ml-1">sugerida</span></label>
+                            <label class="block text-sm font-bold text-slate-900 mb-1">Zona <span class="text-xs font-bold text-brand-600 bg-brand-50 border border-brand-100 rounded px-1.5 py-0.5 ml-1">sugerida</span></label>
                             <select id="gonb-type" class="w-full px-4 py-2.5 bg-white border border-slate-200 rounded-lg text-sm outline-none"><option value="urban">Urbana (Estabelecimento)</option><option value="professional">Autônomo (Em domicílio)</option><option value="rural">Rural</option></select>
                         </div>
                     </div>
@@ -1998,7 +2204,7 @@
                     </div>
 
                     <div>
-                        <label class="block text-sm font-bold text-slate-900 mb-1">Descrição pública <span class="text-[10px] font-bold text-brand-600 bg-brand-50 border border-brand-100 rounded px-1.5 py-0.5 ml-1">rascunho</span></label>
+                        <label class="block text-sm font-bold text-slate-900 mb-1">Descrição pública <span class="text-xs font-bold text-brand-600 bg-brand-50 border border-brand-100 rounded px-1.5 py-0.5 ml-1">rascunho</span></label>
                         <textarea id="gonb-desc" class="w-full px-4 py-2.5 bg-white border border-slate-200 rounded-lg text-sm outline-none h-20"></textarea>
                         <p class="text-xs text-slate-500 mt-1">Montei este texto com as suas respostas. Ajuste como preferir.</p>
                     </div>
@@ -2013,7 +2219,7 @@
 
                     <div class="border border-slate-200 rounded-lg p-4 bg-white">
                         <div class="flex justify-between items-center mb-3">
-                            <label class="block text-sm font-bold text-slate-900">Horário de atendimento <span class="text-[10px] font-bold text-brand-600 bg-brand-50 border border-brand-100 rounded px-1.5 py-0.5 ml-1">sugerido</span></label>
+                            <label class="block text-sm font-bold text-slate-900">Horário de atendimento <span class="text-xs font-bold text-brand-600 bg-brand-50 border border-brand-100 rounded px-1.5 py-0.5 ml-1">sugerido</span></label>
                             <button onclick="app.applyHoursToWeek('gonb')" class="text-xs text-brand-600 font-bold hover:underline">Aplicar Seg a Sex igual</button>
                         </div>
                         <div id="gonb-weekly-hours" class="space-y-3"></div>
@@ -2021,7 +2227,7 @@
 
                     <div class="border border-slate-200 rounded-lg p-4 bg-white">
                         <label class="block text-sm font-bold text-slate-900 mb-1">Comprovante de vínculo com Medianeira</label>
-                        <p class="text-[11px] text-slate-500 mb-3">Alvará, conta de luz ou outro documento que mostre seu endereço. Usado só na análise da Prefeitura — nunca aparece na vitrine pública.</p>
+                        <p class="text-xs text-slate-500 mb-3">Alvará, conta de luz ou outro documento que mostre seu endereço. Usado só na análise da Prefeitura — nunca aparece na vitrine pública.</p>
                         <select id="gonb-evidencia-tipo" class="w-full px-3 py-2 bg-white border border-slate-200 rounded-lg text-sm outline-none mb-2">
                             <option value="enderecoNegocio">Comprovante de endereço do negócio</option>
                             <option value="residencia">Comprovante de residência</option>
@@ -2034,7 +2240,7 @@
                             <span class="text-xs font-semibold text-brand-600 block" id="gonb-file-text">Clique para anexar o arquivo</span>
                             <input type="file" id="gonb-file-upload" class="hidden" onchange="app.handleEvidenciaUpload(this)">
                         </label>
-                        <p class="text-[11px] text-slate-400 mt-2">Demonstração local: arquivos até 400 KB ficam guardados no navegador; acima disso registramos apenas os dados do documento.</p>
+                        <p class="text-xs text-slate-400 mt-2">Demonstração local: arquivos até 400 KB ficam guardados no navegador; acima disso registramos apenas os dados do documento.</p>
                     </div>
 
                     <div class="bg-amber-50 border border-amber-200 p-3 rounded-xl text-xs text-amber-800 font-medium flex items-start gap-2">
@@ -2105,7 +2311,7 @@
                     
                     <div class="mt-4">
                         <label class="block text-sm font-bold text-slate-900 mb-1">Comprovante de Vínculo com Medianeira <span class="text-red-500">*</span></label>
-                        <p class="text-[10px] text-slate-500 mb-2">Documento utilizado exclusivamente para validação cadastral pela Administração Municipal (ex: alvará, conta de luz).</p>
+                        <p class="text-xs text-slate-500 mb-2">Documento utilizado exclusivamente para validação cadastral pela Administração Municipal (ex: alvará, conta de luz).</p>
                         <label for="onb-file-upload" class="border-2 border-dashed border-slate-300 rounded-xl bg-white p-4 text-center cursor-pointer hover:bg-slate-50 transition block">
                             <i data-lucide="upload-cloud" class="w-6 h-6 text-slate-400 mx-auto mb-2" id="onb-file-icon"></i>
                             <span class="text-xs font-semibold text-brand-600 block" id="onb-file-text">Clique para enviar arquivo</span>
@@ -2202,7 +2408,7 @@
                         <div class="bg-slate-50 border border-slate-200 rounded-xl p-3 text-xs" id="ad-depois">Não se aplica</div>
                     </div>
                 </div>
-                <p class="text-[11px] text-slate-400">Campos sensíveis (documento, CPF/CNPJ, senha, token) são mascarados nesta visualização e nunca são gravados na trilha.</p>
+                <p class="text-xs text-slate-400">Campos sensíveis (documento, CPF/CNPJ, senha, token) são mascarados nesta visualização e nunca são gravados na trilha.</p>
             </div>
             <div class="px-6 py-4 border-t border-slate-200 bg-white flex justify-end">
                 <button onclick="app.closeModal('modal-audit-details')" class="px-4 py-2.5 text-sm font-semibold text-slate-600 hover:bg-slate-100 rounded-xl transition">Fechar</button>
@@ -2232,9 +2438,9 @@
                 <div id="usr-negocio-wrap" class="hidden">
                     <label class="block text-xs font-bold text-slate-700 mb-1" for="usr-negocio">Negócio vinculado</label>
                     <select id="usr-negocio" class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm outline-none focus:border-brand-500 transition"></select>
-                    <p class="text-[11px] text-slate-500 mt-1">O empreendedor só enxerga a vitrine do negócio vinculado.</p>
+                    <p class="text-xs text-slate-500 mt-1">O empreendedor só enxerga a vitrine do negócio vinculado.</p>
                 </div>
-                <div class="bg-slate-50 border border-slate-200 rounded-xl p-3 text-[11px] text-slate-600">
+                <div class="bg-slate-50 border border-slate-200 rounded-xl p-3 text-xs text-slate-600">
                     Nenhuma senha é criada ou armazenada neste protótipo. Convite por e-mail e definição de senha ficam para o backend do piloto.
                 </div>
             </div>
@@ -2283,20 +2489,20 @@
 
                 <div class="border-t border-slate-200 pt-5">
                     <h4 class="font-bold text-slate-900 text-sm mb-1">Alterar senha</h4>
-                    <p class="text-[11px] text-slate-500 mb-3">Operação demonstrativa: nenhuma senha é verificada ou armazenada neste protótipo. Registramos apenas a data da alteração.</p>
+                    <p class="text-xs text-slate-500 mb-3">Operação demonstrativa: nenhuma senha é verificada ou armazenada neste protótipo. Registramos apenas a data da alteração.</p>
                     <div class="space-y-3">
                         <div><label class="block text-xs font-bold text-slate-700 mb-1" for="acc-senha-atual">Senha atual</label><input type="password" id="acc-senha-atual" autocomplete="off" class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm outline-none focus:border-brand-500 transition"></div>
                         <div><label class="block text-xs font-bold text-slate-700 mb-1" for="acc-senha-nova">Nova senha</label><input type="password" id="acc-senha-nova" autocomplete="off" class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm outline-none focus:border-brand-500 transition"></div>
                         <div><label class="block text-xs font-bold text-slate-700 mb-1" for="acc-senha-conf">Confirmar nova senha</label><input type="password" id="acc-senha-conf" autocomplete="off" class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm outline-none focus:border-brand-500 transition"></div>
                         <div class="flex justify-end"><button onclick="app.simularTrocaSenha()" class="px-5 py-2.5 bg-slate-900 hover:bg-slate-800 text-white rounded-xl text-sm font-bold transition">Alterar senha</button></div>
                     </div>
-                    <p class="text-[11px] text-slate-500 mt-2" id="acc-senha-info"></p>
+                    <p class="text-xs text-slate-500 mt-2" id="acc-senha-info"></p>
                 </div>
 
                 <div class="border-t border-slate-200 pt-5">
                     <h4 class="font-bold text-slate-900 text-sm mb-3">Sessão e segurança</h4>
                     <div id="acc-sessao-bloco" class="space-y-2 text-sm"></div>
-                    <div class="mt-3 p-3 bg-amber-50 border border-amber-100 rounded-xl text-[11px] text-amber-800">Na implantação do piloto, autenticação, políticas de senha e controle de sessão serão executados no backend.</div>
+                    <div class="mt-3 p-3 bg-amber-50 border border-amber-100 rounded-xl text-xs text-amber-800">Na implantação do piloto, autenticação, políticas de senha e controle de sessão serão executados no backend.</div>
                 </div>
             </div>
             <div class="px-6 py-4 border-t border-slate-200 bg-white flex justify-between gap-3">
@@ -2331,40 +2537,40 @@
 
                     <div class="flex items-center gap-3">
                         <div class="flex-grow h-px bg-slate-200"></div>
-                        <span class="text-[11px] font-bold text-slate-400 uppercase">ou</span>
+                        <span class="text-xs font-bold text-slate-400 uppercase">ou</span>
                         <div class="flex-grow h-px bg-slate-200"></div>
                     </div>
 
                     <button onclick="app.usarArquivoDemonstrativo()" class="w-full px-4 py-3 bg-white border border-brand-200 text-brand-700 rounded-xl text-sm font-bold hover:bg-brand-50 transition flex items-center justify-center gap-2">
                         <i data-lucide="sparkles" class="w-4 h-4"></i> Usar arquivo demonstrativo
                     </button>
-                    <p class="text-[11px] text-slate-500 text-center -mt-2">Simulação demonstrativa: amostra fictícia embutida na página, equivalente a um CSV real. Nenhum arquivo é enviado para fora do navegador.</p>
+                    <p class="text-xs text-slate-500 text-center -mt-2">Simulação demonstrativa: amostra fictícia embutida na página, equivalente a um CSV real. Nenhum arquivo é enviado para fora do navegador.</p>
 
                     <div class="border border-slate-200 rounded-xl overflow-hidden">
                         <div class="px-4 py-2.5 bg-slate-50 border-b border-slate-200"><h4 class="text-xs font-bold text-slate-700 uppercase tracking-wide">Colunas reconhecidas</h4></div>
                         <div class="max-h-52 overflow-y-auto">
                             <table class="w-full text-xs">
-                                <thead class="text-[10px] uppercase text-slate-500 font-bold bg-white border-b border-slate-100"><tr><th class="px-4 py-2 text-left">Coluna no CSV</th><th class="px-4 py-2 text-left">Campo na VITRYX</th><th class="px-4 py-2 text-center">Obrigatória</th></tr></thead>
+                                <thead class="text-xs uppercase text-slate-500 font-bold bg-white border-b border-slate-100"><tr><th class="px-4 py-2 text-left">Coluna no CSV</th><th class="px-4 py-2 text-left">Campo na VITRYX</th><th class="px-4 py-2 text-center">Obrigatória</th></tr></thead>
                                 <tbody id="import-legend" class="divide-y divide-slate-50"></tbody>
                             </table>
                         </div>
                     </div>
-                    <p class="text-[11px] text-slate-500">O arquivo é lido apenas na memória do navegador. Nada é enviado para servidor e o arquivo original não é guardado.</p>
+                    <p class="text-xs text-slate-500">O arquivo é lido apenas na memória do navegador. Nada é enviado para servidor e o arquivo original não é guardado.</p>
                 </div>
 
                 <!-- ESTADO 2: prévia -->
                 <div id="import-step-2" class="hidden p-6 space-y-4">
                     <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
-                        <div class="bg-slate-50 border border-slate-200 rounded-xl p-3"><p class="text-[10px] font-bold text-slate-500 uppercase">Linhas</p><p class="text-xl font-extrabold text-slate-900" id="import-kpi-total">0</p></div>
-                        <div class="bg-emerald-50 border border-emerald-100 rounded-xl p-3"><p class="text-[10px] font-bold text-emerald-600 uppercase">Novos</p><p class="text-xl font-extrabold text-emerald-700" id="import-kpi-novos">0</p></div>
-                        <div class="bg-blue-50 border border-blue-100 rounded-xl p-3"><p class="text-[10px] font-bold text-blue-600 uppercase">Atualizações</p><p class="text-xl font-extrabold text-blue-700" id="import-kpi-updates">0</p></div>
-                        <div class="bg-red-50 border border-red-100 rounded-xl p-3"><p class="text-[10px] font-bold text-red-600 uppercase">Com erro</p><p class="text-xl font-extrabold text-red-700" id="import-kpi-erros">0</p></div>
+                        <div class="bg-slate-50 border border-slate-200 rounded-xl p-3"><p class="text-xs font-bold text-slate-500 uppercase">Linhas</p><p class="text-xl font-extrabold text-slate-900" id="import-kpi-total">0</p></div>
+                        <div class="bg-emerald-50 border border-emerald-100 rounded-xl p-3"><p class="text-xs font-bold text-emerald-600 uppercase">Novos</p><p class="text-xl font-extrabold text-emerald-700" id="import-kpi-novos">0</p></div>
+                        <div class="bg-blue-50 border border-blue-100 rounded-xl p-3"><p class="text-xs font-bold text-blue-600 uppercase">Atualizações</p><p class="text-xl font-extrabold text-blue-700" id="import-kpi-updates">0</p></div>
+                        <div class="bg-red-50 border border-red-100 rounded-xl p-3"><p class="text-xs font-bold text-red-600 uppercase">Com erro</p><p class="text-xl font-extrabold text-red-700" id="import-kpi-erros">0</p></div>
                     </div>
                     <p class="text-xs text-slate-500" id="import-preview-nota">-</p>
                     <div class="border border-slate-200 rounded-xl overflow-hidden">
                         <div class="overflow-x-auto max-h-80 overflow-y-auto">
                             <table class="w-full text-xs whitespace-nowrap">
-                                <thead class="text-[10px] uppercase text-slate-500 font-bold bg-slate-50 border-b border-slate-200 sticky top-0"><tr><th class="px-4 py-2 text-left">#</th><th class="px-4 py-2 text-left">Situação</th><th class="px-4 py-2 text-left">Nome</th><th class="px-4 py-2 text-left">Categoria</th><th class="px-4 py-2 text-left">Documento</th><th class="px-4 py-2 text-left">Coordenadas</th><th class="px-4 py-2 text-left">Observação</th></tr></thead>
+                                <thead class="text-xs uppercase text-slate-500 font-bold bg-slate-50 border-b border-slate-200 sticky top-0"><tr><th class="px-4 py-2 text-left">#</th><th class="px-4 py-2 text-left">Situação</th><th class="px-4 py-2 text-left">Nome</th><th class="px-4 py-2 text-left">Categoria</th><th class="px-4 py-2 text-left">Documento</th><th class="px-4 py-2 text-left">Coordenadas</th><th class="px-4 py-2 text-left">Observação</th></tr></thead>
                                 <tbody id="import-preview" class="divide-y divide-slate-50"></tbody>
                             </table>
                         </div>
@@ -2379,12 +2585,12 @@
                         <p class="text-sm text-slate-500 mt-1" id="import-result-sub">-</p>
                     </div>
                     <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
-                        <div class="bg-emerald-50 border border-emerald-100 rounded-xl p-3 text-center"><p class="text-[10px] font-bold text-emerald-600 uppercase">Criados</p><p class="text-xl font-extrabold text-emerald-700" id="import-res-criados">0</p></div>
-                        <div class="bg-blue-50 border border-blue-100 rounded-xl p-3 text-center"><p class="text-[10px] font-bold text-blue-600 uppercase">Atualizados</p><p class="text-xl font-extrabold text-blue-700" id="import-res-atualizados">0</p></div>
-                        <div class="bg-red-50 border border-red-100 rounded-xl p-3 text-center"><p class="text-[10px] font-bold text-red-600 uppercase">Rejeitados</p><p class="text-xl font-extrabold text-red-700" id="import-res-rejeitados">0</p></div>
-                        <div class="bg-slate-50 border border-slate-200 rounded-xl p-3 text-center"><p class="text-[10px] font-bold text-slate-500 uppercase">Processadas</p><p class="text-xl font-extrabold text-slate-900" id="import-res-total">0</p></div>
+                        <div class="bg-emerald-50 border border-emerald-100 rounded-xl p-3 text-center"><p class="text-xs font-bold text-emerald-600 uppercase">Criados</p><p class="text-xl font-extrabold text-emerald-700" id="import-res-criados">0</p></div>
+                        <div class="bg-blue-50 border border-blue-100 rounded-xl p-3 text-center"><p class="text-xs font-bold text-blue-600 uppercase">Atualizados</p><p class="text-xl font-extrabold text-blue-700" id="import-res-atualizados">0</p></div>
+                        <div class="bg-red-50 border border-red-100 rounded-xl p-3 text-center"><p class="text-xs font-bold text-red-600 uppercase">Rejeitados</p><p class="text-xl font-extrabold text-red-700" id="import-res-rejeitados">0</p></div>
+                        <div class="bg-slate-50 border border-slate-200 rounded-xl p-3 text-center"><p class="text-xs font-bold text-slate-500 uppercase">Processadas</p><p class="text-xl font-extrabold text-slate-900" id="import-res-total">0</p></div>
                     </div>
-                    <div class="bg-slate-50 border border-slate-200 rounded-xl p-4 text-[11px] text-slate-600 leading-relaxed">
+                    <div class="bg-slate-50 border border-slate-200 rounded-xl p-4 text-xs text-slate-600 leading-relaxed">
                         Cadastros importados entram como <b>Base Importada</b>, <b>sem vitrine pública</b> e aguardando validação municipal. Não são publicados automaticamente no portal do cidadão.
                     </div>
                 </div>
@@ -2429,18 +2635,18 @@
                         <div><span class="text-slate-500 block text-xs">Status de Validação</span><span id="bd-validation"></span></div>
                         <div><span class="text-slate-500 block text-xs">Última Atualização</span><span class="font-medium text-slate-900" id="bd-updated">-</span></div>
                     </div>
-                    <p class="text-[11px] text-slate-400 mt-3">Dados administrativos de acesso restrito ao painel da Gestão. O documento completo exige ação explícita e a consulta fica registrada na trilha de auditoria. Nada disso aparece na vitrine pública.</p>
+                    <p class="text-xs text-slate-400 mt-3">Dados administrativos de acesso restrito ao painel da Gestão. O documento completo exige ação explícita e a consulta fica registrada na trilha de auditoria. Nada disso aparece na vitrine pública.</p>
 
                     <div class="mt-4 p-3 bg-slate-50 border border-slate-200 rounded-xl">
                         <div class="flex justify-between items-center mb-2">
                             <span class="text-xs font-bold text-slate-600 uppercase tracking-wide">Completude do cadastro</span>
                             <div class="flex items-center gap-2">
                                 <span class="text-sm font-extrabold text-slate-900" id="bd-completude-pct">0%</span>
-                                <span id="bd-completude-selo" class="text-[10px] font-bold border rounded px-2 py-0.5">-</span>
+                                <span id="bd-completude-selo" class="text-xs font-bold border rounded px-2 py-0.5">-</span>
                             </div>
                         </div>
                         <div class="h-2 bg-slate-200 rounded-full overflow-hidden"><div class="h-full bg-brand-500 rounded-full" id="bd-completude-bar" style="width:0%"></div></div>
-                        <p class="text-[11px] text-slate-500 mt-2" id="bd-completude-falta">-</p>
+                        <p class="text-xs text-slate-500 mt-2" id="bd-completude-falta">-</p>
                     </div>
                 </div>
 
@@ -2854,7 +3060,7 @@
                         <label class="block text-xs font-bold text-slate-700 mb-1">Senha</label>
                         <input type="password" id="login-pass" class="w-full px-3 py-2.5 bg-slate-50 border border-slate-200 rounded-lg text-sm outline-none focus:border-brand-500" value="demo1234">
                     </div>
-                    <p class="text-[11px] text-slate-400">Credenciais demonstrativas preenchidas automaticamente. Nenhum dado real é enviado.</p>
+                    <p class="text-xs text-slate-400">Credenciais demonstrativas preenchidas automaticamente. Nenhum dado real é enviado.</p>
                 </div>
             </div>
 
@@ -2862,8 +3068,8 @@
                 <button onclick="app.confirmLogin()" id="login-submit" class="w-full bg-brand-600 hover:bg-brand-700 text-white py-2.5 rounded-xl text-sm font-bold shadow-md transition">Entrar</button>
                 <button onclick="app.closeModal('modal-login'); app.startOnboarding();" id="login-signup" class="w-full bg-white border border-slate-200 text-slate-700 py-2.5 rounded-xl text-sm font-bold hover:bg-slate-50 transition hidden">Ainda não tenho cadastro</button>
                 <div class="flex items-center justify-between pt-1">
-                    <span class="text-[11px] text-slate-400">Ambiente demonstrativo</span>
-                    <button onclick="app.resetDemo()" class="text-[11px] font-semibold text-slate-500 hover:text-slate-800 flex items-center gap-1 transition"><i data-lucide="rotate-ccw" class="w-3 h-3"></i> Restaurar dados iniciais</button>
+                    <span class="text-xs text-slate-400">Ambiente demonstrativo</span>
+                    <button onclick="app.resetDemo()" class="text-xs font-semibold text-slate-500 hover:text-slate-800 flex items-center gap-1 transition"><i data-lucide="rotate-ccw" class="w-3 h-3"></i> Restaurar dados iniciais</button>
                 </div>
             </div>
         </div>
@@ -2913,11 +3119,11 @@
                 <div class="grid grid-cols-2 gap-3">
                     <div class="bg-slate-50 border border-slate-100 p-4 rounded-xl">
                         <div class="text-2xl font-extrabold text-brand-600 leading-none" id="gap-modal-count">0</div>
-                        <div class="text-[10px] font-bold text-slate-500 uppercase mt-1">Buscas registradas <span class="font-normal normal-case">(acumulado)</span></div>
+                        <div class="text-xs font-bold text-slate-500 uppercase mt-1">Buscas registradas <span class="font-normal normal-case">(acumulado)</span></div>
                     </div>
                     <div class="bg-slate-50 border border-slate-100 p-4 rounded-xl">
                         <div class="text-2xl font-extrabold text-slate-800 leading-none" id="gap-modal-oferta">0</div>
-                        <div class="text-[10px] font-bold text-slate-500 uppercase mt-1">Negócios publicados relacionados</div>
+                        <div class="text-xs font-bold text-slate-500 uppercase mt-1">Negócios publicados relacionados</div>
                     </div>
                 </div>
 
@@ -2941,7 +3147,7 @@
                     <p class="text-xs text-amber-800" id="gap-modal-acao">—</p>
                 </div>
 
-                <div class="text-[11px] text-slate-400 border-t border-slate-100 pt-3 space-y-1">
+                <div class="text-xs text-slate-400 border-t border-slate-100 pt-3 space-y-1">
                     <p id="gap-modal-escopo">—</p>
                     <p>Indicador gerado para apoiar a análise do gestor municipal. Não constitui decisão automática de política pública.</p>
                 </div>
@@ -4355,6 +4561,8 @@
                     this.atualizarBarraSessao();
                     if(typeof vitoriaAssistant !== 'undefined') vitoriaAssistant.init();
                     this.updateBusinessSelector();
+                    this.registrarAtalhosTeclado();
+                    this.atualizarRodapeSidebar();
                 } catch(e) { console.error("Init Error:", e); }
             },
 
@@ -4407,6 +4615,8 @@
                     document.getElementById(`layout-${layoutId}`).classList.add('active');
                     this.currentLayout = layoutId;
                 }
+                // Usado só por CSS (posição do widget de acessibilidade).
+                document.body.dataset.layout = layoutId;
                 this.closeSidebars();
                 document.querySelectorAll(`#layout-${layoutId} .app-view`).forEach(el => el.classList.remove('active', 'flex-active'));
                 
@@ -4441,14 +4651,17 @@
             updateSidebar(navId, viewId, titleId) {
                 const nav = document.getElementById(navId);
                 if(!nav) return;
-                nav.querySelectorAll('button').forEach(btn => {
-                    if(btn.dataset.target === viewId) {
-                        btn.classList.add('bg-slate-100', 'text-brand-700', 'font-bold');
-                        btn.classList.remove('text-slate-600', 'text-slate-300', 'text-slate-400');
+                nav.querySelectorAll('button[data-target]').forEach(btn => {
+                    const ativo = btn.dataset.target === viewId;
+                    btn.classList.toggle('is-active', ativo);
+                    // aria-current marca a página atual para leitores de tela.
+                    if(ativo) btn.setAttribute('aria-current', 'page'); else btn.removeAttribute('aria-current');
+                    if(ativo) {
                         const titleEl = document.getElementById(titleId);
-                        if(titleEl) titleEl.innerText = btn.innerText.replace(/[0-9]/g,'').trim();
-                    } else {
-                        btn.classList.remove('bg-slate-100', 'text-brand-700', 'font-bold');
+                        // O rótulo vem do span próprio, não do innerText inteiro:
+                        // assim o badge de validações não entra no título da tela.
+                        const label = btn.querySelector('.vx-sidebar-item-label');
+                        if(titleEl) titleEl.innerText = (label ? label.innerText : btn.innerText).trim();
                     }
                 });
             },
@@ -4456,14 +4669,38 @@
             toggleSidebar(type) {
                 const sidebar = document.getElementById(`${type}-sidebar`);
                 const overlay = document.getElementById(`${type}-sidebar-overlay`);
-                if (sidebar.classList.contains('open')) { sidebar.classList.remove('open'); overlay.classList.remove('active'); } 
-                else { sidebar.classList.add('open'); overlay.classList.add('active'); }
+                if(!sidebar) return;
+                const abrindo = !sidebar.classList.contains('open');
+                sidebar.classList.toggle('open', abrindo);
+                if(overlay) overlay.classList.toggle('active', abrindo);
+                document.body.classList.toggle('vx-drawer-open', abrindo);
+                // O <body> já é overflow-hidden por padrão neste layout; não
+                // adicionamos trava extra para não sobrar scroll bloqueado depois.
+                if(abrindo) {
+                    const primeiro = sidebar.querySelector('.vx-sidebar-item');
+                    if(primeiro) primeiro.focus({ preventScroll: true });
+                }
             },
             
+            // Escape fecha o drawer aberto e, se não houver, o modal do topo.
+            registrarAtalhosTeclado() {
+                document.addEventListener('keydown', (e) => {
+                    if(e.key !== 'Escape') return;
+                    const drawer = document.querySelector('.mobile-sidebar.open');
+                    if(drawer) {
+                        this.toggleSidebar(drawer.id.replace('-sidebar', ''));
+                        return;
+                    }
+                    const modais = [...document.querySelectorAll('.modal-overlay.active')];
+                    if(modais.length) this.closeModal(modais[modais.length - 1].id);
+                });
+            },
+
             closeSidebars() {
                 const ent = document.getElementById('ent-sidebar'), mgr = document.getElementById('mgr-sidebar');
                 if(ent) ent.classList.remove('open'); if(mgr) mgr.classList.remove('open');
                 document.querySelectorAll('.sidebar-overlay').forEach(el => el.classList.remove('active'));
+                document.body.classList.remove('vx-drawer-open');
             },
 
             // Cada contexto de tags: onde está o container, o input e a lista em memória.
@@ -5379,13 +5616,14 @@
                     }
                     rotulo.innerText = nome;
                     entrar.classList.add('hidden');
-                    trocar.classList.remove('hidden');
-                    sair.classList.remove('hidden');
+                    // `hidden` do Tailwind perde para `inline-flex`; alternamos as duas.
+                    trocar.classList.remove('hidden'); trocar.classList.add('inline-flex');
+                    sair.classList.remove('hidden'); sair.classList.add('inline-flex');
                 } else {
                     rotulo.innerText = 'Visitante (acesso público)';
                     entrar.classList.remove('hidden');
-                    trocar.classList.add('hidden');
-                    sair.classList.add('hidden');
+                    trocar.classList.add('hidden'); trocar.classList.remove('inline-flex');
+                    sair.classList.add('hidden'); sair.classList.remove('inline-flex');
                 }
             },
 
@@ -6392,7 +6630,7 @@
                     ? `<div class="flex justify-between gap-4 py-1.5 border-b border-slate-200 last:border-0"><span class="text-xs text-slate-500">${rotulo}</span><span class="text-xs font-semibold text-slate-800 text-right">${this.escapeHtml(valor)}</span></div>`
                     : '';
                 resumo.innerHTML = `
-                    <div class="text-[10px] font-bold uppercase tracking-wide text-slate-400 mb-2">O que você enviou</div>
+                    <div class="text-xs font-bold uppercase tracking-wide text-slate-400 mb-2">O que você enviou</div>
                     ${linha('Categoria', d.category)}
                     ${linha('Zona', d.type === 'urban' ? 'Urbana' : (d.type === 'rural' ? 'Rural' : 'Autônomo'))}
                     ${linha('Endereço', d.protectedLocation ? (String(d.address || '').split(',')[0] + ' (área aproximada)') : d.address)}
@@ -6798,12 +7036,12 @@
                         ? l.categorias.slice(0, 2).join(', ') + (l.categorias.length > 2 ? ` +${l.categorias.length - 2}` : '')
                         : '<span class="text-slate-400">Sem categoria relacionada</span>';
                     const emAnalise = l.emValidacao.length
-                        ? `<div class="text-[11px] text-amber-700 mt-0.5">${l.emValidacao.length} aguardando validação</div>` : '';
+                        ? `<div class="text-xs text-amber-700 mt-0.5">${l.emValidacao.length} aguardando validação</div>` : '';
                     return `
                     <tr class="hover:bg-slate-50/50 align-top">
                         <td class="px-6 py-4"><div class="font-bold text-slate-900">${this.escapeHtml(l.gap.term)}</div><div class="text-xs text-slate-500 mt-0.5">${cats}</div></td>
                         <td class="px-6 py-4"><span class="bg-slate-100 text-slate-700 px-2 py-1 rounded font-bold">${l.gap.count}</span></td>
-                        <td class="px-6 py-4"><div class="font-bold text-slate-900">${l.publicados.length}</div><div class="text-[11px] text-slate-500">publicados</div>${emAnalise}</td>
+                        <td class="px-6 py-4"><div class="font-bold text-slate-900">${l.publicados.length}</div><div class="text-xs text-slate-500">publicados</div>${emAnalise}</td>
                         <td class="px-6 py-4"><span class="${s.classe} px-2 py-1 rounded text-xs font-bold border whitespace-nowrap">${s.rotulo}</span></td>
                         <td class="px-6 py-4 max-w-xs"><p class="text-xs text-slate-600 leading-snug line-clamp-3">${this.escapeHtml(l.explicacao)}</p></td>
                         <td class="px-6 py-4 text-right"><button onclick="app.analyzeGap(${this.escapeHtml(JSON.stringify(l.gap.term))}, ${l.gap.count})" class="text-brand-600 font-semibold text-xs hover:underline whitespace-nowrap">Analisar</button></td>
@@ -6897,7 +7135,7 @@
                 tbody.innerHTML = filtered.map(b => {
                     const sit = this.situacaoVitrine(b);
                     const selo = this.selosVitrine[sit];
-                    const etiquetaVitrine = `<div class="text-[10px] font-bold ${selo.classe} border rounded px-1.5 py-0.5 mt-1 inline-block">${selo.rotulo}</div>`;
+                    const etiquetaVitrine = `<div class="text-xs font-bold ${selo.classe} border rounded px-1.5 py-0.5 mt-1 inline-block">${selo.rotulo}</div>`;
 
                     const pct = calcularCompletudeCadastro(b);
                     const nivel = nivelCompletude(pct);
@@ -6926,7 +7164,7 @@
                                 <div class="w-14 h-1.5 bg-slate-200 rounded-full overflow-hidden flex-shrink-0"><div class="h-full bg-brand-500 rounded-full" style="width:${pct}%"></div></div>
                                 <span class="text-xs font-bold text-slate-700">${pct}%</span>
                             </div>
-                            <div class="text-[10px] font-bold ${nivel.classe} border rounded px-1.5 py-0.5 mt-1 inline-block">${nivel.rotulo}</div>
+                            <div class="text-xs font-bold ${nivel.classe} border rounded px-1.5 py-0.5 mt-1 inline-block">${nivel.rotulo}</div>
                         </td>
                         <td class="px-6 py-4 text-center">${acao}</td>
                     </tr>`;
@@ -6957,7 +7195,7 @@
                         <td class="px-4 py-2 font-mono text-slate-800">${c.coluna}</td>
                         <td class="px-4 py-2 text-slate-600">${this.escapeHtml(c.destino)}</td>
                         <td class="px-4 py-2 text-center">${c.obrigatoria
-                            ? '<span class="text-red-700 bg-red-50 border border-red-100 rounded px-1.5 py-0.5 text-[10px] font-bold">Sim</span>'
+                            ? '<span class="text-red-700 bg-red-50 border border-red-100 rounded px-1.5 py-0.5 text-xs font-bold">Sim</span>'
                             : '<span class="text-slate-500">-</span>'}</td>
                     </tr>`).join('');
                 const inp = document.getElementById('import-file'); if(inp) inp.value = '';
@@ -7076,9 +7314,9 @@
                     `${this.escapeHtml(nomeArquivo)} · separador "${separador}" · exibindo ${Math.min(20, registros.length)} de ${registros.length} linhas.`;
 
                 const selos = {
-                    novo:        '<span class="text-emerald-700 bg-emerald-50 border border-emerald-100 rounded px-1.5 py-0.5 text-[10px] font-bold">Novo</span>',
-                    atualizacao: '<span class="text-blue-700 bg-blue-50 border border-blue-100 rounded px-1.5 py-0.5 text-[10px] font-bold">Atualização</span>',
-                    rejeitado:   '<span class="text-red-700 bg-red-50 border border-red-100 rounded px-1.5 py-0.5 text-[10px] font-bold">Rejeitado</span>'
+                    novo:        '<span class="text-emerald-700 bg-emerald-50 border border-emerald-100 rounded px-1.5 py-0.5 text-xs font-bold">Novo</span>',
+                    atualizacao: '<span class="text-blue-700 bg-blue-50 border border-blue-100 rounded px-1.5 py-0.5 text-xs font-bold">Atualização</span>',
+                    rejeitado:   '<span class="text-red-700 bg-red-50 border border-red-100 rounded px-1.5 py-0.5 text-xs font-bold">Rejeitado</span>'
                 };
                 document.getElementById('import-preview').innerHTML = registros.slice(0, 20).map(r => `
                     <tr class="${r.situacao === 'rejeitado' ? 'bg-red-50/40' : ''}">
@@ -7516,7 +7754,7 @@
                 const faltam = faltantesCompletude(b);
                 document.getElementById('bd-completude-pct').innerText = pct + '%';
                 document.getElementById('bd-completude-bar').style.width = pct + '%';
-                document.getElementById('bd-completude-selo').className = `text-[10px] font-bold border rounded px-2 py-0.5 ${nivel.classe}`;
+                document.getElementById('bd-completude-selo').className = `text-xs font-bold border rounded px-2 py-0.5 ${nivel.classe}`;
                 document.getElementById('bd-completude-selo').innerText = nivel.rotulo;
                 document.getElementById('bd-completude-falta').innerText = faltam.length
                     ? 'Falta preencher: ' + faltam.join(', ')
@@ -7669,18 +7907,18 @@
                     const color = d.category === 'Alimentação' ? 'emerald' : (d.category === 'Comércio' ? 'purple' : 'brand');
 
                     const chipsTags = (d.tags || []).length
-                        ? `<div class="flex flex-wrap gap-1 mb-3">${d.tags.map(t => `<span class="text-[10px] font-semibold bg-slate-100 text-slate-600 border border-slate-200 px-1.5 py-0.5 rounded">${t}</span>`).join('')}</div>`
-                        : '<div class="text-[11px] text-slate-400 mb-3">Sem palavras-chave — cruzamento apenas por categoria/CNAE.</div>';
+                        ? `<div class="flex flex-wrap gap-1 mb-3">${d.tags.map(t => `<span class="text-xs font-semibold bg-slate-100 text-slate-600 border border-slate-200 px-1.5 py-0.5 rounded">${t}</span>`).join('')}</div>`
+                        : '<div class="text-xs text-slate-400 mb-3">Sem palavras-chave — cruzamento apenas por categoria/CNAE.</div>';
 
                     const listaFornecedores = matches.length
-                        ? `<ul class="mt-2 space-y-1 text-left">${matches.slice(0,4).map(b => `<li class="text-xs text-slate-700 flex items-center gap-1.5"><i data-lucide="store" class="w-3 h-3 text-slate-400"></i> ${b.name}</li>`).join('')}${matches.length > 4 ? `<li class="text-[11px] text-slate-500 pl-[18px]">+ ${matches.length - 4} outros na base</li>` : ''}</ul>`
+                        ? `<ul class="mt-2 space-y-1 text-left">${matches.slice(0,4).map(b => `<li class="text-xs text-slate-700 flex items-center gap-1.5"><i data-lucide="store" class="w-3 h-3 text-slate-400"></i> ${b.name}</li>`).join('')}${matches.length > 4 ? `<li class="text-xs text-slate-500 pl-[18px]">+ ${matches.length - 4} outros na base</li>` : ''}</ul>`
                         : '<p class="text-xs text-slate-500 mt-1">Nenhum negócio da base corresponde a estes critérios.</p>';
 
                     return `
                         <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6 flex flex-col">
                             <div class="flex justify-between items-start mb-4">
-                                <span class="bg-${color}-50 text-${color}-700 text-[10px] font-bold uppercase px-2.5 py-1 rounded-full border border-${color}-200">${d.sector}</span>
-                                <span class="text-[10px] text-slate-500 font-bold bg-slate-100 px-2 py-1 rounded">${d.status}</span>
+                                <span class="bg-${color}-50 text-${color}-700 text-xs font-bold uppercase px-2.5 py-1 rounded-full border border-${color}-200">${d.sector}</span>
+                                <span class="text-xs text-slate-500 font-bold bg-slate-100 px-2 py-1 rounded">${d.status}</span>
                             </div>
                             <h4 class="text-lg font-bold text-slate-900 mb-2">${d.title}</h4>
                             <p class="text-sm text-slate-600 mb-3 flex-grow">${d.desc}</p>
@@ -7692,7 +7930,7 @@
                                 </div>
                                 ${listaFornecedores}
                             </div>
-                            <p class="text-[10px] text-slate-400 mb-3 leading-snug">Apoio à pesquisa de mercado — não indica nem contrata fornecedor.</p>
+                            <p class="text-xs text-slate-400 mb-3 leading-snug">Apoio à pesquisa de mercado — não indica nem contrata fornecedor.</p>
                             <button onclick="app.searchFromManager('${(d.tags||[]).join(', ')}')" class="w-full bg-slate-900 text-white font-bold text-sm py-2.5 rounded-lg hover:bg-slate-800 transition shadow-sm">Ver oferta local relacionada</button>
                         </div>
                     `;
@@ -7750,8 +7988,8 @@
                         for (const [field, vals] of Object.entries(v.changes)) {
                             if(vals.old !== vals.new) {
                                 diffs += `<div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm mt-2">
-                                    <div class="bg-slate-50 text-slate-600 p-2 rounded border border-slate-200"><strong class="capitalize block text-[10px] uppercase tracking-wide text-slate-400 mb-0.5">${this.escapeHtml(field)} · atual</strong><del>${this.escapeHtml(vals.old)}</del></div>
-                                    <div class="bg-emerald-50 text-emerald-800 p-2 rounded border border-emerald-100"><strong class="block text-[10px] uppercase tracking-wide text-emerald-600 mb-0.5">Proposto</strong>${this.escapeHtml(vals.new)}</div>
+                                    <div class="bg-slate-50 text-slate-600 p-2 rounded border border-slate-200"><strong class="capitalize block text-xs uppercase tracking-wide text-slate-400 mb-0.5">${this.escapeHtml(field)} · atual</strong><del>${this.escapeHtml(vals.old)}</del></div>
+                                    <div class="bg-emerald-50 text-emerald-800 p-2 rounded border border-emerald-100"><strong class="block text-xs uppercase tracking-wide text-emerald-600 mb-0.5">Proposto</strong>${this.escapeHtml(vals.new)}</div>
                                 </div>`;
                             }
                         }
@@ -7763,13 +8001,13 @@
                             <button onclick="app.openAdjustmentModal(${v.id})" class="bg-amber-100 text-amber-700 hover:bg-amber-200 px-3 py-1.5 rounded-lg text-xs font-bold shadow-sm transition">Pedir Ajuste</button>
                             <button onclick="app.prepareRejection(${v.id})" class="bg-white border border-slate-300 text-slate-700 hover:bg-slate-50 px-3 py-1.5 rounded-lg text-xs font-bold shadow-sm transition">Rejeitar</button>
                         </div>` : `
-                        <div class="text-[11px] text-slate-500 text-right">
+                        <div class="text-xs text-slate-500 text-right">
                             ${v.decidedAt ? `Decidido em ${new Date(v.decidedAt).toLocaleDateString('pt-BR')}<br>por ${this.escapeHtml(v.decidedBy || 'Gestor Municipal')}` : 'Solicitação encerrada'}
                         </div>`;
 
                     const justificativa = v.feedback ? `
                         <div class="mt-3 bg-slate-50 border border-slate-200 rounded-xl p-3">
-                            <div class="text-[10px] font-bold uppercase tracking-wide text-slate-400 mb-0.5">Justificativa registrada</div>
+                            <div class="text-xs font-bold uppercase tracking-wide text-slate-400 mb-0.5">Justificativa registrada</div>
                             <p class="text-xs text-slate-700">${this.escapeHtml(v.feedback)}</p>
                         </div>` : '';
 
@@ -7779,7 +8017,7 @@
                                 <div class="min-w-0">
                                     <div class="flex items-center gap-2 flex-wrap mb-1">
                                         <h4 class="text-lg font-bold text-slate-900">${this.escapeHtml(v.businessName)}</h4>
-                                        <span class="${s.classe} px-2 py-0.5 rounded text-[10px] font-bold border uppercase tracking-wide">${s.rotulo}</span>
+                                        <span class="${s.classe} px-2 py-0.5 rounded text-xs font-bold border uppercase tracking-wide">${s.rotulo}</span>
                                     </div>
                                     <p class="text-xs text-slate-500">Solicitação: <span class="font-bold text-slate-700">${this.escapeHtml(v.type)}</span> • Origem: <span class="font-bold text-slate-700">${this.escapeHtml(origem)}</span> • Data: ${new Date(v.date).toLocaleDateString('pt-BR')}</p>
                                 </div>
@@ -8056,7 +8294,7 @@
                     <tr class="hover:bg-slate-50/50">
                         <td class="px-6 py-4 text-slate-600 text-xs">${isNaN(d) ? '-' : d.toLocaleDateString('pt-BR') + ' ' + d.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}</td>
                         <td class="px-6 py-4 font-semibold text-slate-900">${this.escapeHtml(a.usuario || 'Sistema')}</td>
-                        <td class="px-6 py-4"><span class="text-[10px] font-bold border rounded px-1.5 py-0.5 ${perfil.classe}">${this.escapeHtml(perfil.rotulo)}</span></td>
+                        <td class="px-6 py-4"><span class="text-xs font-bold border rounded px-1.5 py-0.5 ${perfil.classe}">${this.escapeHtml(perfil.rotulo)}</span></td>
                         <td class="px-6 py-4 text-slate-600">${this.escapeHtml(a.modulo || '-')}</td>
                         <td class="px-6 py-4 text-slate-800 font-medium">${this.escapeHtml(a.acao || '-')}</td>
                         <td class="px-6 py-4 text-slate-500 text-xs font-mono">${this.escapeHtml(entidade)}</td>
@@ -8082,7 +8320,7 @@
                 document.getElementById('ad-acao').innerText = a.acao || 'Evento de auditoria';
                 document.getElementById('ad-datahora').innerText = isNaN(d) ? '-' : d.toLocaleString('pt-BR');
                 document.getElementById('ad-usuario').innerText = a.usuario || 'Sistema';
-                document.getElementById('ad-perfil').innerHTML = `<span class="text-[10px] font-bold border rounded px-1.5 py-0.5 ${perfil.classe}">${this.escapeHtml(perfil.rotulo)}</span>`;
+                document.getElementById('ad-perfil').innerHTML = `<span class="text-xs font-bold border rounded px-1.5 py-0.5 ${perfil.classe}">${this.escapeHtml(perfil.rotulo)}</span>`;
                 document.getElementById('ad-modulo').innerText = a.modulo || '-';
                 document.getElementById('ad-acao-campo').innerText = a.acao || '-';
                 document.getElementById('ad-entidade').innerText = a.entidade || '—';
@@ -8194,7 +8432,9 @@
                 });
 
                 const aviso = document.getElementById('mgr-readonly-banner');
-                if (aviso) aviso.classList.toggle('hidden', !analista);
+                if (aviso) { aviso.classList.toggle('hidden', !analista); aviso.classList.toggle('flex', analista); }
+                const avisoLateral = document.getElementById('mgr-readonly-side');
+                if (avisoLateral) { avisoLateral.classList.toggle('hidden', !analista); avisoLateral.classList.toggle('flex', analista); }
 
                 // Analista dentro de uma área restrita volta para a visão geral.
                 if (!admin && (this.currentView === 'users' || this.currentView === 'settings')) {
@@ -8202,15 +8442,21 @@
                 }
             },
 
+            // Rodapé de sessão das DUAS sidebars (Gestão e Empreendedor).
             atualizarRodapeSidebar() {
                 const u = this.usuarioAtual;
-                const nome = document.getElementById('mgr-user-name');
-                const papel = document.getElementById('mgr-user-role');
-                const iniciais = document.getElementById('mgr-user-initials');
-                if (!nome) return;
-                nome.innerText = u ? u.nome : 'Sessão não iniciada';
-                papel.innerText = u ? rotuloPerfil(u.perfil) : '—';
-                iniciais.innerText = u ? (u.nome || '?').split(' ').filter(Boolean).slice(0, 2).map(x => x[0].toUpperCase()).join('') : '--';
+                const iniciaisDe = n => (n || '?').split(' ').filter(Boolean).slice(0, 2).map(x => x[0].toUpperCase()).join('');
+
+                [['mgr-user-name', 'mgr-user-role', 'mgr-user-initials'],
+                 ['ent-user-name', 'ent-user-role', 'ent-user-initials']].forEach(([idN, idR, idI]) => {
+                    const nome = document.getElementById(idN);
+                    if (!nome) return;
+                    const papel = document.getElementById(idR);
+                    const iniciais = document.getElementById(idI);
+                    nome.innerText = u ? u.nome : 'Sessão não iniciada';
+                    if (papel) papel.innerText = u ? rotuloPerfil(u.perfil) : '—';
+                    if (iniciais) iniciais.innerText = u ? iniciaisDe(u.nome) : '--';
+                });
             },
 
             // =================================================================
@@ -8234,7 +8480,7 @@
                     <tr class="hover:bg-slate-50/50 ${ativo ? '' : 'opacity-60'}">
                         <td class="px-6 py-4 font-bold text-slate-900">${this.escapeHtml(u.nome)}</td>
                         <td class="px-6 py-4 text-slate-600 text-xs">${this.escapeHtml(u.email || '—')}</td>
-                        <td class="px-6 py-4"><span class="text-[10px] font-bold border rounded px-1.5 py-0.5 ${perfil.classe}">${this.escapeHtml(perfil.rotulo)}</span></td>
+                        <td class="px-6 py-4"><span class="text-xs font-bold border rounded px-1.5 py-0.5 ${perfil.classe}">${this.escapeHtml(perfil.rotulo)}</span></td>
                         <td class="px-6 py-4">${ativo
                             ? '<span class="text-emerald-700 bg-emerald-50 px-2 py-1 rounded text-xs font-bold border border-emerald-100">Ativo</span>'
                             : '<span class="text-slate-600 bg-slate-100 px-2 py-1 rounded text-xs font-bold border border-slate-200">Inativo</span>'}</td>
@@ -8410,7 +8656,7 @@
 
                 document.getElementById('acc-initials').innerText = (u.nome || '?').split(' ').filter(Boolean).slice(0, 2).map(x => x[0].toUpperCase()).join('');
                 document.getElementById('acc-perfil-label').innerText = u.email || '—';
-                document.getElementById('acc-perfil').innerHTML = `<span class="text-[10px] font-bold border rounded px-1.5 py-0.5 ${perfil.classe}">${this.escapeHtml(perfil.rotulo)}</span>`;
+                document.getElementById('acc-perfil').innerHTML = `<span class="text-xs font-bold border rounded px-1.5 py-0.5 ${perfil.classe}">${this.escapeHtml(perfil.rotulo)}</span>`;
                 document.getElementById('acc-negocio').innerText = negocio || '—';
                 document.getElementById('acc-ultimo').innerText = u.ultimoAcesso ? new Date(u.ultimoAcesso).toLocaleString('pt-BR') : 'Primeiro acesso';
                 document.getElementById('acc-sessao').innerText = this.sessao ? 'Sessão ativa' : 'Sem sessão';
@@ -8518,7 +8764,7 @@
                     <label class="flex items-start justify-between gap-4 p-3 rounded-xl hover:bg-slate-50 transition cursor-pointer border border-transparent">
                         <span class="min-w-0">
                             <span class="block text-sm font-semibold text-slate-800">${this.escapeHtml(n.rotulo)}</span>
-                            <span class="block text-[11px] text-slate-500">${this.escapeHtml(n.desc)}</span>
+                            <span class="block text-xs text-slate-500">${this.escapeHtml(n.desc)}</span>
                         </span>
                         <span class="relative inline-flex flex-shrink-0 mt-0.5">
                             <input type="checkbox" class="sr-only peer" ${on ? 'checked' : ''} onchange="app.alternarNotificacao('${n.chave}', this.checked)" aria-label="${this.escapeHtml(n.rotulo)}">
@@ -8838,7 +9084,7 @@
                     const d = dataDoBloco(i);
                     const pos = totalBlocos > 1 ? (i / (totalBlocos - 1)) * 100 : 0;
                     const alinhamento = i === 0 ? 'left:0;' : (i === totalBlocos - 1 ? 'right:0;' : `left:${pos}%; transform:translateX(-50%);`);
-                    return `<span class="absolute top-0 text-[9px] text-slate-400 font-medium whitespace-nowrap" style="${alinhamento}">${d.toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit' })}</span>`;
+                    return `<span class="absolute top-0 text-xs text-slate-400 font-medium whitespace-nowrap" style="${alinhamento}">${d.toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit' })}</span>`;
                 }).join('');
             },
 
@@ -8910,7 +9156,7 @@
                         <div class="h-2.5 bg-slate-100 rounded-full overflow-hidden">
                             <div class="h-full bg-brand-500 rounded-full" style="width:${pct}%"></div>
                         </div>
-                        <p class="text-[11px] text-slate-500 mt-1.5">${this.plural(s.buscas, 'busca', 'buscas')} · ${this.plural(s.aberturas, 'abertura', 'aberturas')} · ${this.plural(s.contatos, 'contato', 'contatos')}</p>
+                        <p class="text-xs text-slate-500 mt-1.5">${this.plural(s.buscas, 'busca', 'buscas')} · ${this.plural(s.aberturas, 'abertura', 'aberturas')} · ${this.plural(s.contatos, 'contato', 'contatos')}</p>
                     </div>`;
                 }).join('') || '<p class="text-xs text-slate-400">Nenhuma interação por segmento no recorte.</p>';
             },
@@ -8965,7 +9211,7 @@
                             <td class="py-2.5 font-semibold text-slate-800">${this.escapeHtml(r.termo)}</td>
                             <td class="py-2.5 text-center text-amber-600 font-bold">${r.semResultado}</td>
                             <td class="py-2.5 text-center text-slate-500 text-xs">${this.dataLocalBR(r.ultima)}</td>
-                            <td class="py-2.5 text-right"><span class="text-amber-700 bg-amber-50 px-2 py-1 rounded text-[10px] font-bold border border-amber-100">Oportunidade territorial</span></td>
+                            <td class="py-2.5 text-right"><span class="text-amber-700 bg-amber-50 px-2 py-1 rounded text-xs font-bold border border-amber-100">Oportunidade territorial</span></td>
                         </tr>`).join('') || '<tr><td colspan="4" class="py-6 text-center text-xs text-slate-400">Toda busca do recorte encontrou oferta local.</td></tr>';
             },
 
@@ -9080,7 +9326,7 @@
                 const catWrap = document.getElementById('gap-modal-cat-wrap');
                 catWrap.classList.toggle('hidden', tags.length === 0);
                 document.getElementById('gap-modal-tags').innerHTML = tags.map(t =>
-                    `<span class="text-[10px] font-semibold px-2 py-1 rounded-md bg-slate-100 text-slate-600 border border-slate-200">${this.escapeHtml(t)}</span>`
+                    `<span class="text-xs font-semibold px-2 py-1 rounded-md bg-slate-100 text-slate-600 border border-slate-200">${this.escapeHtml(t)}</span>`
                 ).join('');
 
                 // Negócios relacionados: publicados primeiro, depois os em validação.
@@ -9094,9 +9340,9 @@
                     <div class="flex items-center justify-between gap-3 bg-slate-50 border border-slate-100 rounded-xl px-3 py-2">
                         <div class="min-w-0">
                             <div class="text-sm font-bold text-slate-900 truncate">${this.escapeHtml(r.b.name)}</div>
-                            <div class="text-[11px] text-slate-500">${this.escapeHtml(r.b.category)} · ${this.escapeHtml(r.nota)}</div>
+                            <div class="text-xs text-slate-500">${this.escapeHtml(r.b.category)} · ${this.escapeHtml(r.nota)}</div>
                         </div>
-                        ${r.pendente ? '<span class="text-[10px] font-bold text-amber-700 bg-amber-50 border border-amber-200 rounded px-1.5 py-0.5 flex-shrink-0">Pendente</span>' : ''}
+                        ${r.pendente ? '<span class="text-xs font-bold text-amber-700 bg-amber-50 border border-amber-200 rounded px-1.5 py-0.5 flex-shrink-0">Pendente</span>' : ''}
                     </div>`).join('');
 
                 // Escopo honesto do dado: sem data por evento, o número é acumulado.
@@ -9155,8 +9401,8 @@
                     : this.escapeHtml(b.address || 'Endereço não informado');
 
                 const botaoVitrine = sit === 'sem'
-                    ? `<div class="text-[10px] text-slate-500 bg-slate-100 border border-slate-200 rounded px-2 py-1.5 text-center font-semibold">Somente cadastro municipal</div>`
-                    : `<button onclick="app.viewProfileFromManager(${b.id})" class="w-full bg-white border border-slate-300 text-slate-700 text-[11px] font-bold py-1.5 rounded-lg hover:bg-slate-50 transition">Ver vitrine pública</button>`;
+                    ? `<div class="text-xs text-slate-500 bg-slate-100 border border-slate-200 rounded px-2 py-1.5 text-center font-semibold">Somente cadastro municipal</div>`
+                    : `<button onclick="app.viewProfileFromManager(${b.id})" class="w-full bg-white border border-slate-300 text-slate-700 text-xs font-bold py-1.5 rounded-lg hover:bg-slate-50 transition">Ver vitrine pública</button>`;
 
                 return `
                     <div class="p-1 min-w-[220px]">
@@ -9164,17 +9410,17 @@
                             <div class="w-9 h-9 ${b.color || 'bg-slate-500'} rounded-lg flex items-center justify-center text-white flex-shrink-0"><i data-lucide="${icone}" class="w-4 h-4"></i></div>
                             <div class="min-w-0">
                                 <h4 class="font-bold text-slate-900 text-sm leading-tight">${this.escapeHtml(b.name)}</h4>
-                                <p class="text-[10px] font-bold text-slate-400 uppercase mt-0.5">${this.escapeHtml(b.category)} · ${this.escapeHtml(b.porte || 'Porte não informado')}</p>
+                                <p class="text-xs font-bold text-slate-400 uppercase mt-0.5">${this.escapeHtml(b.category)} · ${this.escapeHtml(b.porte || 'Porte não informado')}</p>
                             </div>
                         </div>
                         <div class="flex flex-wrap gap-1 mb-2">
-                            <span class="text-[10px] font-bold border rounded px-1.5 py-0.5 ${validado ? 'text-emerald-700 bg-emerald-50 border-emerald-100' : 'text-amber-700 bg-amber-50 border-amber-100'}">${validado ? 'Validado' : 'Pendente'}</span>
-                            <span class="text-[10px] font-bold border rounded px-1.5 py-0.5 ${selo.classe}">${selo.rotulo}</span>
-                            <span class="text-[10px] font-bold border rounded px-1.5 py-0.5 ${nivel.classe}">${pct}% cadastro</span>
+                            <span class="text-xs font-bold border rounded px-1.5 py-0.5 ${validado ? 'text-emerald-700 bg-emerald-50 border-emerald-100' : 'text-amber-700 bg-amber-50 border-amber-100'}">${validado ? 'Validado' : 'Pendente'}</span>
+                            <span class="text-xs font-bold border rounded px-1.5 py-0.5 ${selo.classe}">${selo.rotulo}</span>
+                            <span class="text-xs font-bold border rounded px-1.5 py-0.5 ${nivel.classe}">${pct}% cadastro</span>
                         </div>
-                        <p class="text-[11px] text-slate-600 mb-2.5 leading-snug">${local}</p>
+                        <p class="text-xs text-slate-600 mb-2.5 leading-snug">${local}</p>
                         <div class="flex flex-col gap-1.5">
-                            <button onclick="app.openBaseDetails(${b.id})" class="w-full bg-brand-600 hover:bg-brand-700 text-white text-[11px] font-bold py-1.5 rounded-lg transition">Ver cadastro interno</button>
+                            <button onclick="app.openBaseDetails(${b.id})" class="w-full bg-brand-600 hover:bg-brand-700 text-white text-xs font-bold py-1.5 rounded-lg transition">Ver cadastro interno</button>
                             ${botaoVitrine}
                         </div>
                     </div>`;
