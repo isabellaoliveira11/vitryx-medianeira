@@ -796,17 +796,36 @@
                     <button class="lg:hidden text-slate-400 hover:text-white" onclick="app.toggleSidebar('mgr')"><i data-lucide="x" class="w-5 h-5"></i></button>
                 </div>
                 <nav class="p-4 space-y-1 flex-grow overflow-y-auto hide-scroll" id="nav-manager">
+                    <p class="px-3 pt-4 pb-1 text-[10px] font-bold text-slate-500 uppercase tracking-wider">Inteligência Territorial</p>
                     <button onclick="app.navigate('manager', 'overview')" data-target="overview" class="w-full flex items-center gap-3 px-3 py-2.5 text-slate-300 rounded-lg font-medium text-sm hover:bg-slate-800 hover:text-white transition-colors"><i data-lucide="globe" class="w-4 h-4"></i> Visão Territorial</button>
                     <button onclick="app.navigate('manager', 'base')" data-target="base" class="w-full flex items-center gap-3 px-3 py-2.5 text-slate-300 rounded-lg font-medium text-sm hover:bg-slate-800 hover:text-white transition-colors"><i data-lucide="database" class="w-4 h-4"></i> Base Econômica</button>
                     <button onclick="app.navigate('manager', 'map')" data-target="map" class="w-full flex items-center gap-3 px-3 py-2.5 text-slate-300 rounded-lg font-medium text-sm hover:bg-slate-800 hover:text-white transition-colors"><i data-lucide="map" class="w-4 h-4"></i> Mapa Territorial</button>
-                    <button onclick="app.navigate('manager', 'validations')" data-target="validations" class="w-full flex items-center gap-3 px-3 py-2.5 text-slate-300 rounded-lg font-medium text-sm hover:bg-slate-800 hover:text-white transition-colors"><i data-lucide="check-square" class="w-4 h-4"></i> Validações <span id="mgr-badge-val" class="ml-auto bg-accent-500 text-white text-[10px] px-1.5 py-0.5 rounded font-bold hidden">0</span></button>
                     <button onclick="app.navigate('manager', 'gaps')" data-target="gaps" class="w-full flex items-center gap-3 px-3 py-2.5 text-slate-300 rounded-lg font-medium text-sm hover:bg-slate-800 hover:text-white transition-colors"><i data-lucide="search-x" class="w-4 h-4"></i> Buscas e Oportunidades</button>
+                    <button onclick="app.navigate('manager', 'impact')" data-target="impact" class="w-full flex items-center gap-3 px-3 py-2.5 text-slate-300 rounded-lg font-medium text-sm hover:bg-slate-800 hover:text-white transition-colors"><i data-lucide="bar-chart-2" class="w-4 h-4"></i> Impacto e Resultados</button>
+                    <p class="px-3 pt-4 pb-1 text-[10px] font-bold text-slate-500 uppercase tracking-wider">Operação</p>
+                    <button onclick="app.navigate('manager', 'validations')" data-target="validations" class="w-full flex items-center gap-3 px-3 py-2.5 text-slate-300 rounded-lg font-medium text-sm hover:bg-slate-800 hover:text-white transition-colors"><i data-lucide="check-square" class="w-4 h-4"></i> Validações <span id="mgr-badge-val" class="ml-auto bg-accent-500 text-white text-[10px] px-1.5 py-0.5 rounded font-bold hidden">0</span></button>
                     <button onclick="app.navigate('manager', 'demands')" data-target="demands" class="w-full flex items-center gap-3 px-3 py-2.5 text-slate-300 rounded-lg font-medium text-sm hover:bg-slate-800 hover:text-white transition-colors"><i data-lucide="clipboard-list" class="w-4 h-4"></i> Demandas Públicas</button>
                     <button onclick="app.navigate('manager', 'purchases')" data-target="purchases" class="w-full flex items-center gap-3 px-3 py-2.5 text-slate-300 rounded-lg font-medium text-sm hover:bg-slate-800 hover:text-white transition-colors"><i data-lucide="shopping-cart" class="w-4 h-4"></i> Compras Públicas</button>
-                    <button onclick="app.navigate('manager', 'impact')" data-target="impact" class="w-full flex items-center gap-3 px-3 py-2.5 text-slate-300 rounded-lg font-medium text-sm hover:bg-slate-800 hover:text-white transition-colors"><i data-lucide="bar-chart-2" class="w-4 h-4"></i> Impacto e Resultados</button>
-                    <div class="h-px bg-slate-800 my-2 mx-3"></div>
-                    <button onclick="app.navigate('manager', 'history')" data-target="history" class="w-full flex items-center gap-3 px-3 py-2.5 text-slate-400 rounded-lg font-medium text-sm hover:bg-slate-800 hover:text-white transition-colors"><i data-lucide="history" class="w-4 h-4"></i> Histórico do Sistema</button>
+                    <p class="px-3 pt-4 pb-1 text-[10px] font-bold text-slate-500 uppercase tracking-wider" id="nav-grupo-admin">Administração</p>
+                    <button onclick="app.navigate('manager', 'history')" data-target="history" class="w-full flex items-center gap-3 px-3 py-2.5 text-slate-300 rounded-lg font-medium text-sm hover:bg-slate-800 hover:text-white transition-colors"><i data-lucide="file-clock" class="w-4 h-4"></i> Auditoria</button>
+                    <div id="nav-admin-restrito">
+                    <button onclick="app.navigate('manager', 'users')" data-target="users" class="w-full flex items-center gap-3 px-3 py-2.5 text-slate-300 rounded-lg font-medium text-sm hover:bg-slate-800 hover:text-white transition-colors"><i data-lucide="users" class="w-4 h-4"></i> Usuários e Permissões</button>
+                    <button onclick="app.navigate('manager', 'settings')" data-target="settings" class="w-full flex items-center gap-3 px-3 py-2.5 text-slate-300 rounded-lg font-medium text-sm hover:bg-slate-800 hover:text-white transition-colors"><i data-lucide="settings" class="w-4 h-4"></i> Configurações</button>
+                    </div>
                 </nav>
+                <div class="p-3 border-t border-slate-800 flex-shrink-0">
+                    <div class="flex items-center gap-3 px-2 py-2">
+                        <div class="w-8 h-8 rounded-full bg-slate-700 text-slate-200 flex items-center justify-center text-xs font-bold flex-shrink-0" id="mgr-user-initials">--</div>
+                        <div class="min-w-0 leading-tight">
+                            <div class="text-sm font-bold text-white truncate" id="mgr-user-name">-</div>
+                            <div class="text-[10px] text-slate-400 truncate" id="mgr-user-role">-</div>
+                        </div>
+                    </div>
+                    <div class="flex gap-2 mt-2">
+                        <button onclick="app.openMinhaConta()" class="flex-1 flex items-center justify-center gap-1.5 px-2 py-2 text-slate-300 rounded-lg text-xs font-semibold hover:bg-slate-800 hover:text-white transition-colors"><i data-lucide="user-cog" class="w-3.5 h-3.5"></i> Minha conta</button>
+                        <button onclick="app.logout()" class="flex-1 flex items-center justify-center gap-1.5 px-2 py-2 text-slate-300 rounded-lg text-xs font-semibold hover:bg-slate-800 hover:text-white transition-colors"><i data-lucide="log-out" class="w-3.5 h-3.5"></i> Sair</button>
+                    </div>
+                </div>
             </div>
 
             <!-- Content Area -->
@@ -816,6 +835,7 @@
                         <button onclick="app.toggleSidebar('mgr')" class="lg:hidden text-slate-500 hover:bg-slate-100 p-1.5 rounded-lg"><i data-lucide="menu" class="w-5 h-5"></i></button>
                         <h2 class="font-bold text-slate-900 text-lg" id="mgr-topbar-title">Visão Territorial</h2>
                     </div>
+                    <div id="mgr-readonly-banner" class="hidden flex items-center gap-2 px-3 py-1.5 bg-indigo-50 border border-indigo-100 rounded-lg text-xs font-bold text-indigo-700"><i data-lucide="eye" class="w-3.5 h-3.5"></i> Acesso somente para consulta</div>
                 </div>
 
                 <div class="flex-grow overflow-y-auto p-4 sm:p-6 lg:p-8">
@@ -971,8 +991,8 @@
                                     <div class="text-sm font-bold text-slate-600 bg-slate-100 px-3 py-1.5 rounded-lg border border-slate-200">
                                         <span id="mgr-base-count">0</span> registros encontrados
                                     </div>
-                                    <button onclick="app.openImportModal()" class="bg-white border border-slate-300 text-slate-700 px-4 py-2 rounded-xl font-bold text-sm hover:bg-slate-50 transition shadow-sm flex items-center gap-2"><i data-lucide="upload" class="w-4 h-4"></i> Importar base</button>
-                                    <button onclick="app.openNewBusiness()" class="bg-brand-600 text-white px-4 py-2 rounded-xl font-bold text-sm hover:bg-brand-700 transition shadow-sm">Adicionar cadastro</button>
+                                    <button onclick="app.openImportModal()" data-admin-only class="bg-white border border-slate-300 text-slate-700 px-4 py-2 rounded-xl font-bold text-sm hover:bg-slate-50 transition shadow-sm flex items-center gap-2"><i data-lucide="upload" class="w-4 h-4"></i> Importar base</button>
+                                    <button onclick="app.openNewBusiness()" data-admin-only class="bg-brand-600 text-white px-4 py-2 rounded-xl font-bold text-sm hover:bg-brand-700 transition shadow-sm">Adicionar cadastro</button>
                                 </div>
                             </div>
                             <!-- Filtros -->
@@ -1297,7 +1317,7 @@
                                 <h3 class="text-xl font-bold text-slate-900">Demandas Públicas (Fomento Local)</h3>
                                 <p class="text-sm text-slate-500 mt-1">Conecte necessidades da Prefeitura com potenciais fornecedores locais mapeados no sistema.</p>
                             </div>
-                            <button onclick="app.openNewDemand()" class="bg-brand-600 text-white px-4 py-2 rounded-xl font-bold text-sm hover:bg-brand-700 transition shadow-sm">+ Cadastrar Demanda</button>
+                            <button onclick="app.openNewDemand()" data-admin-only class="bg-brand-600 text-white px-4 py-2 rounded-xl font-bold text-sm hover:bg-brand-700 transition shadow-sm">+ Cadastrar Demanda</button>
                         </div>
                         <div class="mb-6 bg-blue-50 text-blue-800 text-xs font-medium px-4 py-3 rounded-xl border border-blue-200 flex items-center gap-2">
                             <i data-lucide="info" class="w-4 h-4 flex-shrink-0"></i> A identificação de oferta local tem caráter informativo e de apoio ao planejamento. Os procedimentos oficiais de contratação permanecem nos sistemas e canais próprios da Administração Pública.
@@ -1320,7 +1340,7 @@
                                 <h3 class="text-xl font-bold text-slate-900">Compras Públicas</h3>
                                 <p class="text-sm text-slate-500 mt-1">Contratações efetivamente realizadas pelo Município. Diferente de demanda (necessidade mapeada) e de fornecedor potencial (oferta local identificada).</p>
                             </div>
-                            <button onclick="app.openNewPurchase()" class="bg-brand-600 text-white px-4 py-2 rounded-xl font-bold text-sm hover:bg-brand-700 transition shadow-sm flex-shrink-0">+ Registrar compra</button>
+                            <button onclick="app.openNewPurchase()" data-admin-only class="bg-brand-600 text-white px-4 py-2 rounded-xl font-bold text-sm hover:bg-brand-700 transition shadow-sm flex-shrink-0">+ Registrar compra</button>
                         </div>
 
                         <div class="mb-6 bg-amber-50 text-amber-900 text-xs font-medium px-4 py-3 rounded-xl border border-amber-200 flex items-center gap-2">
@@ -1391,23 +1411,162 @@
                     </div>
 
                     <!-- VIEW: HISTÓRICO -->
-                    <div id="view-mgr-history" class="app-view max-w-5xl mx-auto">
-                        <div class="mb-6 bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex justify-between items-center">
-                            <div>
-                                <h3 class="text-xl font-bold text-slate-900">Histórico do Sistema</h3>
-                                <p class="text-sm text-slate-500 mt-1">Trilha de auditoria das ações realizadas na plataforma.</p>
-                                <div class="flex flex-wrap gap-2 mt-3">
-                                    <span class="inline-flex items-center gap-1.5 text-[11px] font-semibold text-slate-600 bg-slate-100 border border-slate-200 rounded-full px-2.5 py-1"><i data-lucide="log-in" class="w-3 h-3"></i> Acesso</span>
-                                    <span class="inline-flex items-center gap-1.5 text-[11px] font-semibold text-slate-600 bg-slate-100 border border-slate-200 rounded-full px-2.5 py-1"><i data-lucide="pencil" class="w-3 h-3"></i> Alteração de cadastro</span>
-                                    <span class="inline-flex items-center gap-1.5 text-[11px] font-semibold text-slate-600 bg-slate-100 border border-slate-200 rounded-full px-2.5 py-1"><i data-lucide="download" class="w-3 h-3"></i> Exportação de dados</span>
-                                    <span class="inline-flex items-center gap-1.5 text-[11px] font-semibold text-slate-600 bg-slate-100 border border-slate-200 rounded-full px-2.5 py-1"><i data-lucide="shield-check" class="w-3 h-3"></i> Validação municipal</span>
-                                </div>
-                                <p class="text-xs text-slate-400 mt-2">Cada registro guarda data, hora, perfil responsável e detalhe da ação.</p>
+                    <!-- VIEW: AUDITORIA -->
+                    <div id="view-mgr-history" class="app-view max-w-6xl mx-auto">
+                        <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+                            <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm">
+                                <div class="text-xs font-semibold text-slate-500 mb-1 uppercase tracking-wide">Eventos Registrados</div>
+                                <div class="text-2xl font-extrabold text-slate-900" id="aud-kpi-total">0</div>
                             </div>
-                            <button onclick="app.renderHistory()" class="bg-slate-100 p-2 rounded-lg text-slate-600 hover:text-slate-900 transition"><i data-lucide="refresh-cw" class="w-4 h-4"></i></button>
+                            <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm">
+                                <div class="text-xs font-semibold text-slate-500 mb-1 uppercase tracking-wide">Ações Hoje</div>
+                                <div class="text-2xl font-extrabold text-brand-600" id="aud-kpi-hoje">0</div>
+                            </div>
+                            <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm">
+                                <div class="text-xs font-semibold text-slate-500 mb-1 uppercase tracking-wide">Usuários Ativos</div>
+                                <div class="text-2xl font-extrabold text-emerald-600" id="aud-kpi-usuarios">0</div>
+                            </div>
+                            <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm">
+                                <div class="text-xs font-semibold text-slate-500 mb-1 uppercase tracking-wide">Módulos Auditados</div>
+                                <div class="text-2xl font-extrabold text-slate-900" id="aud-kpi-modulos">0</div>
+                            </div>
                         </div>
-                        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-2 overflow-hidden">
-                            <div class="relative pl-6 border-l-2 border-slate-100 ml-4 my-4 space-y-6" id="mgr-history-timeline"></div>
+
+                        <div class="mb-6 bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex flex-col gap-4">
+                            <div class="flex flex-col sm:flex-row justify-between sm:items-center gap-3">
+                                <div>
+                                    <h3 class="text-xl font-bold text-slate-900">Auditoria</h3>
+                                    <p class="text-sm text-slate-500 mt-1">Trilha das ações administrativas: quem fez, o quê, quando e sobre qual registro.</p>
+                                </div>
+                                <div class="flex flex-wrap items-center gap-3">
+                                    <span class="text-sm font-bold text-slate-600 bg-slate-100 px-3 py-1.5 rounded-lg border border-slate-200"><span id="aud-count">0</span> eventos</span>
+                                    <button onclick="app.exportarAuditoriaCSV()" class="bg-white border border-slate-300 text-slate-700 px-4 py-2 rounded-xl font-bold text-sm hover:bg-slate-50 transition shadow-sm flex items-center gap-2"><i data-lucide="download" class="w-4 h-4"></i> Exportar auditoria em CSV</button>
+                                </div>
+                            </div>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 pt-4 border-t border-slate-100">
+                                <div class="relative w-full lg:col-span-3">
+                                    <i data-lucide="search" class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400"></i>
+                                    <input type="text" id="aud-search" onkeyup="app.renderAuditoria()" class="w-full pl-9 pr-4 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm focus:bg-white focus:border-brand-500 outline-none transition-all" placeholder="Buscar por ação, descrição, usuário ou entidade...">
+                                </div>
+                                <select id="aud-filter-period" onchange="app.renderAuditoria()" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm outline-none focus:border-brand-500 transition">
+                                    <option value="">Todo o período</option><option value="1">Hoje</option><option value="7">Últimos 7 dias</option><option value="30">Últimos 30 dias</option><option value="90">Últimos 90 dias</option>
+                                </select>
+                                <select id="aud-filter-user" onchange="app.renderAuditoria()" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm outline-none focus:border-brand-500 transition"><option value="">Todos os usuários</option></select>
+                                <select id="aud-filter-profile" onchange="app.renderAuditoria()" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm outline-none focus:border-brand-500 transition"><option value="">Todos os perfis</option></select>
+                                <select id="aud-filter-module" onchange="app.renderAuditoria()" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm outline-none focus:border-brand-500 transition"><option value="">Todos os módulos</option></select>
+                                <select id="aud-filter-action" onchange="app.renderAuditoria()" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm outline-none focus:border-brand-500 transition"><option value="">Todas as ações</option></select>
+                                <button onclick="app.limparFiltrosAuditoria()" class="w-full px-3 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg text-xs font-bold transition flex items-center justify-center gap-2"><i data-lucide="rotate-ccw" class="w-3.5 h-3.5"></i> Limpar filtros</button>
+                            </div>
+                        </div>
+
+                        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+                            <div class="overflow-x-auto">
+                                <table class="w-full text-sm text-left whitespace-nowrap">
+                                    <thead class="bg-slate-50 text-slate-500 text-xs uppercase font-semibold border-b border-slate-200">
+                                        <tr><th class="px-6 py-4">Data e hora</th><th class="px-6 py-4">Usuário</th><th class="px-6 py-4">Perfil</th><th class="px-6 py-4">Módulo</th><th class="px-6 py-4">Ação</th><th class="px-6 py-4">Entidade</th><th class="px-6 py-4">Detalhes</th><th class="px-6 py-4 text-center">Ações</th></tr>
+                                    </thead>
+                                    <tbody class="divide-y divide-slate-100" id="aud-table"></tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <p class="text-[11px] text-slate-400 mt-3">Protótipo demonstrativo em HTML + localStorage. Na implantação do piloto, a trilha de auditoria é gravada no backend, somente-inserção.</p>
+                    </div>
+
+                    <!-- VIEW: USUÁRIOS E PERMISSÕES -->
+                    <div id="view-mgr-users" class="app-view max-w-6xl mx-auto">
+                        <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+                            <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm">
+                                <div class="text-xs font-semibold text-slate-500 mb-1 uppercase tracking-wide">Usuários Ativos</div>
+                                <div class="text-2xl font-extrabold text-emerald-600" id="usr-kpi-ativos">0</div>
+                            </div>
+                            <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm">
+                                <div class="text-xs font-semibold text-slate-500 mb-1 uppercase tracking-wide">Gestores</div>
+                                <div class="text-2xl font-extrabold text-brand-600" id="usr-kpi-gestores">0</div>
+                            </div>
+                            <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm">
+                                <div class="text-xs font-semibold text-slate-500 mb-1 uppercase tracking-wide">Analistas</div>
+                                <div class="text-2xl font-extrabold text-indigo-600" id="usr-kpi-analistas">0</div>
+                            </div>
+                            <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm">
+                                <div class="text-xs font-semibold text-slate-500 mb-1 uppercase tracking-wide">Empreendedores</div>
+                                <div class="text-2xl font-extrabold text-slate-900" id="usr-kpi-empreendedores">0</div>
+                            </div>
+                        </div>
+
+                        <div class="mb-6 bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex flex-col sm:flex-row justify-between sm:items-center gap-3">
+                            <div>
+                                <h3 class="text-xl font-bold text-slate-900">Usuários e Permissões</h3>
+                                <p class="text-sm text-slate-500 mt-1">Contas de acesso ao painel e vínculo com negócios da Base Econômica.</p>
+                            </div>
+                            <button onclick="app.openNovoUsuario()" data-admin-only class="bg-brand-600 text-white px-4 py-2 rounded-xl font-bold text-sm hover:bg-brand-700 transition shadow-sm flex-shrink-0">Adicionar usuário</button>
+                        </div>
+
+                        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+                            <div class="overflow-x-auto">
+                                <table class="w-full text-sm text-left whitespace-nowrap">
+                                    <thead class="bg-slate-50 text-slate-500 text-xs uppercase font-semibold border-b border-slate-200">
+                                        <tr><th class="px-6 py-4">Nome</th><th class="px-6 py-4">E-mail</th><th class="px-6 py-4">Perfil</th><th class="px-6 py-4">Situação</th><th class="px-6 py-4">Negócio vinculado</th><th class="px-6 py-4">Último acesso</th><th class="px-6 py-4 text-center">Ações</th></tr>
+                                    </thead>
+                                    <tbody class="divide-y divide-slate-100" id="usr-table"></tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <div class="mt-6 bg-white rounded-2xl border border-slate-200 shadow-sm p-6">
+                            <h3 class="font-bold text-slate-900 mb-1">Matriz de Permissões</h3>
+                            <p class="text-xs text-slate-500 mb-4">O que cada perfil pode fazer na plataforma. As restrições principais já valem nesta demonstração.</p>
+                            <div class="overflow-x-auto">
+                                <table class="w-full text-sm text-left">
+                                    <thead class="bg-slate-50 text-slate-500 text-[11px] uppercase font-semibold border-b border-slate-200">
+                                        <tr><th class="px-4 py-3">Permissão</th><th class="px-4 py-3 text-center">Gestão Municipal</th><th class="px-4 py-3 text-center">Analista Municipal</th><th class="px-4 py-3 text-center">Empreendedor</th></tr>
+                                    </thead>
+                                    <tbody class="divide-y divide-slate-100" id="usr-matriz"></tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- VIEW: CONFIGURAÇÕES -->
+                    <div id="view-mgr-settings" class="app-view max-w-4xl mx-auto">
+                        <div class="mb-6 bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+                            <h3 class="text-xl font-bold text-slate-900">Configurações</h3>
+                            <p class="text-sm text-slate-500 mt-1">Parâmetros da implantação municipal. Alterações ficam registradas na auditoria.</p>
+                        </div>
+
+                        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6 mb-6">
+                            <h4 class="font-bold text-slate-900 mb-4 flex items-center gap-2"><i data-lucide="building-2" class="w-4 h-4 text-slate-400"></i> Identificação da implantação</h4>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                <div><label class="block text-xs font-bold text-slate-700 mb-1" for="set-municipio">Município</label><input type="text" id="set-municipio" class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm outline-none focus:border-brand-500 transition"></div>
+                                <div><label class="block text-xs font-bold text-slate-700 mb-1" for="set-estado">Estado</label><input type="text" id="set-estado" class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm outline-none focus:border-brand-500 transition"></div>
+                                <div class="sm:col-span-2"><label class="block text-xs font-bold text-slate-700 mb-1" for="set-nome">Nome da implantação</label><input type="text" id="set-nome" class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm outline-none focus:border-brand-500 transition"></div>
+                                <div class="sm:col-span-2"><label class="block text-xs font-bold text-slate-700 mb-1" for="set-email">E-mail administrativo</label><input type="email" id="set-email" class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm outline-none focus:border-brand-500 transition"></div>
+                            </div>
+                            <div class="flex justify-end mt-4"><button onclick="app.salvarIdentificacao()" id="set-btn-salvar" class="px-6 py-2.5 bg-brand-600 hover:bg-brand-700 text-white rounded-xl text-sm font-bold shadow-md transition-colors">Salvar identificação</button></div>
+                        </div>
+
+                        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6 mb-6">
+                            <h4 class="font-bold text-slate-900 mb-1 flex items-center gap-2"><i data-lucide="bell" class="w-4 h-4 text-slate-400"></i> Notificações</h4>
+                            <p class="text-xs text-slate-500 mb-4">Quais eventos a Gestão quer acompanhar. Cada mudança entra na auditoria.</p>
+                            <div class="space-y-1" id="set-notificacoes"></div>
+                        </div>
+
+                        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6 mb-6">
+                            <h4 class="font-bold text-slate-900 mb-1 flex items-center gap-2"><i data-lucide="shield" class="w-4 h-4 text-slate-400"></i> Privacidade e dados</h4>
+                            <p class="text-xs text-slate-500 mb-4">Como a plataforma trata dado sensível. Estas regras não são configuráveis: são decisões de arquitetura.</p>
+                            <div class="space-y-2 text-sm">
+                                <div class="flex items-start gap-2.5 p-3 bg-slate-50 border border-slate-100 rounded-xl"><i data-lucide="lock" class="w-4 h-4 text-emerald-600 mt-0.5 flex-shrink-0"></i><span class="text-slate-700">Documentos <b>protegidos por padrão</b>: CPF/CNPJ aparece mascarado em toda a interface.</span></div>
+                                <div class="flex items-start gap-2.5 p-3 bg-slate-50 border border-slate-100 rounded-xl"><i data-lucide="eye" class="w-4 h-4 text-emerald-600 mt-0.5 flex-shrink-0"></i><span class="text-slate-700">Cada <b>revelação de documento é registrada</b> na auditoria, com usuário e horário.</span></div>
+                                <div class="flex items-start gap-2.5 p-3 bg-slate-50 border border-slate-100 rounded-xl"><i data-lucide="users" class="w-4 h-4 text-emerald-600 mt-0.5 flex-shrink-0"></i><span class="text-slate-700">Eventos de uso público são <b>agregados e anônimos</b>: não há identificação do cidadão.</span></div>
+                                <div class="flex items-start gap-2.5 p-3 bg-slate-50 border border-slate-100 rounded-xl"><i data-lucide="hard-drive" class="w-4 h-4 text-amber-600 mt-0.5 flex-shrink-0"></i><span class="text-slate-700">Neste protótipo, os dados ficam <b>armazenados localmente no navegador</b> (localStorage).</span></div>
+                                <div class="flex items-start gap-2.5 p-3 bg-slate-50 border border-slate-100 rounded-xl"><i data-lucide="flask-conical" class="w-4 h-4 text-amber-600 mt-0.5 flex-shrink-0"></i><span class="text-slate-700">Todo o conteúdo é <b>demonstrativo e fictício</b>, incluindo documentos e contatos.</span></div>
+                            </div>
+                        </div>
+
+                        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6">
+                            <h4 class="font-bold text-slate-900 mb-4 flex items-center gap-2"><i data-lucide="key-round" class="w-4 h-4 text-slate-400"></i> Sessão e segurança</h4>
+                            <div id="set-sessao" class="space-y-2 text-sm"></div>
+                            <div class="mt-4 p-3 bg-amber-50 border border-amber-100 rounded-xl text-[11px] text-amber-800">Na implantação do piloto, autenticação, políticas de senha e controle de sessão serão executados no backend.</div>
+                            <div class="flex justify-end mt-4"><button onclick="app.logout()" class="px-5 py-2.5 bg-slate-900 hover:bg-slate-800 text-white rounded-xl text-sm font-bold transition flex items-center gap-2"><i data-lucide="log-out" class="w-4 h-4"></i> Encerrar sessão</button></div>
                         </div>
                     </div>
 
@@ -2010,6 +2169,143 @@
 
     <!-- Modal: Detalhes da Base (Gestor) -->
     <!-- Modal: Importar Base Econômica (Etapa 4) -->
+    <!-- Modal: Detalhes do evento de auditoria -->
+    <div id="modal-audit-details" class="modal-overlay">
+        <div class="bg-white w-full max-w-2xl rounded-2xl shadow-2xl flex flex-col overflow-hidden max-h-[90vh] transform scale-95 transition-transform duration-200" id="modal-audit-details-content">
+            <div class="px-6 py-4 border-b border-slate-200 flex justify-between items-center bg-slate-50">
+                <div class="flex items-center gap-3">
+                    <div class="w-9 h-9 rounded-lg bg-slate-900 text-white flex items-center justify-center"><i data-lucide="file-clock" class="w-4 h-4"></i></div>
+                    <div><h3 class="font-bold text-slate-900" id="ad-acao">Evento de auditoria</h3><p class="text-xs text-slate-500" id="ad-datahora">-</p></div>
+                </div>
+                <button onclick="app.closeModal('modal-audit-details')" aria-label="Fechar detalhes do evento" class="text-slate-400 hover:text-slate-600 bg-white p-1 rounded-full shadow-sm"><i data-lucide="x" class="w-5 h-5"></i></button>
+            </div>
+            <div class="flex-grow overflow-y-auto p-6 space-y-5">
+                <div class="grid grid-cols-2 gap-x-6 gap-y-3 text-sm">
+                    <div><span class="text-slate-500 block text-xs">Usuário</span><span class="font-medium text-slate-900" id="ad-usuario">-</span></div>
+                    <div><span class="text-slate-500 block text-xs">Perfil</span><span id="ad-perfil"></span></div>
+                    <div><span class="text-slate-500 block text-xs">Módulo</span><span class="font-medium text-slate-900" id="ad-modulo">-</span></div>
+                    <div><span class="text-slate-500 block text-xs">Ação</span><span class="font-medium text-slate-900" id="ad-acao-campo">-</span></div>
+                    <div><span class="text-slate-500 block text-xs">Entidade</span><span class="font-medium text-slate-900" id="ad-entidade">-</span></div>
+                    <div><span class="text-slate-500 block text-xs">ID da entidade</span><span class="font-mono text-slate-900" id="ad-entidade-id">-</span></div>
+                </div>
+                <div>
+                    <span class="text-slate-500 block text-xs mb-1">Descrição</span>
+                    <p class="text-sm text-slate-800 bg-slate-50 border border-slate-100 rounded-xl p-3" id="ad-descricao">-</p>
+                </div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                        <span class="text-slate-500 block text-xs mb-1 font-bold uppercase tracking-wide">Dados anteriores</span>
+                        <div class="bg-slate-50 border border-slate-200 rounded-xl p-3 text-xs" id="ad-antes">Não se aplica</div>
+                    </div>
+                    <div>
+                        <span class="text-slate-500 block text-xs mb-1 font-bold uppercase tracking-wide">Dados posteriores</span>
+                        <div class="bg-slate-50 border border-slate-200 rounded-xl p-3 text-xs" id="ad-depois">Não se aplica</div>
+                    </div>
+                </div>
+                <p class="text-[11px] text-slate-400">Campos sensíveis (documento, CPF/CNPJ, senha, token) são mascarados nesta visualização e nunca são gravados na trilha.</p>
+            </div>
+            <div class="px-6 py-4 border-t border-slate-200 bg-white flex justify-end">
+                <button onclick="app.closeModal('modal-audit-details')" class="px-4 py-2.5 text-sm font-semibold text-slate-600 hover:bg-slate-100 rounded-xl transition">Fechar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal: Usuário -->
+    <div id="modal-user" class="modal-overlay">
+        <div class="bg-white w-full max-w-lg rounded-2xl shadow-2xl flex flex-col overflow-hidden max-h-[90vh] transform scale-95 transition-transform duration-200" id="modal-user-content">
+            <div class="px-6 py-4 border-b border-slate-200 flex justify-between items-center bg-slate-50">
+                <h3 class="font-bold text-slate-900" id="modal-user-title">Novo usuário</h3>
+                <button onclick="app.closeModal('modal-user')" aria-label="Fechar cadastro de usuário" class="text-slate-400 hover:text-slate-600 bg-white p-1 rounded-full shadow-sm"><i data-lucide="x" class="w-5 h-5"></i></button>
+            </div>
+            <div class="flex-grow overflow-y-auto p-6 space-y-4">
+                <input type="hidden" id="usr-id">
+                <div><label class="block text-xs font-bold text-slate-700 mb-1" for="usr-nome">Nome</label><input type="text" id="usr-nome" class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm outline-none focus:border-brand-500 transition" placeholder="Nome completo"></div>
+                <div><label class="block text-xs font-bold text-slate-700 mb-1" for="usr-email">E-mail</label><input type="email" id="usr-email" class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm outline-none focus:border-brand-500 transition" placeholder="nome@medianeira.pr.gov.br"></div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 mb-1" for="usr-perfil">Perfil</label>
+                    <select id="usr-perfil" onchange="app.onPerfilUsuarioChange()" class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm outline-none focus:border-brand-500 transition">
+                        <option value="manager">Gestão Municipal</option>
+                        <option value="analyst">Analista Municipal</option>
+                        <option value="entrepreneur">Empreendedor</option>
+                    </select>
+                </div>
+                <div id="usr-negocio-wrap" class="hidden">
+                    <label class="block text-xs font-bold text-slate-700 mb-1" for="usr-negocio">Negócio vinculado</label>
+                    <select id="usr-negocio" class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm outline-none focus:border-brand-500 transition"></select>
+                    <p class="text-[11px] text-slate-500 mt-1">O empreendedor só enxerga a vitrine do negócio vinculado.</p>
+                </div>
+                <div class="bg-slate-50 border border-slate-200 rounded-xl p-3 text-[11px] text-slate-600">
+                    Nenhuma senha é criada ou armazenada neste protótipo. Convite por e-mail e definição de senha ficam para o backend do piloto.
+                </div>
+            </div>
+            <div class="px-6 py-4 border-t border-slate-200 bg-slate-50 flex justify-end gap-3">
+                <button onclick="app.closeModal('modal-user')" class="px-4 py-2.5 text-sm font-semibold text-slate-600 hover:bg-slate-200 rounded-xl transition">Cancelar</button>
+                <button onclick="app.salvarUsuario()" class="px-6 py-2.5 bg-brand-600 hover:bg-brand-700 text-white rounded-xl text-sm font-bold shadow-md transition-colors">Salvar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal: Permissões do perfil -->
+    <div id="modal-permissions" class="modal-overlay">
+        <div class="bg-white w-full max-w-lg rounded-2xl shadow-2xl flex flex-col overflow-hidden max-h-[90vh] transform scale-95 transition-transform duration-200" id="modal-permissions-content">
+            <div class="px-6 py-4 border-b border-slate-200 flex justify-between items-center bg-slate-50">
+                <h3 class="font-bold text-slate-900" id="perm-titulo">Permissões</h3>
+                <button onclick="app.closeModal('modal-permissions')" aria-label="Fechar permissões" class="text-slate-400 hover:text-slate-600 bg-white p-1 rounded-full shadow-sm"><i data-lucide="x" class="w-5 h-5"></i></button>
+            </div>
+            <div class="flex-grow overflow-y-auto p-6"><div id="perm-lista" class="space-y-2"></div></div>
+            <div class="px-6 py-4 border-t border-slate-200 bg-white flex justify-end"><button onclick="app.closeModal('modal-permissions')" class="px-4 py-2.5 text-sm font-semibold text-slate-600 hover:bg-slate-100 rounded-xl transition">Fechar</button></div>
+        </div>
+    </div>
+
+    <!-- Modal: Minha conta -->
+    <div id="modal-account" class="modal-overlay">
+        <div class="bg-white w-full max-w-lg rounded-2xl shadow-2xl flex flex-col overflow-hidden max-h-[90vh] transform scale-95 transition-transform duration-200" id="modal-account-content">
+            <div class="px-6 py-4 border-b border-slate-200 flex justify-between items-center bg-slate-50">
+                <div class="flex items-center gap-3">
+                    <div class="w-9 h-9 rounded-full bg-slate-900 text-white flex items-center justify-center text-xs font-bold" id="acc-initials">--</div>
+                    <div><h3 class="font-bold text-slate-900">Minha conta</h3><p class="text-xs text-slate-500" id="acc-perfil-label">-</p></div>
+                </div>
+                <button onclick="app.closeModal('modal-account')" aria-label="Fechar minha conta" class="text-slate-400 hover:text-slate-600 bg-white p-1 rounded-full shadow-sm"><i data-lucide="x" class="w-5 h-5"></i></button>
+            </div>
+            <div class="flex-grow overflow-y-auto p-6 space-y-5">
+                <div class="grid grid-cols-2 gap-x-6 gap-y-3 text-sm bg-slate-50 border border-slate-200 rounded-xl p-4">
+                    <div><span class="text-slate-500 block text-xs">Perfil</span><span id="acc-perfil"></span></div>
+                    <div><span class="text-slate-500 block text-xs">Negócio vinculado</span><span class="font-medium text-slate-900" id="acc-negocio">-</span></div>
+                    <div><span class="text-slate-500 block text-xs">Último acesso</span><span class="font-medium text-slate-900" id="acc-ultimo">-</span></div>
+                    <div><span class="text-slate-500 block text-xs">Situação da sessão</span><span class="font-medium text-emerald-600" id="acc-sessao">-</span></div>
+                </div>
+
+                <div class="space-y-3">
+                    <div><label class="block text-xs font-bold text-slate-700 mb-1" for="acc-nome">Nome</label><input type="text" id="acc-nome" class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm outline-none focus:border-brand-500 transition"></div>
+                    <div><label class="block text-xs font-bold text-slate-700 mb-1" for="acc-email">E-mail</label><input type="email" id="acc-email" class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm outline-none focus:border-brand-500 transition"></div>
+                    <div class="flex justify-end"><button onclick="app.salvarMinhaConta()" class="px-5 py-2.5 bg-brand-600 hover:bg-brand-700 text-white rounded-xl text-sm font-bold shadow-md transition-colors">Salvar dados</button></div>
+                </div>
+
+                <div class="border-t border-slate-200 pt-5">
+                    <h4 class="font-bold text-slate-900 text-sm mb-1">Alterar senha</h4>
+                    <p class="text-[11px] text-slate-500 mb-3">Operação demonstrativa: nenhuma senha é verificada ou armazenada neste protótipo. Registramos apenas a data da alteração.</p>
+                    <div class="space-y-3">
+                        <div><label class="block text-xs font-bold text-slate-700 mb-1" for="acc-senha-atual">Senha atual</label><input type="password" id="acc-senha-atual" autocomplete="off" class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm outline-none focus:border-brand-500 transition"></div>
+                        <div><label class="block text-xs font-bold text-slate-700 mb-1" for="acc-senha-nova">Nova senha</label><input type="password" id="acc-senha-nova" autocomplete="off" class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm outline-none focus:border-brand-500 transition"></div>
+                        <div><label class="block text-xs font-bold text-slate-700 mb-1" for="acc-senha-conf">Confirmar nova senha</label><input type="password" id="acc-senha-conf" autocomplete="off" class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm outline-none focus:border-brand-500 transition"></div>
+                        <div class="flex justify-end"><button onclick="app.simularTrocaSenha()" class="px-5 py-2.5 bg-slate-900 hover:bg-slate-800 text-white rounded-xl text-sm font-bold transition">Alterar senha</button></div>
+                    </div>
+                    <p class="text-[11px] text-slate-500 mt-2" id="acc-senha-info"></p>
+                </div>
+
+                <div class="border-t border-slate-200 pt-5">
+                    <h4 class="font-bold text-slate-900 text-sm mb-3">Sessão e segurança</h4>
+                    <div id="acc-sessao-bloco" class="space-y-2 text-sm"></div>
+                    <div class="mt-3 p-3 bg-amber-50 border border-amber-100 rounded-xl text-[11px] text-amber-800">Na implantação do piloto, autenticação, políticas de senha e controle de sessão serão executados no backend.</div>
+                </div>
+            </div>
+            <div class="px-6 py-4 border-t border-slate-200 bg-white flex justify-between gap-3">
+                <button onclick="app.logout()" class="px-4 py-2.5 text-sm font-bold text-slate-600 hover:bg-slate-100 rounded-xl transition flex items-center gap-2"><i data-lucide="log-out" class="w-4 h-4"></i> Encerrar sessão</button>
+                <button onclick="app.closeModal('modal-account')" class="px-4 py-2.5 text-sm font-semibold text-slate-600 hover:bg-slate-100 rounded-xl transition">Fechar</button>
+            </div>
+        </div>
+    </div>
+
     <div id="modal-import" class="modal-overlay">
         <div class="bg-white w-full max-w-4xl rounded-2xl shadow-2xl flex flex-col overflow-hidden max-h-[90vh] transform scale-95 transition-transform duration-200" id="modal-import-content">
             <div class="px-6 py-4 border-b border-slate-200 flex justify-between items-center bg-slate-50">
@@ -3152,14 +3448,14 @@
         const appData = {
             businesses: [], validations: [], gaps: [], history: [], demands: [], metrics: { buscas: 0 },
             // Coleções preparadas na Etapa 1 para as próximas etapas do plano.
-            usageEvents: [], purchases: [], auditEvents: [], users: [], pilotMetrics: {}
+            usageEvents: [], purchases: [], auditEvents: [], users: [], pilotMetrics: {}, settings: {}
         };
 
         const SEED_VERSION = '2026-08-20-catalogo-v2';
 
         // Versão do MODELO de dados. Diferente de SEED_VERSION: subir esta constante
         // acrescenta campos e coleções sem apagar nada do que o usuário já criou.
-        const DATA_MODEL_VERSION = 5;
+        const DATA_MODEL_VERSION = 6;
 
         // ---------------------------------------------------------------------
         // USUÁRIOS DEMONSTRATIVOS
@@ -3416,6 +3712,133 @@
             return corrigidas;
         }
 
+        // ---------------------------------------------------------------------
+        // GOVERNANÇA (Etapa 5)
+        // ---------------------------------------------------------------------
+        const PERFIS = {
+            manager:      { rotulo: 'Gestão Municipal',   classe: 'text-brand-700 bg-brand-50 border-brand-100' },
+            analyst:      { rotulo: 'Analista Municipal', classe: 'text-indigo-700 bg-indigo-50 border-indigo-100' },
+            entrepreneur: { rotulo: 'Empreendedor',       classe: 'text-emerald-700 bg-emerald-50 border-emerald-100' },
+            system:       { rotulo: 'Sistema',            classe: 'text-slate-600 bg-slate-100 border-slate-200' },
+            citizen:      { rotulo: 'Cidadão',            classe: 'text-slate-600 bg-slate-100 border-slate-200' }
+        };
+
+        function rotuloPerfil(p) { return (PERFIS[p] && PERFIS[p].rotulo) || p || 'Sistema'; }
+
+        // Configurações da implantação. Persistem em vitryx_demo_settings.
+        const seedSettings = {
+            municipio: 'Medianeira',
+            estado: 'Paraná',
+            nomeImplantacao: 'VITRYX — Inteligência Econômica Territorial',
+            emailAdministrativo: 'gestao@medianeira.pr.gov.br',
+            notificacoes: {
+                novosCadastros: true,
+                validacoesPendentes: true,
+                importacoes: true,
+                comprasPublicas: false,
+                alertasSeguranca: true
+            },
+            atualizadoEm: null
+        };
+
+        /**
+         * Massa demonstrativa da trilha de auditoria.
+         *
+         * Marcada com `seedDemo: true`: é essa marca que torna a inserção
+         * idempotente — se já existe massa, nada é acrescentado, e os eventos
+         * reais que o usuário gerou navegando nunca são tocados.
+         *
+         * Nenhum evento traz documento completo nem senha, nem no texto nem nos
+         * blocos de antes/depois.
+         */
+        function gerarAuditoriaDemonstrativa() {
+            const agora = new Date();
+            const hMenos = (horas) => new Date(agora.getTime() - horas * 3600000).toISOString();
+
+            const eventos = [
+                { h: 1,   usuario: 'Marina Ferrari', usuarioId: 'u-gestor',   perfil: 'manager', acao: 'Login da Gestão Municipal', modulo: 'Acesso',
+                  entidade: 'session', entidadeId: 'u-gestor',
+                  descricao: 'Acesso ao painel administrativo pelo e-mail institucional.' },
+
+                { h: 3,   usuario: 'Marina Ferrari', usuarioId: 'u-gestor',   perfil: 'manager', acao: 'Validação de cadastro', modulo: 'Validações',
+                  entidade: 'business', entidadeId: 8,
+                  descricao: 'Cadastro "TecnoFix Assistência" aprovado e vitrine publicada.',
+                  antes: { validationStatus: 'pendente', hasVitrine: false },
+                  depois: { validationStatus: 'validado', hasVitrine: true } },
+
+                { h: 6,   usuario: 'Carlos Bueno',   usuarioId: 'u-analista', perfil: 'analyst', acao: 'Solicitação de ajuste', modulo: 'Validações',
+                  entidade: 'business', entidadeId: 11,
+                  descricao: 'Comprovante de endereço ilegível. Ajuste solicitado ao empreendedor.',
+                  antes: { situacao: 'em análise' },
+                  depois: { situacao: 'ajuste solicitado', motivo: 'comprovante ilegível' } },
+
+                { h: 10,  usuario: 'Marina Ferrari', usuarioId: 'u-gestor',   perfil: 'manager', acao: 'Importação de base econômica', modulo: 'Base Econômica',
+                  entidade: 'business', entidadeId: null,
+                  descricao: 'Importação de "cadastros-tributarios-2026.csv": 12 criados, 3 atualizados, 1 rejeitado.',
+                  depois: { criados: 12, atualizados: 3, rejeitados: 1, total: 16 } },
+
+                { h: 26,  usuario: 'Marina Ferrari', usuarioId: 'u-gestor',   perfil: 'manager', acao: 'Registro de compra pública', modulo: 'Compras Públicas',
+                  entidade: 'purchase', entidadeId: '2026/0412',
+                  descricao: 'Contratação registrada: reparo de mobiliário escolar com fornecedor local.',
+                  depois: { processo: '2026/0412', fornecedorLocal: true, valor: 18400 } },
+
+                { h: 30,  usuario: 'Carlos Bueno',   usuarioId: 'u-analista', perfil: 'analyst', acao: 'Exportação de dados', modulo: 'Base Econômica',
+                  entidade: 'export', entidadeId: null,
+                  descricao: 'Base econômica exportada em CSV com minimização LGPD aplicada.',
+                  depois: { formato: 'CSV', registros: 15, camposOmitidos: ['documento', 'responsavelCpf', 'evidências'] } },
+
+                { h: 34,  usuario: 'Marina Ferrari', usuarioId: 'u-gestor',   perfil: 'manager', acao: 'Alteração de configuração', modulo: 'Configurações',
+                  entidade: 'settings', entidadeId: null,
+                  descricao: 'Notificação de compras públicas desativada.',
+                  antes: { comprasPublicas: true },
+                  depois: { comprasPublicas: false } },
+
+                { h: 48,  usuario: 'Marina Ferrari', usuarioId: 'u-gestor',   perfil: 'manager', acao: 'Alteração de permissão', modulo: 'Usuários e Permissões',
+                  entidade: 'user', entidadeId: 'u-analista',
+                  descricao: 'Perfil de Carlos Bueno ajustado para Analista Municipal.',
+                  antes: { perfil: 'manager' },
+                  depois: { perfil: 'analyst' } },
+
+                { h: 52,  usuario: 'Marina Ferrari', usuarioId: 'u-gestor',   perfil: 'manager', acao: 'Revelação de documento', modulo: 'Base Econômica',
+                  entidade: 'business', entidadeId: 6,
+                  descricao: 'Documento CNPJ de "Marcenaria Medianeira" exibido na íntegra no painel administrativo.',
+                  antes: { documento: '**.***.666/0001-81' },
+                  depois: { documento: 'exibido ao usuário' } },
+
+                { h: 70,  usuario: 'Maria Aparecida', usuarioId: 'u-empreende', perfil: 'entrepreneur', acao: 'Atualização de vitrine', modulo: 'Vitrine',
+                  entidade: 'business', entidadeId: 6,
+                  descricao: 'Descrição pública e horário de funcionamento atualizados pelo empreendedor.',
+                  antes: { horario: 'Seg a Sex, 08h-18h' },
+                  depois: { horario: 'Seg a Sáb, 08h-18h' } }
+            ];
+
+            return eventos.map((e, i) => ({
+                id: 'au-seed-' + i,
+                dataHora: hMenos(e.h),
+                usuario: e.usuario,
+                usuarioId: e.usuarioId,
+                perfil: e.perfil,
+                acao: e.acao,
+                modulo: e.modulo,
+                entidade: e.entidade,
+                entidadeId: e.entidadeId != null ? e.entidadeId : null,
+                descricao: e.descricao,
+                dadosAnteriores: e.antes !== undefined ? e.antes : null,
+                dadosPosteriores: e.depois !== undefined ? e.depois : null,
+                seedDemo: true
+            }));
+        }
+
+        // Campos de governança que usuários antigos (gravados antes da v6) não têm.
+        function normalizarUsuario(u) {
+            if (!u || typeof u !== 'object') return u;
+            if (!u.ultimoAcesso) u.ultimoAcesso = null;
+            if (u.senhaAlteradaEm === undefined) u.senhaAlteradaEm = null;
+            if (!u.situacao) u.situacao = 'ativo';
+            if (u.businessId === undefined) u.businessId = null;
+            return u;
+        }
+
         function ensureDataModelVersion() {
             const versaoGravada = Number(localStorage.getItem('vitryx_data_model_version') || 0);
 
@@ -3473,6 +3896,25 @@
             // Roda em toda carga, sem depender de versão de modelo: bases já
             // gravadas no navegador podem ter documento divergente do cadastro.
             normalizarDocumentosDeCompras();
+
+            // v6 — Governança: configurações persistentes e trilha de auditoria
+            // demonstrativa. Ambas só nascem quando faltam, então nada do que já
+            // existe é sobrescrito e recarregar não duplica.
+            if (!appData.settings || typeof appData.settings !== 'object' || !appData.settings.municipio) {
+                appData.settings = JSON.parse(JSON.stringify(seedSettings));
+            }
+            if (!appData.settings.notificacoes || typeof appData.settings.notificacoes !== 'object') {
+                appData.settings.notificacoes = JSON.parse(JSON.stringify(seedSettings.notificacoes));
+            }
+
+            appData.users.forEach(normalizarUsuario);
+
+            // A marca `seedDemo` é o que garante a idempotência: havendo massa,
+            // não se acrescenta outra.
+            if (!appData.auditEvents.some(a => a && a.seedDemo)) {
+                appData.auditEvents = appData.auditEvents.concat(gerarAuditoriaDemonstrativa());
+                appData.auditEvents.sort((a, b) => String(b.dataHora).localeCompare(String(a.dataHora)));
+            }
 
             if (versaoGravada !== DATA_MODEL_VERSION) {
                 localStorage.setItem('vitryx_data_model_version', String(DATA_MODEL_VERSION));
@@ -3551,6 +3993,7 @@
                     appData.auditEvents = JSON.parse(localStorage.getItem('vitryx_demo_audit_events') || '[]');
                     appData.users       = JSON.parse(localStorage.getItem('vitryx_demo_users') || '[]');
                     appData.pilotMetrics= JSON.parse(localStorage.getItem('vitryx_demo_pilot_metrics') || '{}');
+                    appData.settings    = JSON.parse(localStorage.getItem('vitryx_demo_settings') || '{}');
                     normalizeAll();
                     ensureDataModelVersion();
                     this.save();
@@ -3568,6 +4011,7 @@
                 localStorage.setItem('vitryx_demo_audit_events', JSON.stringify(appData.auditEvents));
                 localStorage.setItem('vitryx_demo_users', JSON.stringify(appData.users));
                 localStorage.setItem('vitryx_demo_pilot_metrics', JSON.stringify(appData.pilotMetrics));
+                localStorage.setItem('vitryx_demo_settings', JSON.stringify(appData.settings));
                 localStorage.setItem('vitryx_seed_version', SEED_VERSION);
                 localStorage.setItem('vitryx_data_model_version', String(DATA_MODEL_VERSION));
             },
@@ -3583,6 +4027,9 @@
                 appData.auditEvents = [];
                 appData.users = [];
                 appData.pilotMetrics = {};
+                // Zerados aqui e recriados por ensureDataModelVersion: usuários,
+                // configurações e a massa de auditoria voltam ao estado inicial.
+                appData.settings = {};
                 normalizeAll();
                 ensureDataModelVersion();
                 registrarAuditoria({
@@ -3895,7 +4342,7 @@
             perfilContexto: 'portal_publico',
             mobileMapVisible: false, leafletMap: null, mapMarkers: [], mgrLeafletMap: null,
             // Sem sessão e sem negócio vinculado até alguém entrar ou concluir o cadastro.
-            sessao: null, loggedInBusinessId: null, usuarioAtual: null,
+            sessao: null, loggedInBusinessId: null, usuarioAtual: null, sessaoIniciadaEm: null,
             profileLeafletMap: null, profileMapLayer: null, perfilAtual: null,
             onboardingStep: 0, onboardingType: 'new', currentTags: [], currentEditTags: [], currentDemandTags: [], currentUploadedFile: null, evidenciaPendente: null,
 
@@ -4786,7 +5233,8 @@
             perfisLogin: [
                 { id: 'citizen',      titulo: 'Cidadão',            desc: 'Buscar negócios e serviços. Não exige cadastro.', icone: 'search',  cor: 'brand',   usuario: '', rotuloUsuario: '' },
                 { id: 'entrepreneur', titulo: 'Empreendedor',       desc: 'Gerenciar a vitrine do meu negócio.',             icone: 'store',   cor: 'emerald', usuario: 'maria@marcenariamedianeira.com.br', rotuloUsuario: 'CPF, CNPJ ou e-mail' },
-                { id: 'manager',      titulo: 'Gestão Municipal',   desc: 'Painel de inteligência econômica da Prefeitura.', icone: 'shield',  cor: 'slate',   usuario: 'gestor@medianeira.pr.gov.br', rotuloUsuario: 'E-mail institucional' }
+                { id: 'manager',      titulo: 'Gestão Municipal',   desc: 'Painel de inteligência econômica da Prefeitura.', icone: 'shield',  cor: 'slate',   usuario: 'gestor@medianeira.pr.gov.br', rotuloUsuario: 'E-mail institucional' },
+                { id: 'analyst',      titulo: 'Analista Municipal', desc: 'Mesmo painel, somente para consulta.',            icone: 'line-chart', cor: 'indigo', usuario: 'analista@medianeira.pr.gov.br', rotuloUsuario: 'E-mail institucional' }
             ],
             perfilSelecionado: 'entrepreneur',
 
@@ -4873,15 +5321,40 @@
                     if(alvo) this.loggedInBusinessId = alvo.id;
                     this.usuarioAtual = usuario || { id: 'u-demo-ent', nome: (alvo && alvo.legal && alvo.legal.responsavelNome) || 'Empreendedor', email: digitado, perfil: 'entrepreneur', situacao: 'ativo', businessId: alvo ? alvo.id : null };
                     this.updateBusinessSelector();
-                } else if(perfil === 'manager') {
-                    this.usuarioAtual = appData.users.find(u => u.perfil === 'manager') || { id: 'u-gestor', nome: 'Gestor Municipal', email: '', perfil: 'manager', situacao: 'ativo', businessId: null };
+                } else if(perfil === 'manager' || perfil === 'analyst') {
+                    this.usuarioAtual = appData.users.find(u => u.perfil === perfil && u.situacao === 'ativo')
+                        || { id: 'u-' + perfil, nome: perfil === 'manager' ? 'Gestor Municipal' : 'Analista Municipal', email: '', perfil: perfil, situacao: 'ativo', businessId: null };
                 }
 
+                // Marca o acesso na conta e abre a janela de sessão.
+                this.sessaoIniciadaEm = new Date().toISOString();
+                if(this.usuarioAtual) {
+                    const registrado = appData.users.find(u => u.id === this.usuarioAtual.id);
+                    if(registrado) { registrado.ultimoAcesso = this.sessaoIniciadaEm; this.usuarioAtual = registrado; }
+                    else this.usuarioAtual.ultimoAcesso = this.sessaoIniciadaEm;
+                }
+                registrarAuditoria({
+                    acao: 'Login', modulo: 'Acesso', entidade: 'session',
+                    entidadeId: this.usuarioAtual ? this.usuarioAtual.id : null,
+                    descricao: `Acesso autorizado no perfil ${rotuloPerfil(perfil)}.`
+                });
+                storage.save();
+
                 this.switchPersona(perfil);
-                this.showToast(perfil === 'manager' ? 'Acesso da Gestão Municipal autorizado.' : 'Acesso do empreendedor autorizado.', 'success');
+                const saudacao = { manager: 'Acesso da Gestão Municipal autorizado.', analyst: 'Acesso do Analista Municipal autorizado (somente consulta).', entrepreneur: 'Acesso do empreendedor autorizado.' };
+                this.showToast(saudacao[perfil] || 'Acesso autorizado.', 'success');
             },
 
             logout(silencioso) {
+                ['modal-account','modal-user','modal-permissions','modal-audit-details'].forEach(m => { try { this.closeModal(m); } catch(e) {} });
+                if(this.usuarioAtual) {
+                    registrarAuditoria({
+                        acao: 'Logout', modulo: 'Acesso', entidade: 'session', entidadeId: this.usuarioAtual.id,
+                        descricao: `Sessão encerrada pelo perfil ${rotuloPerfil(this.usuarioAtual.perfil)}.`
+                    });
+                    storage.save();
+                }
+                this.sessaoIniciadaEm = null;
                 this.sessao = null;
                 this.loggedInBusinessId = null;
                 this.usuarioAtual = null;
@@ -4918,16 +5391,18 @@
 
             switchPersona(persona) {
                 // Áreas restritas exigem sessão: sem ela, o login vem primeiro.
-                if((persona === 'entrepreneur' || persona === 'manager') && this.sessao !== persona) {
+                if((persona === 'entrepreneur' || persona === 'manager' || persona === 'analyst') && this.sessao !== persona) {
                     return this.openLoginModal(persona);
                 }
 
                 this.currentPersona = persona;
                 this.atualizarBarraSessao();
+                this.atualizarRodapeSidebar();
 
                 if(persona === 'citizen') this.navigate('public', 'landing');
                 if(persona === 'entrepreneur') this.navigate('entrepreneur', 'overview');
-                if(persona === 'manager') this.navigate('manager', 'overview');
+                // Analista usa o MESMO painel da Gestão, em modo de consulta.
+                if(persona === 'manager' || persona === 'analyst') this.navigate('manager', 'overview');
                 if(typeof vitoriaAssistant !== 'undefined') vitoriaAssistant.updateContext(persona);
             },
 
@@ -6126,10 +6601,14 @@
                 if(view === 'demands') this.renderDemands();
                 if(view === 'purchases') this.renderPurchases();
                 if(view === 'validations') this.renderValidations();
-                if(view === 'history') this.renderHistory();
+                if(view === 'history') this.renderAuditoria();
+                if(view === 'users') this.renderUsuarios();
+                if(view === 'settings') this.renderSettings();
                 if(view === 'impact') this.renderImpact();
 
                 this.updateValidationsBadge();
+                this.atualizarRodapeSidebar();
+                this.aplicarRestricoesPerfil();
             },
 
             // ---------- VISÃO TERRITORIAL (executiva: panorama + resumos com link) ----------
@@ -7455,19 +7934,649 @@
                 if(appData.history.length > 50) appData.history.pop();
             },
 
-            renderHistory() {
-                const container = document.getElementById('mgr-history-timeline');
-                if(!container) return;
-                container.innerHTML = appData.history.map(h => {
-                    const date = new Date(h.date);
-                    return `
-                        <div class="relative">
-                            <div class="absolute -left-[31px] bg-white border-2 border-slate-200 w-4 h-4 rounded-full mt-1"></div>
-                            <div class="text-xs text-slate-400 font-semibold mb-1">${date.toLocaleDateString('pt-BR')} às ${date.toLocaleTimeString('pt-BR', {hour: '2-digit', minute:'2-digit'})}</div>
-                            <div class="bg-slate-50 border border-slate-100 p-3 rounded-lg text-sm"><span class="font-bold text-slate-800">${h.user}:</span> <span class="font-medium text-slate-700">${h.action}</span> - <span class="text-slate-500">${h.detail}</span></div>
-                        </div>
-                    `;
+            // Timeline antiga preservada para compatibilidade: `appData.history`
+            // continua sendo alimentado, mas o painel principal agora é a
+            // auditoria estruturada.
+            renderHistory() { this.renderAuditoria(); },
+
+            // =================================================================
+            // GOVERNANÇA — AUDITORIA
+            // =================================================================
+
+            // Nomes de propriedade que nunca podem ser exibidos por extenso.
+            CHAVES_SENSIVEIS: ['documento', 'cpf', 'cnpj', 'senha', 'password', 'token', 'responsavelcpf', 'secret'],
+
+            ehChaveSensivel(chave) {
+                const k = this.normalize(String(chave)).replace(/[^a-z]/g, '');
+                return this.CHAVES_SENSIVEIS.some(c => k.includes(c));
+            },
+
+            // Mascara pelo NOME da propriedade, não pelo formato do valor: é o que
+            // impede um campo novo de vazar só porque ninguém lembrou dele.
+            mascararValorSensivel(valor) {
+                const txt = String(valor == null ? '' : valor);
+                const digitos = txt.replace(/\D/g, '');
+                if (digitos.length >= 11) return docUtils.mascarar(digitos);
+                if (!txt) return '—';
+                return '•'.repeat(Math.min(txt.length, 8));
+            },
+
+            // Objeto antes/depois em formato legível, com sensíveis já mascarados.
+            renderBlocoAuditoria(obj) {
+                if (obj == null || (typeof obj === 'object' && Object.keys(obj).length === 0)) {
+                    return '<span class="text-slate-400 italic">Não se aplica</span>';
+                }
+                if (typeof obj !== 'object') return `<span class="font-mono text-slate-700">${this.escapeHtml(String(obj))}</span>`;
+
+                return Object.entries(obj).map(([k, v]) => {
+                    let valor;
+                    if (this.ehChaveSensivel(k)) valor = this.mascararValorSensivel(v);
+                    else if (Array.isArray(v)) valor = v.join(', ') || '—';
+                    else if (v && typeof v === 'object') valor = JSON.stringify(v);
+                    else if (typeof v === 'boolean') valor = v ? 'sim' : 'não';
+                    else valor = (v == null || v === '') ? '—' : String(v);
+                    return `<div class="flex justify-between gap-3 py-1 border-b border-slate-100 last:border-0">
+                        <span class="text-slate-500 flex-shrink-0">${this.escapeHtml(k)}</span>
+                        <span class="font-medium text-slate-800 text-right break-all">${this.escapeHtml(valor)}</span>
+                    </div>`;
                 }).join('');
+            },
+
+            auditoriaFiltrada() {
+                const valor = id => (document.getElementById(id) || {}).value || '';
+                const busca = this.normalize(valor('aud-search'));
+                const periodo = valor('aud-filter-period');
+                const usuario = valor('aud-filter-user');
+                const perfil = valor('aud-filter-profile');
+                const modulo = valor('aud-filter-module');
+                const acao = valor('aud-filter-action');
+
+                let lista = (appData.auditEvents || []).slice();
+
+                if (periodo) {
+                    const limite = new Date(); limite.setHours(0, 0, 0, 0);
+                    limite.setDate(limite.getDate() - (Number(periodo) - 1));
+                    lista = lista.filter(a => new Date(a.dataHora) >= limite);
+                }
+                if (usuario) lista = lista.filter(a => (a.usuario || '') === usuario);
+                if (perfil) lista = lista.filter(a => (a.perfil || '') === perfil);
+                if (modulo) lista = lista.filter(a => (a.modulo || '') === modulo);
+                if (acao) lista = lista.filter(a => (a.acao || '') === acao);
+                if (busca) {
+                    lista = lista.filter(a => [a.acao, a.descricao, a.usuario, a.modulo, a.entidade, a.entidadeId]
+                        .some(c => c && this.normalize(String(c)).includes(busca)));
+                }
+
+                // Mais recente primeiro.
+                return lista.sort((a, b) => String(b.dataHora).localeCompare(String(a.dataHora)));
+            },
+
+            atualizarFiltrosAuditoria() {
+                const preencher = (id, valores, rotulo) => {
+                    const sel = document.getElementById(id); if (!sel) return;
+                    const atual = sel.value;
+                    const opcoes = [...new Set(valores.filter(Boolean))].sort((a, b) => String(a).localeCompare(String(b), 'pt-BR'));
+                    sel.innerHTML = `<option value="">${rotulo}</option>` +
+                        opcoes.map(v => `<option value="${this.escapeHtml(String(v))}">${this.escapeHtml(rotulo === 'Todos os perfis' ? rotuloPerfil(v) : String(v))}</option>`).join('');
+                    sel.value = atual;
+                };
+                const ev = appData.auditEvents || [];
+                preencher('aud-filter-user', ev.map(a => a.usuario), 'Todos os usuários');
+                preencher('aud-filter-profile', ev.map(a => a.perfil), 'Todos os perfis');
+                preencher('aud-filter-module', ev.map(a => a.modulo), 'Todos os módulos');
+                preencher('aud-filter-action', ev.map(a => a.acao), 'Todas as ações');
+            },
+
+            limparFiltrosAuditoria() {
+                ['aud-search', 'aud-filter-period', 'aud-filter-user', 'aud-filter-profile', 'aud-filter-module', 'aud-filter-action']
+                    .forEach(id => { const el = document.getElementById(id); if (el) el.value = ''; });
+                this.renderAuditoria();
+            },
+
+            renderAuditoria() {
+                const tbody = document.getElementById('aud-table');
+                if (!tbody) return;
+                this.atualizarFiltrosAuditoria();
+
+                const todos = appData.auditEvents || [];
+                const lista = this.auditoriaFiltrada();
+
+                const hoje = new Date(); hoje.setHours(0, 0, 0, 0);
+                document.getElementById('aud-kpi-total').innerText = todos.length;
+                document.getElementById('aud-kpi-hoje').innerText = todos.filter(a => new Date(a.dataHora) >= hoje).length;
+                document.getElementById('aud-kpi-usuarios').innerText = (appData.users || []).filter(u => u.situacao === 'ativo').length;
+                document.getElementById('aud-kpi-modulos').innerText = new Set(todos.map(a => a.modulo).filter(Boolean)).size;
+                document.getElementById('aud-count').innerText = lista.length;
+
+                tbody.innerHTML = lista.map(a => {
+                    const d = new Date(a.dataHora);
+                    const perfil = PERFIS[a.perfil] || PERFIS.system;
+                    const entidade = a.entidade ? `${a.entidade}${a.entidadeId != null ? ' #' + a.entidadeId : ''}` : '—';
+                    return `
+                    <tr class="hover:bg-slate-50/50">
+                        <td class="px-6 py-4 text-slate-600 text-xs">${isNaN(d) ? '-' : d.toLocaleDateString('pt-BR') + ' ' + d.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}</td>
+                        <td class="px-6 py-4 font-semibold text-slate-900">${this.escapeHtml(a.usuario || 'Sistema')}</td>
+                        <td class="px-6 py-4"><span class="text-[10px] font-bold border rounded px-1.5 py-0.5 ${perfil.classe}">${this.escapeHtml(perfil.rotulo)}</span></td>
+                        <td class="px-6 py-4 text-slate-600">${this.escapeHtml(a.modulo || '-')}</td>
+                        <td class="px-6 py-4 text-slate-800 font-medium">${this.escapeHtml(a.acao || '-')}</td>
+                        <td class="px-6 py-4 text-slate-500 text-xs font-mono">${this.escapeHtml(entidade)}</td>
+                        <td class="px-6 py-4 text-slate-600 text-xs"><div class="max-w-xs truncate" title="${this.escapeHtml(a.descricao || '')}">${this.escapeHtml(a.descricao || '-')}</div></td>
+                        <td class="px-6 py-4 text-center"><button onclick="app.openAuditDetails('${this.escapeHtml(String(a.id))}')" aria-label="Ver detalhes do evento" class="text-slate-400 hover:text-slate-700 hover:bg-slate-100 p-2 rounded-lg transition-colors" title="Ver detalhes"><i data-lucide="eye" class="w-4 h-4"></i></button></td>
+                    </tr>`;
+                }).join('') || `
+                    <tr><td colspan="8" class="px-6 py-12 text-center">
+                        <div class="w-12 h-12 bg-slate-100 rounded-full flex items-center justify-center mx-auto mb-3 text-slate-400"><i data-lucide="file-clock" class="w-6 h-6"></i></div>
+                        <p class="text-sm font-bold text-slate-700">${todos.length ? 'Nenhum evento encontrado' : 'Nenhum evento registrado'}</p>
+                        <p class="text-xs text-slate-500 mt-1">${todos.length ? 'Nenhum registro atende aos filtros selecionados.' : 'As ações administrativas aparecerão aqui conforme forem realizadas.'}</p>
+                        ${todos.length ? '<button onclick="app.limparFiltrosAuditoria()" class="mt-4 px-4 py-2 bg-slate-900 hover:bg-slate-800 text-white rounded-lg text-xs font-bold transition">Limpar filtros</button>' : ''}
+                    </td></tr>`;
+                if (typeof lucide !== 'undefined') lucide.createIcons();
+            },
+
+            openAuditDetails(id) {
+                const a = (appData.auditEvents || []).find(x => String(x.id) === String(id));
+                if (!a) return;
+                const d = new Date(a.dataHora);
+                const perfil = PERFIS[a.perfil] || PERFIS.system;
+
+                document.getElementById('ad-acao').innerText = a.acao || 'Evento de auditoria';
+                document.getElementById('ad-datahora').innerText = isNaN(d) ? '-' : d.toLocaleString('pt-BR');
+                document.getElementById('ad-usuario').innerText = a.usuario || 'Sistema';
+                document.getElementById('ad-perfil').innerHTML = `<span class="text-[10px] font-bold border rounded px-1.5 py-0.5 ${perfil.classe}">${this.escapeHtml(perfil.rotulo)}</span>`;
+                document.getElementById('ad-modulo').innerText = a.modulo || '-';
+                document.getElementById('ad-acao-campo').innerText = a.acao || '-';
+                document.getElementById('ad-entidade').innerText = a.entidade || '—';
+                document.getElementById('ad-entidade-id').innerText = a.entidadeId != null ? String(a.entidadeId) : '—';
+                document.getElementById('ad-descricao').innerText = a.descricao || '-';
+                document.getElementById('ad-antes').innerHTML = this.renderBlocoAuditoria(a.dadosAnteriores);
+                document.getElementById('ad-depois').innerHTML = this.renderBlocoAuditoria(a.dadosPosteriores);
+
+                this.openModal('modal-audit-details');
+                if (typeof lucide !== 'undefined') lucide.createIcons();
+            },
+
+            // =================================================================
+            // DOWNLOAD LOCAL — sem servidor, sem upload
+            // =================================================================
+            baixarArquivo(conteudo, nomeArquivo, mime) {
+                const blob = new Blob([conteudo], { type: mime + ';charset=utf-8;' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url; a.download = nomeArquivo;
+                document.body.appendChild(a); a.click(); document.body.removeChild(a);
+                // Libera a referência: sem isto o blob fica retido até a aba fechar.
+                setTimeout(() => URL.revokeObjectURL(url), 1000);
+            },
+
+            // Campo de CSV: aspas dobradas e o todo entre aspas quando necessário.
+            csvCampo(v) {
+                const t = v == null ? '' : String(v);
+                return /[";\n]/.test(t) ? '"' + t.replace(/"/g, '""') + '"' : t;
+            },
+
+            csvLinha(campos) { return campos.map(c => this.csvCampo(c)).join(';'); },
+
+            exportarAuditoriaCSV() {
+                const lista = this.auditoriaFiltrada();
+                if (!lista.length) return this.showToast('Nenhum evento no recorte atual para exportar.', 'error');
+
+                // Antes/depois viram texto já mascarado — o CSV não pode ser uma
+                // porta de saída para o que a tela esconde.
+                const achatar = obj => {
+                    if (!obj || typeof obj !== 'object') return '';
+                    return Object.entries(obj).map(([k, v]) =>
+                        `${k}=${this.ehChaveSensivel(k) ? this.mascararValorSensivel(v) : (Array.isArray(v) ? v.join('|') : String(v))}`
+                    ).join(' | ');
+                };
+
+                const linhas = [this.csvLinha(['data_hora', 'usuario', 'perfil', 'modulo', 'acao', 'entidade', 'entidade_id', 'descricao', 'dados_anteriores', 'dados_posteriores'])];
+                lista.forEach(a => linhas.push(this.csvLinha([
+                    new Date(a.dataHora).toLocaleString('pt-BR'),
+                    a.usuario || 'Sistema', rotuloPerfil(a.perfil), a.modulo || '', a.acao || '',
+                    a.entidade || '', a.entidadeId != null ? a.entidadeId : '',
+                    a.descricao || '', achatar(a.dadosAnteriores), achatar(a.dadosPosteriores)
+                ])));
+
+                this.baixarArquivo('﻿' + linhas.join('\n'), `vitryx-auditoria-${this.dataLocalISO(new Date())}.csv`, 'text/csv');
+                registrarAuditoria({
+                    acao: 'Exportação de auditoria', modulo: 'Auditoria', entidade: 'export', entidadeId: null,
+                    descricao: `Trilha de auditoria exportada em CSV (${lista.length} eventos, campos sensíveis mascarados).`,
+                    dadosPosteriores: { formato: 'CSV', eventos: lista.length }
+                });
+                storage.save();
+                this.renderAuditoria();
+                this.showToast(`Auditoria exportada: ${lista.length} eventos.`, 'success');
+            },
+
+            // =================================================================
+            // PERFIS E PERMISSÕES
+            //
+            // A matriz é demonstrativa, mas `podeAdministrar()` é real: é ela que
+            // esconde e desabilita as ações administrativas para o analista.
+            // =================================================================
+            MATRIZ_PERMISSOES: [
+                { rotulo: 'Consultar Base Econômica, mapa e indicadores', manager: true,  analyst: true,  entrepreneur: false },
+                { rotulo: 'Consultar demandas, compras e auditoria',      manager: true,  analyst: true,  entrepreneur: false },
+                { rotulo: 'Revelar CPF/CNPJ completo',                    manager: true,  analyst: false, entrepreneur: false },
+                { rotulo: 'Importar base econômica',                      manager: true,  analyst: false, entrepreneur: false },
+                { rotulo: 'Exportar dados',                               manager: true,  analyst: true,  entrepreneur: false },
+                { rotulo: 'Validar, rejeitar ou pedir ajuste',            manager: true,  analyst: false, entrepreneur: false },
+                { rotulo: 'Registrar compra pública',                     manager: true,  analyst: false, entrepreneur: false },
+                { rotulo: 'Gerenciar usuários e permissões',              manager: true,  analyst: false, entrepreneur: false },
+                { rotulo: 'Alterar configurações da implantação',         manager: true,  analyst: false, entrepreneur: false },
+                { rotulo: 'Gerenciar a própria vitrine e catálogo',       manager: false, analyst: false, entrepreneur: true }
+            ],
+
+            /** Só a Gestão administra. Analista consulta; empreendedor nem entra aqui. */
+            podeAdministrar() { return this.currentPersona === 'manager'; },
+
+            /**
+             * Aplica as restrições visíveis do analista: esconde as áreas
+             * administrativas, desabilita botões de ação e mostra o aviso de
+             * somente-consulta. Chamada a cada navegação do painel.
+             */
+            aplicarRestricoesPerfil() {
+                const admin = this.podeAdministrar();
+                const analista = this.currentPersona === 'analyst';
+
+                const restrito = document.getElementById('nav-admin-restrito');
+                if (restrito) restrito.classList.toggle('hidden', !admin);
+
+                // Ações administrativas some/desabilitam para quem não é gestor.
+                document.querySelectorAll('[data-admin-only]').forEach(el => {
+                    el.classList.toggle('hidden', !admin);
+                });
+                document.querySelectorAll('[data-admin-disable]').forEach(el => {
+                    el.disabled = !admin;
+                    el.classList.toggle('opacity-40', !admin);
+                    el.classList.toggle('cursor-not-allowed', !admin);
+                    if (!admin) el.title = 'Ação restrita ao perfil Gestão Municipal';
+                });
+
+                const aviso = document.getElementById('mgr-readonly-banner');
+                if (aviso) aviso.classList.toggle('hidden', !analista);
+
+                // Analista dentro de uma área restrita volta para a visão geral.
+                if (!admin && (this.currentView === 'users' || this.currentView === 'settings')) {
+                    this.navigate('manager', 'overview');
+                }
+            },
+
+            atualizarRodapeSidebar() {
+                const u = this.usuarioAtual;
+                const nome = document.getElementById('mgr-user-name');
+                const papel = document.getElementById('mgr-user-role');
+                const iniciais = document.getElementById('mgr-user-initials');
+                if (!nome) return;
+                nome.innerText = u ? u.nome : 'Sessão não iniciada';
+                papel.innerText = u ? rotuloPerfil(u.perfil) : '—';
+                iniciais.innerText = u ? (u.nome || '?').split(' ').filter(Boolean).slice(0, 2).map(x => x[0].toUpperCase()).join('') : '--';
+            },
+
+            // =================================================================
+            // USUÁRIOS E PERMISSÕES
+            // =================================================================
+            renderUsuarios() {
+                const tbody = document.getElementById('usr-table');
+                if (!tbody) return;
+                const users = appData.users || [];
+
+                document.getElementById('usr-kpi-ativos').innerText = users.filter(u => u.situacao === 'ativo').length;
+                document.getElementById('usr-kpi-gestores').innerText = users.filter(u => u.perfil === 'manager').length;
+                document.getElementById('usr-kpi-analistas').innerText = users.filter(u => u.perfil === 'analyst').length;
+                document.getElementById('usr-kpi-empreendedores').innerText = users.filter(u => u.perfil === 'entrepreneur').length;
+
+                tbody.innerHTML = users.map(u => {
+                    const perfil = PERFIS[u.perfil] || PERFIS.system;
+                    const negocio = u.businessId != null ? (appData.businesses.find(b => b.id === u.businessId) || {}).name : null;
+                    const ativo = u.situacao === 'ativo';
+                    return `
+                    <tr class="hover:bg-slate-50/50 ${ativo ? '' : 'opacity-60'}">
+                        <td class="px-6 py-4 font-bold text-slate-900">${this.escapeHtml(u.nome)}</td>
+                        <td class="px-6 py-4 text-slate-600 text-xs">${this.escapeHtml(u.email || '—')}</td>
+                        <td class="px-6 py-4"><span class="text-[10px] font-bold border rounded px-1.5 py-0.5 ${perfil.classe}">${this.escapeHtml(perfil.rotulo)}</span></td>
+                        <td class="px-6 py-4">${ativo
+                            ? '<span class="text-emerald-700 bg-emerald-50 px-2 py-1 rounded text-xs font-bold border border-emerald-100">Ativo</span>'
+                            : '<span class="text-slate-600 bg-slate-100 px-2 py-1 rounded text-xs font-bold border border-slate-200">Inativo</span>'}</td>
+                        <td class="px-6 py-4 text-slate-600 text-xs">${this.escapeHtml(negocio || '—')}</td>
+                        <td class="px-6 py-4 text-slate-500 text-xs">${u.ultimoAcesso ? new Date(u.ultimoAcesso).toLocaleString('pt-BR') : 'Nunca acessou'}</td>
+                        <td class="px-6 py-4 text-center">
+                            <div class="flex items-center justify-center gap-1">
+                                <button onclick="app.openEditarUsuario('${this.escapeHtml(u.id)}')" data-admin-disable aria-label="Editar usuário" title="Editar" class="text-slate-400 hover:text-slate-700 hover:bg-slate-100 p-2 rounded-lg transition-colors"><i data-lucide="pencil" class="w-4 h-4"></i></button>
+                                <button onclick="app.verPermissoes('${this.escapeHtml(u.perfil)}')" aria-label="Ver permissões do perfil" title="Ver permissões" class="text-slate-400 hover:text-slate-700 hover:bg-slate-100 p-2 rounded-lg transition-colors"><i data-lucide="key-round" class="w-4 h-4"></i></button>
+                                <button onclick="app.alternarSituacaoUsuario('${this.escapeHtml(u.id)}')" data-admin-disable aria-label="${ativo ? 'Desativar usuário' : 'Reativar usuário'}" title="${ativo ? 'Desativar' : 'Reativar'}" class="text-slate-400 hover:text-slate-700 hover:bg-slate-100 p-2 rounded-lg transition-colors"><i data-lucide="${ativo ? 'user-x' : 'user-check'}" class="w-4 h-4"></i></button>
+                            </div>
+                        </td>
+                    </tr>`;
+                }).join('') || `
+                    <tr><td colspan="7" class="px-6 py-12 text-center">
+                        <div class="w-12 h-12 bg-slate-100 rounded-full flex items-center justify-center mx-auto mb-3 text-slate-400"><i data-lucide="users" class="w-6 h-6"></i></div>
+                        <p class="text-sm font-bold text-slate-700">Nenhum usuário cadastrado</p>
+                        <p class="text-xs text-slate-500 mt-1">Adicione o primeiro acesso ao painel da Gestão.</p>
+                    </td></tr>`;
+
+                const marca = ok => ok
+                    ? '<i data-lucide="check" class="w-4 h-4 text-emerald-600 mx-auto"></i>'
+                    : '<i data-lucide="minus" class="w-4 h-4 text-slate-300 mx-auto"></i>';
+                document.getElementById('usr-matriz').innerHTML = this.MATRIZ_PERMISSOES.map(l => `
+                    <tr>
+                        <td class="px-4 py-3 text-slate-700">${this.escapeHtml(l.rotulo)}</td>
+                        <td class="px-4 py-3 text-center">${marca(l.manager)}</td>
+                        <td class="px-4 py-3 text-center">${marca(l.analyst)}</td>
+                        <td class="px-4 py-3 text-center">${marca(l.entrepreneur)}</td>
+                    </tr>`).join('');
+
+                this.aplicarRestricoesPerfil();
+                if (typeof lucide !== 'undefined') lucide.createIcons();
+            },
+
+            verPermissoes(perfil) {
+                const p = PERFIS[perfil] || PERFIS.system;
+                document.getElementById('perm-titulo').innerText = 'Permissões · ' + p.rotulo;
+                document.getElementById('perm-lista').innerHTML = this.MATRIZ_PERMISSOES.map(l => {
+                    const ok = !!l[perfil];
+                    return `<div class="flex items-start gap-2.5 p-3 rounded-xl border ${ok ? 'bg-emerald-50 border-emerald-100' : 'bg-slate-50 border-slate-200'}">
+                        <i data-lucide="${ok ? 'check-circle' : 'x-circle'}" class="w-4 h-4 mt-0.5 flex-shrink-0 ${ok ? 'text-emerald-600' : 'text-slate-400'}"></i>
+                        <span class="text-sm ${ok ? 'text-slate-800' : 'text-slate-500'}">${this.escapeHtml(l.rotulo)}</span>
+                    </div>`;
+                }).join('');
+                this.openModal('modal-permissions');
+                if (typeof lucide !== 'undefined') lucide.createIcons();
+            },
+
+            onPerfilUsuarioChange() {
+                const perfil = document.getElementById('usr-perfil').value;
+                const wrap = document.getElementById('usr-negocio-wrap');
+                wrap.classList.toggle('hidden', perfil !== 'entrepreneur');
+                if (perfil === 'entrepreneur') {
+                    const sel = document.getElementById('usr-negocio');
+                    const atual = sel.value;
+                    sel.innerHTML = '<option value="">Sem vínculo</option>' + appData.businesses
+                        .slice().sort((a, b) => a.name.localeCompare(b.name, 'pt-BR'))
+                        .map(b => `<option value="${b.id}">${this.escapeHtml(b.name)}</option>`).join('');
+                    sel.value = atual;
+                }
+            },
+
+            openNovoUsuario() {
+                if (!this.podeAdministrar()) return this.showToast('Ação restrita ao perfil Gestão Municipal.', 'error');
+                document.getElementById('modal-user-title').innerText = 'Novo usuário';
+                document.getElementById('usr-id').value = '';
+                document.getElementById('usr-nome').value = '';
+                document.getElementById('usr-email').value = '';
+                document.getElementById('usr-perfil').value = 'analyst';
+                this.onPerfilUsuarioChange();
+                this.openModal('modal-user');
+                if (typeof lucide !== 'undefined') lucide.createIcons();
+            },
+
+            openEditarUsuario(id) {
+                if (!this.podeAdministrar()) return this.showToast('Ação restrita ao perfil Gestão Municipal.', 'error');
+                const u = (appData.users || []).find(x => x.id === id);
+                if (!u) return;
+                document.getElementById('modal-user-title').innerText = 'Editar usuário';
+                document.getElementById('usr-id').value = u.id;
+                document.getElementById('usr-nome').value = u.nome || '';
+                document.getElementById('usr-email').value = u.email || '';
+                document.getElementById('usr-perfil').value = u.perfil || 'analyst';
+                this.onPerfilUsuarioChange();
+                if (u.perfil === 'entrepreneur') document.getElementById('usr-negocio').value = u.businessId != null ? String(u.businessId) : '';
+                this.openModal('modal-user');
+                if (typeof lucide !== 'undefined') lucide.createIcons();
+            },
+
+            salvarUsuario() {
+                if (!this.podeAdministrar()) return this.showToast('Ação restrita ao perfil Gestão Municipal.', 'error');
+                const id = document.getElementById('usr-id').value;
+                const nome = document.getElementById('usr-nome').value.trim();
+                const email = document.getElementById('usr-email').value.trim().toLowerCase();
+                const perfil = document.getElementById('usr-perfil').value;
+                const negocioSel = document.getElementById('usr-negocio').value;
+                const businessId = perfil === 'entrepreneur' && negocioSel ? Number(negocioSel) : null;
+
+                if (!nome) return this.showToast('Informe o nome do usuário.', 'error');
+                if (!email || !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) return this.showToast('Informe um e-mail válido.', 'error');
+
+                const duplicado = (appData.users || []).some(u => u.id !== id && (u.email || '').toLowerCase() === email);
+                if (duplicado) return this.showToast('Já existe um usuário com este e-mail.', 'error');
+
+                if (id) {
+                    const u = appData.users.find(x => x.id === id);
+                    if (!u) return;
+                    const antes = { nome: u.nome, email: u.email, perfil: u.perfil, businessId: u.businessId };
+                    u.nome = nome; u.email = email; u.perfil = perfil; u.businessId = businessId;
+                    registrarAuditoria({
+                        acao: 'Alteração de usuário', modulo: 'Usuários e Permissões', entidade: 'user', entidadeId: u.id,
+                        descricao: `Cadastro de acesso de "${nome}" atualizado.`,
+                        dadosAnteriores: antes,
+                        dadosPosteriores: { nome: nome, email: email, perfil: perfil, businessId: businessId }
+                    });
+                    this.showToast('Usuário atualizado.', 'success');
+                } else {
+                    // Nenhuma senha é criada: o acesso real vem do backend do piloto.
+                    const novo = normalizarUsuario({
+                        id: 'u-' + Date.now().toString(36),
+                        nome: nome, email: email, perfil: perfil,
+                        situacao: 'ativo', businessId: businessId
+                    });
+                    appData.users.push(novo);
+                    registrarAuditoria({
+                        acao: 'Criação de usuário', modulo: 'Usuários e Permissões', entidade: 'user', entidadeId: novo.id,
+                        descricao: `Novo acesso demonstrativo criado para "${nome}" com perfil ${rotuloPerfil(perfil)}.`,
+                        dadosPosteriores: { nome: nome, email: email, perfil: perfil, businessId: businessId }
+                    });
+                    this.showToast('Usuário criado.', 'success');
+                }
+
+                storage.save();
+                this.closeModal('modal-user');
+                this.renderUsuarios();
+            },
+
+            // Nunca há exclusão definitiva: o usuário é desativado e a trilha
+            // continua apontando para ele.
+            alternarSituacaoUsuario(id) {
+                if (!this.podeAdministrar()) return this.showToast('Ação restrita ao perfil Gestão Municipal.', 'error');
+                const u = (appData.users || []).find(x => x.id === id);
+                if (!u) return;
+                const ativando = u.situacao !== 'ativo';
+
+                if (!ativando && !window.confirm(`Desativar o acesso de "${u.nome}"?\n\nO usuário deixa de entrar na plataforma, mas o cadastro e a trilha de auditoria são preservados.`)) return;
+                if (!ativando && this.usuarioAtual && this.usuarioAtual.id === u.id) {
+                    return this.showToast('Você não pode desativar a própria conta em uso.', 'error');
+                }
+
+                const antes = { situacao: u.situacao };
+                u.situacao = ativando ? 'ativo' : 'inativo';
+                registrarAuditoria({
+                    acao: ativando ? 'Reativação de usuário' : 'Desativação de usuário',
+                    modulo: 'Usuários e Permissões', entidade: 'user', entidadeId: u.id,
+                    descricao: `Acesso de "${u.nome}" ${ativando ? 'reativado' : 'desativado'}. O cadastro é preservado.`,
+                    dadosAnteriores: antes, dadosPosteriores: { situacao: u.situacao }
+                });
+                storage.save();
+                this.renderUsuarios();
+                this.showToast(ativando ? 'Usuário reativado.' : 'Usuário desativado.', 'success');
+            },
+
+            // =================================================================
+            // MINHA CONTA
+            // =================================================================
+            openMinhaConta() {
+                const u = this.usuarioAtual;
+                if (!u) return this.showToast('Nenhuma sessão ativa.', 'error');
+                const perfil = PERFIS[u.perfil] || PERFIS.system;
+                const negocio = u.businessId != null ? (appData.businesses.find(b => b.id === u.businessId) || {}).name : null;
+
+                document.getElementById('acc-initials').innerText = (u.nome || '?').split(' ').filter(Boolean).slice(0, 2).map(x => x[0].toUpperCase()).join('');
+                document.getElementById('acc-perfil-label').innerText = u.email || '—';
+                document.getElementById('acc-perfil').innerHTML = `<span class="text-[10px] font-bold border rounded px-1.5 py-0.5 ${perfil.classe}">${this.escapeHtml(perfil.rotulo)}</span>`;
+                document.getElementById('acc-negocio').innerText = negocio || '—';
+                document.getElementById('acc-ultimo').innerText = u.ultimoAcesso ? new Date(u.ultimoAcesso).toLocaleString('pt-BR') : 'Primeiro acesso';
+                document.getElementById('acc-sessao').innerText = this.sessao ? 'Sessão ativa' : 'Sem sessão';
+                document.getElementById('acc-nome').value = u.nome || '';
+                document.getElementById('acc-email').value = u.email || '';
+                ['acc-senha-atual', 'acc-senha-nova', 'acc-senha-conf'].forEach(id => { document.getElementById(id).value = ''; });
+                document.getElementById('acc-senha-info').innerText = u.senhaAlteradaEm
+                    ? 'Última alteração registrada em ' + new Date(u.senhaAlteradaEm).toLocaleString('pt-BR') + '.'
+                    : 'Nenhuma alteração de senha registrada nesta demonstração.';
+                document.getElementById('acc-sessao-bloco').innerHTML = this.blocoSessaoHtml();
+
+                this.openModal('modal-account');
+                if (typeof lucide !== 'undefined') lucide.createIcons();
+            },
+
+            blocoSessaoHtml() {
+                const u = this.usuarioAtual;
+                const linha = (rotulo, valor) => `<div class="flex justify-between gap-3 py-1.5 border-b border-slate-100 last:border-0"><span class="text-slate-500">${rotulo}</span><span class="font-medium text-slate-800 text-right">${this.escapeHtml(String(valor))}</span></div>`;
+                return linha('Sessão atual', u ? (u.nome + ' · ' + (u.email || 'sem e-mail')) : 'Sem sessão')
+                     + linha('Perfil', u ? rotuloPerfil(u.perfil) : '—')
+                     + linha('Início da sessão', this.sessaoIniciadaEm ? new Date(this.sessaoIniciadaEm).toLocaleString('pt-BR') : '—')
+                     + linha('Ambiente', 'Demonstração local (navegador)');
+            },
+
+            salvarMinhaConta() {
+                const u = this.usuarioAtual;
+                if (!u) return;
+                const nome = document.getElementById('acc-nome').value.trim();
+                const email = document.getElementById('acc-email').value.trim().toLowerCase();
+                if (!nome) return this.showToast('Informe o nome.', 'error');
+                if (!email || !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) return this.showToast('Informe um e-mail válido.', 'error');
+                if ((appData.users || []).some(x => x.id !== u.id && (x.email || '').toLowerCase() === email)) {
+                    return this.showToast('Já existe um usuário com este e-mail.', 'error');
+                }
+
+                const antes = { nome: u.nome, email: u.email };
+                u.nome = nome; u.email = email;
+                const registrado = (appData.users || []).find(x => x.id === u.id);
+                if (registrado) { registrado.nome = nome; registrado.email = email; }
+
+                registrarAuditoria({
+                    acao: 'Alteração de dados da conta', modulo: 'Minha Conta', entidade: 'user', entidadeId: u.id,
+                    descricao: 'Nome e e-mail da própria conta atualizados.',
+                    dadosAnteriores: antes, dadosPosteriores: { nome: nome, email: email }
+                });
+                storage.save();
+                this.atualizarRodapeSidebar();
+                this.atualizarBarraSessao();
+                if (this.currentView === 'users') this.renderUsuarios();
+                this.showToast('Dados da conta atualizados.', 'success');
+            },
+
+            // Nenhum valor de senha é lido, comparado ou guardado: registramos
+            // apenas que a troca foi solicitada e quando.
+            simularTrocaSenha() {
+                const u = this.usuarioAtual;
+                if (!u) return;
+                const atual = document.getElementById('acc-senha-atual').value;
+                const nova = document.getElementById('acc-senha-nova').value;
+                const conf = document.getElementById('acc-senha-conf').value;
+
+                if (!atual || !nova || !conf) return this.showToast('Preencha a senha atual, a nova e a confirmação.', 'error');
+                if (nova.length < 8) return this.showToast('A nova senha deve ter ao menos 8 caracteres.', 'error');
+                if (nova !== conf) return this.showToast('A nova senha e a confirmação não coincidem.', 'error');
+
+                u.senhaAlteradaEm = new Date().toISOString();
+                const registrado = (appData.users || []).find(x => x.id === u.id);
+                if (registrado) registrado.senhaAlteradaEm = u.senhaAlteradaEm;
+
+                ['acc-senha-atual', 'acc-senha-nova', 'acc-senha-conf'].forEach(id => { document.getElementById(id).value = ''; });
+                document.getElementById('acc-senha-info').innerText = 'Última alteração registrada em ' + new Date(u.senhaAlteradaEm).toLocaleString('pt-BR') + '.';
+
+                registrarAuditoria({
+                    acao: 'Alteração de senha (demonstrativa)', modulo: 'Minha Conta', entidade: 'user', entidadeId: u.id,
+                    descricao: 'Solicitação de troca de senha registrada. Nenhum valor de senha é armazenado neste protótipo.',
+                    dadosPosteriores: { senhaAlteradaEm: u.senhaAlteradaEm }
+                });
+                storage.save();
+                this.showToast('Alteração registrada. No protótipo local, nenhuma senha é armazenada.', 'success');
+            },
+
+            // =================================================================
+            // CONFIGURAÇÕES
+            // =================================================================
+            NOTIFICACOES: [
+                { chave: 'novosCadastros',      rotulo: 'Novos cadastros',              desc: 'Avisar quando um empreendedor enviar cadastro.' },
+                { chave: 'validacoesPendentes', rotulo: 'Validações pendentes',         desc: 'Lembrete de solicitações aguardando análise.' },
+                { chave: 'importacoes',         rotulo: 'Importações concluídas',       desc: 'Resumo ao final de cada importação de base.' },
+                { chave: 'comprasPublicas',     rotulo: 'Compras públicas registradas', desc: 'Avisar a cada nova contratação registrada.' },
+                { chave: 'alertasSeguranca',    rotulo: 'Alertas de segurança',         desc: 'Revelação de documento e exportações de dados.' }
+            ],
+
+            renderSettings() {
+                if (!this.podeAdministrar()) { this.navigate('manager', 'overview'); return; }
+                const st = appData.settings || {};
+                document.getElementById('set-municipio').value = st.municipio || '';
+                document.getElementById('set-estado').value = st.estado || '';
+                document.getElementById('set-nome').value = st.nomeImplantacao || '';
+                document.getElementById('set-email').value = st.emailAdministrativo || '';
+
+                const notif = st.notificacoes || {};
+                document.getElementById('set-notificacoes').innerHTML = this.NOTIFICACOES.map(n => {
+                    const on = !!notif[n.chave];
+                    return `
+                    <label class="flex items-start justify-between gap-4 p-3 rounded-xl hover:bg-slate-50 transition cursor-pointer border border-transparent">
+                        <span class="min-w-0">
+                            <span class="block text-sm font-semibold text-slate-800">${this.escapeHtml(n.rotulo)}</span>
+                            <span class="block text-[11px] text-slate-500">${this.escapeHtml(n.desc)}</span>
+                        </span>
+                        <span class="relative inline-flex flex-shrink-0 mt-0.5">
+                            <input type="checkbox" class="sr-only peer" ${on ? 'checked' : ''} onchange="app.alternarNotificacao('${n.chave}', this.checked)" aria-label="${this.escapeHtml(n.rotulo)}">
+                            <span class="w-10 h-6 bg-slate-200 peer-checked:bg-brand-600 rounded-full transition-colors"></span>
+                            <span class="absolute left-0.5 top-0.5 w-5 h-5 bg-white rounded-full shadow transition-transform peer-checked:translate-x-4"></span>
+                        </span>
+                    </label>`;
+                }).join('');
+
+                document.getElementById('set-sessao').innerHTML = this.blocoSessaoHtml();
+                if (typeof lucide !== 'undefined') lucide.createIcons();
+            },
+
+            salvarIdentificacao() {
+                if (!this.podeAdministrar()) return this.showToast('Ação restrita ao perfil Gestão Municipal.', 'error');
+                const st = appData.settings;
+                const novo = {
+                    municipio: document.getElementById('set-municipio').value.trim(),
+                    estado: document.getElementById('set-estado').value.trim(),
+                    nomeImplantacao: document.getElementById('set-nome').value.trim(),
+                    emailAdministrativo: document.getElementById('set-email').value.trim()
+                };
+                if (!novo.municipio || !novo.estado || !novo.nomeImplantacao) {
+                    return this.showToast('Município, estado e nome da implantação são obrigatórios.', 'error');
+                }
+                if (novo.emailAdministrativo && !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(novo.emailAdministrativo)) {
+                    return this.showToast('Informe um e-mail administrativo válido.', 'error');
+                }
+
+                const antes = { municipio: st.municipio, estado: st.estado, nomeImplantacao: st.nomeImplantacao, emailAdministrativo: st.emailAdministrativo };
+                Object.assign(st, novo);
+                st.atualizadoEm = new Date().toISOString();
+
+                registrarAuditoria({
+                    acao: 'Alteração de configuração', modulo: 'Configurações', entidade: 'settings', entidadeId: null,
+                    descricao: 'Identificação da implantação atualizada.',
+                    dadosAnteriores: antes, dadosPosteriores: novo
+                });
+                storage.save();
+                this.showToast('Configurações salvas.', 'success');
+            },
+
+            alternarNotificacao(chave, valor) {
+                if (!this.podeAdministrar()) return this.showToast('Ação restrita ao perfil Gestão Municipal.', 'error');
+                const notif = appData.settings.notificacoes;
+                const antes = {}; antes[chave] = !!notif[chave];
+                notif[chave] = !!valor;
+                appData.settings.atualizadoEm = new Date().toISOString();
+
+                const rotulo = (this.NOTIFICACOES.find(n => n.chave === chave) || {}).rotulo || chave;
+                const depois = {}; depois[chave] = !!valor;
+                registrarAuditoria({
+                    acao: 'Alteração de configuração', modulo: 'Configurações', entidade: 'settings', entidadeId: null,
+                    descricao: `Notificação "${rotulo}" ${valor ? 'ativada' : 'desativada'}.`,
+                    dadosAnteriores: antes, dadosPosteriores: depois
+                });
+                storage.save();
+                this.showToast(`Notificação "${rotulo}" ${valor ? 'ativada' : 'desativada'}.`, 'success');
             },
 
             // =================================================================
@@ -8127,12 +9236,104 @@
 
             // Exportação demonstrativa: não gera arquivo, mas registra na trilha de auditoria
             // como qualquer saída de dados faria.
+            // =================================================================
+            // EXPORTAÇÃO ABERTA COM MINIMIZAÇÃO
+            //
+            // "Dado do município é do município": a exportação é de primeira
+            // classe. Mas o que sai é o dado ECONÔMICO, não o pessoal — documento,
+            // CPF do responsável, evidências, e-mail e telefone administrativos
+            // ficam de fora, e endereço protegido não sai como ponto exato.
+            // =================================================================
+
+            /** Casas decimais suficientes para o bairro, insuficientes para a casa. */
+            PRECISAO_PROTEGIDA: 2,
+
+            registroExportavel(b) {
+                const protegido = !!b.protectedLocation;
+                const arredondar = v => v == null ? null : Number(Number(v).toFixed(this.PRECISAO_PROTEGIDA));
+                return {
+                    id: b.id,
+                    nome: b.name,
+                    categoria: b.category,
+                    tipo: b.type,
+                    porte: b.porte || '',
+                    cnae: b.cnae || '',
+                    // Endereço protegido vira apenas a referência aproximada.
+                    endereco: protegido ? 'Área aproximada — endereço preservado por privacidade' : (b.address || ''),
+                    localizacaoProtegida: protegido,
+                    latitude: b.lat == null ? null : (protegido ? arredondar(b.lat) : b.lat),
+                    longitude: b.lng == null ? null : (protegido ? arredondar(b.lng) : b.lng),
+                    origem: b.origin || '',
+                    situacaoValidacao: b.validationStatus || '',
+                    vitrinePublica: b.hasVitrine !== false,
+                    completudeCadastral: calcularCompletudeCadastro(b),
+                    atualizadoEm: b.updatedAt || ''
+                };
+            },
+
             exportarBase(formato) {
-                const n = appData.businesses.length;
-                this.addHistory('Exportação de Dados', `Base econômica exportada em ${formato} (${n} registros, com minimização LGPD).`);
+                const registros = appData.businesses.map(b => this.registroExportavel(b));
+                if(!registros.length) return this.showToast('Não há registros para exportar.', 'error');
+
+                const data = this.dataLocalISO(new Date());
+                const protegidos = registros.filter(r => r.localizacaoProtegida).length;
+                let conteudo, nome, mime;
+
+                if(formato === 'CSV') {
+                    const colunas = Object.keys(registros[0]);
+                    const linhas = [this.csvLinha(colunas)];
+                    registros.forEach(r => linhas.push(this.csvLinha(colunas.map(c => {
+                        const v = r[c];
+                        return typeof v === 'boolean' ? (v ? 'sim' : 'nao') : (v == null ? '' : v);
+                    }))));
+                    // BOM para o Excel abrir os acentos corretamente.
+                    conteudo = '﻿' + linhas.join('\n');
+                    nome = `vitryx-base-economica-${data}.csv`;
+                    mime = 'text/csv';
+
+                } else if(formato === 'JSON') {
+                    conteudo = JSON.stringify({
+                        municipio: (appData.settings && appData.settings.municipio) || 'Medianeira',
+                        geradoEm: new Date().toISOString(),
+                        observacao: 'Exportação aberta com minimização LGPD: documentos, evidências e contatos administrativos omitidos.',
+                        totalRegistros: registros.length,
+                        registros: registros
+                    }, null, 2);
+                    nome = `vitryx-base-economica-${data}.json`;
+                    mime = 'application/json';
+
+                } else {
+                    // GeoJSON: só entra quem tem coordenada.
+                    const features = registros.filter(r => r.latitude != null && r.longitude != null).map(r => {
+                        const props = Object.assign({}, r);
+                        delete props.latitude; delete props.longitude;
+                        return { type: 'Feature', geometry: { type: 'Point', coordinates: [r.longitude, r.latitude] }, properties: props };
+                    });
+                    conteudo = JSON.stringify({
+                        type: 'FeatureCollection',
+                        name: 'Base Econômica — ' + ((appData.settings && appData.settings.municipio) || 'Medianeira'),
+                        crs: { type: 'name', properties: { name: 'urn:ogc:def:crs:OGC:1.3:CRS84' } },
+                        features: features
+                    }, null, 2);
+                    nome = `vitryx-base-economica-${data}.geojson`;
+                    mime = 'application/geo+json';
+                }
+
+                this.baixarArquivo(conteudo, nome, mime);
+
+                this.addHistory('Exportação de Dados', `Base econômica exportada em ${formato} (${registros.length} registros, com minimização LGPD).`);
+                registrarAuditoria({
+                    acao: 'Exportação de dados', modulo: 'Base Econômica', entidade: 'export', entidadeId: null,
+                    descricao: `Base econômica exportada em ${formato}: ${registros.length} registros, ${protegidos} com localização protegida arredondada.`,
+                    dadosPosteriores: {
+                        formato: formato, registros: registros.length, arquivo: nome,
+                        camposOmitidos: ['documento', 'responsavelCpf', 'email administrativo', 'telefone cadastral', 'evidências'],
+                        localizacoesProtegidas: protegidos
+                    }
+                });
                 storage.save();
-                this.showToast(`Exportação em ${formato} gerada e registrada na auditoria.`, 'success');
-                if(this.currentView === 'history') this.renderHistory();
+                this.showToast(`Arquivo ${formato} baixado e registrado na auditoria.`, 'success');
+                if(this.currentView === 'history') this.renderAuditoria();
             },
             
             showToast(message, type = 'success') {
