@@ -385,10 +385,10 @@
     <!-- Accessibility Widget -->
     <div class="vx-a11y fixed left-0 top-1/2 -translate-y-1/2 z-[9000] flex flex-col gap-1 bg-white border border-slate-200 shadow-md rounded-r-xl p-1">
         <button onclick="app.adjustFontSize(1)" class="w-8 h-8 flex items-center justify-center text-slate-600 hover:bg-slate-100 rounded-lg font-bold" title="Aumentar fonte">A+</button>
-        <span class="text-[9px] font-bold text-slate-400 text-center leading-none" id="a11y-font-level">100%</span>
+        <span class="text-xs font-bold text-slate-400 text-center leading-none" id="a11y-font-level">100%</span>
         <button onclick="app.adjustFontSize(-1)" class="w-8 h-8 flex items-center justify-center text-slate-600 hover:bg-slate-100 rounded-lg font-bold" title="Diminuir fonte">A-</button>
-        <button onclick="app.resetFontSize()" class="w-8 h-8 flex items-center justify-center text-slate-500 hover:bg-slate-100 rounded-lg" title="Voltar ao tamanho padrão"><i data-lucide="rotate-ccw" class="w-3.5 h-3.5"></i></button>
-        <button onclick="app.toggleHighContrast()" class="w-8 h-8 flex items-center justify-center text-slate-600 hover:bg-slate-100 rounded-lg" title="Alto contraste"><i data-lucide="contrast" class="w-4 h-4"></i></button>
+        <button onclick="app.resetFontSize()" class="w-8 h-8 flex items-center justify-center text-slate-500 hover:bg-slate-100 rounded-lg" title="Voltar ao tamanho padrão" aria-label="Voltar ao tamanho de fonte padrão"><i data-lucide="rotate-ccw" class="w-3.5 h-3.5"></i></button>
+        <button onclick="app.toggleHighContrast()" class="w-8 h-8 flex items-center justify-center text-slate-600 hover:bg-slate-100 rounded-lg" title="Alto contraste" aria-label="Alternar alto contraste"><i data-lucide="contrast" class="w-4 h-4"></i></button>
     </div>
 
     <!-- ================= LAYOUT 1: ÁREA PÚBLICA (CIDADÃO) ================= -->
@@ -454,7 +454,7 @@
                             <div class="flex-grow flex items-center w-full px-4 gap-2">
                                 <i data-lucide="search" class="w-6 h-6 text-slate-400 flex-shrink-0"></i>
                                 <input type="text" id="landing-search" class="w-full py-4 px-1 text-lg text-slate-900 placeholder-slate-400 focus:outline-none bg-transparent" placeholder="Ex: manicure, diarista, eletricista, frete..." onkeypress="if(event.key === 'Enter') app.doSearch('landing-search')">
-                                <button onclick="app.simulateVoiceSearch()" class="p-2 text-slate-400 hover:text-brand-600 hover:bg-slate-100 rounded-full transition-colors"><i data-lucide="mic" class="w-5 h-5"></i></button>
+                                <button onclick="app.simulateVoiceSearch()" class="p-2 text-slate-400 hover:text-brand-600 hover:bg-slate-100 rounded-full transition-colors" aria-label="Buscar por voz"><i data-lucide="mic" class="w-5 h-5"></i></button>
                             </div>
                             <div class="w-full sm:w-auto flex items-center gap-2">
                                 <button onclick="app.doSearch('landing-search')" class="w-full sm:w-auto bg-brand-600 hover:bg-brand-700 text-white px-8 py-4 rounded-xl font-bold transition-all shadow-md hover:shadow-lg flex items-center justify-center gap-2 text-lg">Buscar</button>
@@ -575,11 +575,11 @@
                     <div id="radar-sidebar" class="w-full md:w-[420px] lg:w-[480px] h-full flex flex-col border-r border-slate-200 bg-slate-50 relative z-20 flex-shrink-0 transition-transform duration-300">
                         <div class="p-4 bg-white border-b border-slate-200 shadow-sm z-10 relative flex-shrink-0">
                             <div class="flex items-center gap-3 mb-3">
-                                <button onclick="app.navigate('public', 'landing')" class="md:hidden text-slate-500 p-1 -ml-1 hover:bg-slate-100 rounded"><i data-lucide="arrow-left" class="w-5 h-5"></i></button>
+                                <button onclick="app.navigate('public', 'landing')" class="md:hidden text-slate-500 p-1 -ml-1 hover:bg-slate-100 rounded" aria-label="Ir para a página inicial"><i data-lucide="arrow-left" class="w-5 h-5"></i></button>
                                 <div class="relative w-full flex items-center bg-slate-100 rounded-lg px-2 border border-transparent focus-within:bg-white focus-within:border-brand-500 focus-within:ring-2 focus-within:ring-brand-200 transition-all">
                                     <i data-lucide="search" class="w-4 h-4 text-slate-400 ml-1"></i>
                                     <input type="text" id="radar-search" class="w-full pl-2 pr-2 py-2.5 bg-transparent text-sm outline-none" placeholder="Buscar serviços, produtos ou necessidades..." onkeypress="if(event.key === 'Enter') app.doSearch('radar-search')">
-                                    <button onclick="app.simulateVoiceSearch()" class="p-1.5 text-slate-400 hover:text-brand-600 hover:bg-slate-200 rounded-full transition-colors"><i data-lucide="mic" class="w-4 h-4"></i></button>
+                                    <button onclick="app.simulateVoiceSearch()" class="p-1.5 text-slate-400 hover:text-brand-600 hover:bg-slate-200 rounded-full transition-colors" aria-label="Buscar por voz"><i data-lucide="mic" class="w-4 h-4"></i></button>
                                 </div>
                             </div>
                             <div class="flex items-center gap-2 overflow-x-auto hide-scroll pb-1">
@@ -607,8 +607,8 @@
                             <img src="" class="w-full h-full object-cover" id="profile-cover-img" alt="Capa">
                             <div class="absolute inset-0 bg-gradient-to-t from-slate-900/45 to-transparent"></div>
                             <div class="absolute top-4 left-4 right-4 flex justify-between z-20">
-                                <button onclick="app.navigate('public', 'radar')" class="w-10 h-10 bg-white/95 backdrop-blur rounded-full flex items-center justify-center text-slate-700 hover:bg-white transition-colors" style="box-shadow: var(--vx-shadow-md)" title="Voltar"><i data-lucide="arrow-left" class="w-5 h-5"></i></button>
-                                <button onclick="app.shareProfile()" class="w-10 h-10 bg-white/95 backdrop-blur rounded-full flex items-center justify-center text-slate-700 hover:bg-white transition-colors lg:hidden" style="box-shadow: var(--vx-shadow-md)" title="Compartilhar"><i data-lucide="share-2" class="w-5 h-5"></i></button>
+                                <button onclick="app.navigate('public', 'radar')" class="w-10 h-10 bg-white/95 backdrop-blur rounded-full flex items-center justify-center text-slate-700 hover:bg-white transition-colors" style="box-shadow: var(--vx-shadow-md)" title="Voltar" aria-label="Abrir o mapa de negócios"><i data-lucide="arrow-left" class="w-5 h-5"></i></button>
+                                <button onclick="app.shareProfile()" class="w-10 h-10 bg-white/95 backdrop-blur rounded-full flex items-center justify-center text-slate-700 hover:bg-white transition-colors lg:hidden" style="box-shadow: var(--vx-shadow-md)" title="Compartilhar" aria-label="Compartilhar esta vitrine"><i data-lucide="share-2" class="w-5 h-5"></i></button>
                             </div>
                         </div>
 
@@ -639,9 +639,9 @@
                             <!-- Ações: WhatsApp é a principal; as demais, secundárias -->
                             <div class="flex flex-col sm:flex-row gap-2.5 mt-6">
                                 <button onclick="app.actionWhatsApp()" class="vx-btn vx-btn-whatsapp vx-btn-lg hidden lg:inline-flex"><i data-lucide="message-circle" class="w-5 h-5"></i> Falar pelo WhatsApp</button>
-                                <button onclick="app.actionCall()" class="vx-btn vx-btn-secondary vx-btn-lg sm:vx-btn"><i data-lucide="phone" class="w-4 h-4"></i> Ligar</button>
-                                <button onclick="app.actionRoute()" class="vx-btn vx-btn-secondary vx-btn-lg sm:vx-btn"><i data-lucide="map-pin" class="w-4 h-4"></i> Ver rota</button>
-                                <button onclick="app.shareProfile()" class="vx-btn vx-btn-secondary vx-btn-lg sm:vx-btn hidden sm:inline-flex"><i data-lucide="share-2" class="w-4 h-4"></i> Compartilhar</button>
+                                <button onclick="app.actionCall()" class="vx-btn vx-btn-secondary vx-btn-lg"><i data-lucide="phone" class="w-4 h-4"></i> Ligar</button>
+                                <button onclick="app.actionRoute()" class="vx-btn vx-btn-secondary vx-btn-lg"><i data-lucide="map-pin" class="w-4 h-4"></i> Ver rota</button>
+                                <button onclick="app.shareProfile()" class="vx-btn vx-btn-secondary vx-btn-lg hidden sm:inline-flex"><i data-lucide="share-2" class="w-4 h-4"></i> Compartilhar</button>
                             </div>
                         </div>
                     </div>
@@ -1357,7 +1357,7 @@
                                         <select id="mgr-map-origin" onchange="app.renderMgrMapMarkers()" class="flex-grow px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm focus:bg-white focus:border-brand-500 outline-none transition-all">
                                             <option value="">Todas as Origens</option><option value="Cadastro do Empreendedor">Cadastro do Empreendedor</option><option value="Base Importada">Base Importada</option><option value="Sincronizado">Sincronizado</option>
                                         </select>
-                                        <button onclick="app.limparFiltrosMapa()" class="px-3 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg text-xs font-bold transition flex items-center gap-1.5 flex-shrink-0" title="Limpar filtros"><i data-lucide="rotate-ccw" class="w-3.5 h-3.5"></i></button>
+                                        <button onclick="app.limparFiltrosMapa()" class="px-3 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg text-xs font-bold transition flex items-center gap-1.5 flex-shrink-0" title="Limpar filtros" aria-label="Limpar filtros do mapa"><i data-lucide="rotate-ccw" class="w-3.5 h-3.5"></i></button>
                                     </div>
                                 </div>
                             </div>
@@ -2052,7 +2052,7 @@
         <div class="bg-white w-full max-w-md rounded-2xl shadow-2xl flex flex-col overflow-hidden transform scale-95 transition-transform duration-200" id="modal-product-content">
             <div class="px-6 py-4 border-b border-slate-100 flex justify-between items-center bg-slate-50">
                 <h3 class="font-bold text-slate-900" id="modal-product-title">Novo Item no Catálogo</h3>
-                <button onclick="app.closeModal('modal-product')" class="text-slate-400 hover:text-slate-600 bg-white p-1 rounded-full shadow-sm"><i data-lucide="x" class="w-5 h-5"></i></button>
+                <button onclick="app.closeModal('modal-product')" class="text-slate-400 hover:text-slate-600 bg-white p-1 rounded-full shadow-sm" aria-label="Fechar janela"><i data-lucide="x" class="w-5 h-5"></i></button>
             </div>
             <div class="p-6 space-y-4">
                 <input type="hidden" id="prod-id">
@@ -2074,7 +2074,7 @@
                     <div class="w-8 h-8 rounded-lg bg-brand-600 text-white flex items-center justify-center"><i data-lucide="layout-dashboard" class="w-4 h-4"></i></div>
                     <h3 class="font-bold text-slate-900" id="onb-title">Quero fazer parte da Vitryx</h3>
                 </div>
-                <button onclick="app.closeModal('modal-onboarding')" class="text-slate-400 hover:text-slate-600 bg-slate-100 p-1.5 rounded-full"><i data-lucide="x" class="w-5 h-5"></i></button>
+                <button onclick="app.closeModal('modal-onboarding')" class="text-slate-400 hover:text-slate-600 bg-slate-100 p-1.5 rounded-full" aria-label="Fechar janela"><i data-lucide="x" class="w-5 h-5"></i></button>
             </div>
             <div class="flex-grow overflow-y-auto p-6 bg-slate-50 relative" id="onb-body">
                 <!-- ASSISTIDO 1/5: dados da pessoa (o dono) -->
@@ -2102,11 +2102,11 @@
                     <p class="text-sm text-slate-500 -mt-2">Por enquanto só o básico. O resto da vitrine a Vitória monta com você.</p>
                     <div><label class="block text-sm font-bold text-slate-900 mb-1">Nome do estabelecimento <span class="text-red-500">*</span></label><input type="text" id="ap-negocio" class="w-full px-4 py-2.5 bg-white border border-slate-200 rounded-lg text-sm outline-none" placeholder="Ex: Bolos da Joana"></div>
                     <div class="grid grid-cols-2 gap-4">
-                        <div><label class="block text-sm font-bold text-slate-900 mb-1">Tipo / Porte</label><select id="ap-porte" class="w-full px-4 py-2.5 bg-white border border-slate-200 rounded-lg text-sm outline-none"><option>MEI</option><option>Empresa (ME/EPP/LTDA)</option><option>Profissional Autônomo</option><option>Produtor Rural</option></select></div>
+                        <div><label class="block text-sm font-bold text-slate-900 mb-1">Tipo / Porte</label><select id="ap-porte" onchange="app.atualizarRotuloCnpj()" class="w-full px-4 py-2.5 bg-white border border-slate-200 rounded-lg text-sm outline-none"><option>MEI</option><option>Empresa (ME/EPP/LTDA)</option><option>Profissional Autônomo</option><option>Produtor Rural</option></select></div>
                         <div>
-                            <label class="block text-sm font-bold text-slate-900 mb-1">CNPJ <span class="font-normal text-slate-400">(se tiver)</span></label>
+                            <label class="block text-sm font-bold text-slate-900 mb-1" for="ap-cnpj">CNPJ <span class="font-normal text-slate-400" id="ap-cnpj-hint">(obrigatório para MEI)</span></label>
                             <input type="text" id="ap-cnpj" oninput="app.maskCpfCnpj(this)" class="w-full px-4 py-2.5 bg-white border border-slate-200 rounded-lg text-sm outline-none" placeholder="00.000.000/0000-00">
-                            <p class="text-xs text-slate-400 mt-1">Sem CNPJ? Deixe em branco — o cadastro segue no seu CPF.</p>
+                            <p class="text-xs text-slate-400 mt-1" id="ap-cnpj-ajuda">MEI é pessoa jurídica e possui CNPJ.</p>
                         </div>
                     </div>
                     <div class="bg-blue-50 border border-blue-100 p-3 rounded-lg text-xs text-blue-800 font-medium flex items-start gap-2">
@@ -2156,7 +2156,7 @@
 
                     <div class="flex items-center gap-2 bg-white border border-slate-200 rounded-xl p-2 focus-within:border-brand-500 transition-all">
                         <input type="text" id="gonb-input" class="flex-grow px-2 py-2 bg-transparent text-sm outline-none" placeholder="Digite sua resposta..." onkeypress="if(event.key === 'Enter') app.guiadoResponder()">
-                        <button onclick="app.guiadoResponder()" class="bg-brand-600 hover:bg-brand-700 text-white w-9 h-9 rounded-lg flex items-center justify-center transition flex-shrink-0"><i data-lucide="send" class="w-4 h-4"></i></button>
+                        <button onclick="app.guiadoResponder()" class="bg-brand-600 hover:bg-brand-700 text-white w-9 h-9 rounded-lg flex items-center justify-center transition flex-shrink-0" aria-label="Enviar resposta"><i data-lucide="send" class="w-4 h-4"></i></button>
                     </div>
                     <button onclick="app.guiadoUsarFormulario()" class="mt-4 w-full text-xs font-bold text-slate-400 hover:text-slate-600 transition">Prefiro preencher o formulário tradicional</button>
                 </div>
@@ -2522,7 +2522,7 @@
                         <p class="text-xs text-slate-500" id="imp-step-label">Passo 1 de 3 — selecionar arquivo</p>
                     </div>
                 </div>
-                <button onclick="app.closeModal('modal-import')" class="text-slate-400 hover:text-slate-600 bg-white p-1 rounded-full shadow-sm"><i data-lucide="x" class="w-5 h-5"></i></button>
+                <button onclick="app.closeModal('modal-import')" class="text-slate-400 hover:text-slate-600 bg-white p-1 rounded-full shadow-sm" aria-label="Fechar janela"><i data-lucide="x" class="w-5 h-5"></i></button>
             </div>
 
             <div class="flex-grow overflow-y-auto">
@@ -2614,7 +2614,7 @@
                     <div id="bd-icon" class="w-10 h-10 rounded-lg bg-slate-200 flex items-center justify-center text-slate-600"></div>
                     <div><h3 class="font-bold text-slate-900 text-lg leading-tight" id="bd-name">Nome</h3><p class="text-xs font-semibold text-slate-500 uppercase" id="bd-category">Categoria</p></div>
                 </div>
-                <button onclick="app.closeModal('modal-base-details')" class="text-slate-400 hover:text-slate-600 bg-white p-1 rounded-full shadow-sm"><i data-lucide="x" class="w-5 h-5"></i></button>
+                <button onclick="app.closeModal('modal-base-details')" class="text-slate-400 hover:text-slate-600 bg-white p-1 rounded-full shadow-sm" aria-label="Fechar janela"><i data-lucide="x" class="w-5 h-5"></i></button>
             </div>
             <div class="flex-grow overflow-y-auto p-6 space-y-6">
                 <div>
@@ -2764,7 +2764,7 @@
         <div class="bg-white w-full max-w-sm rounded-2xl shadow-2xl flex flex-col overflow-hidden transform scale-95 transition-transform duration-200" id="modal-view-doc-content">
             <div class="px-6 py-4 border-b border-slate-100 flex justify-between bg-slate-50">
                 <h3 class="font-bold text-slate-900">Comprovante de Vínculo</h3>
-                <button onclick="app.closeModal('modal-view-doc')" class="text-slate-400 hover:text-slate-600"><i data-lucide="x" class="w-5 h-5"></i></button>
+                <button onclick="app.closeModal('modal-view-doc')" class="text-slate-400 hover:text-slate-600" aria-label="Fechar janela"><i data-lucide="x" class="w-5 h-5"></i></button>
             </div>
             <div class="p-8 text-center">
                 <i data-lucide="file-check" class="w-16 h-16 text-brand-500 mx-auto mb-4"></i>
@@ -2781,7 +2781,7 @@
     <div id="modal-item-detail" class="modal-overlay">
         <div class="bg-white w-full max-w-md rounded-2xl shadow-2xl flex flex-col overflow-hidden max-h-[90vh] transform scale-95 transition-transform duration-200" id="modal-item-detail-content">
             <div class="relative flex-shrink-0" id="item-image" style="aspect-ratio: 16/9; background: var(--vx-surface-muted)"></div>
-            <button onclick="app.closeModal('modal-item-detail')" class="absolute top-3 right-3 z-10 w-9 h-9 bg-white/95 backdrop-blur rounded-full flex items-center justify-center text-slate-700 hover:bg-white transition" style="box-shadow: var(--vx-shadow-md)"><i data-lucide="x" class="w-5 h-5"></i></button>
+            <button onclick="app.closeModal('modal-item-detail')" class="absolute top-3 right-3 z-10 w-9 h-9 bg-white/95 backdrop-blur rounded-full flex items-center justify-center text-slate-700 hover:bg-white transition" style="box-shadow: var(--vx-shadow-md)" aria-label="Fechar janela"><i data-lucide="x" class="w-5 h-5"></i></button>
             <div class="flex-grow overflow-y-auto p-5 sm:p-6">
                 <span class="vx-badge mb-3" id="item-kind"></span>
                 <h3 class="text-lg font-extrabold leading-tight" style="color: var(--vx-text)" id="item-name">Item</h3>
@@ -2805,7 +2805,7 @@
         <div class="bg-white w-full max-w-lg rounded-2xl shadow-2xl flex flex-col overflow-hidden max-h-[90vh] transform scale-95 transition-transform duration-200" id="modal-mgr-new-business-content">
             <div class="px-6 py-4 border-b border-slate-100 flex justify-between items-center bg-slate-50">
                 <h3 class="font-bold text-slate-900 flex items-center gap-2"><i data-lucide="building-2" class="w-5 h-5 text-brand-600"></i> Cadastrar Empresa na Base</h3>
-                <button onclick="app.closeModal('modal-mgr-new-business')" class="text-slate-400 hover:text-slate-600"><i data-lucide="x" class="w-5 h-5"></i></button>
+                <button onclick="app.closeModal('modal-mgr-new-business')" class="text-slate-400 hover:text-slate-600" aria-label="Fechar janela"><i data-lucide="x" class="w-5 h-5"></i></button>
             </div>
             <div class="flex-grow overflow-y-auto p-6 space-y-4">
                 <div class="bg-blue-50 border border-blue-100 p-3 rounded-lg text-xs text-blue-800 font-medium">
@@ -2850,7 +2850,7 @@
                     <div class="w-9 h-9 rounded-lg bg-brand-50 text-brand-600 flex items-center justify-center"><i data-lucide="shopping-cart" class="w-4 h-4"></i></div>
                     <div><h3 class="font-bold text-slate-900">Registrar compra pública</h3><p class="text-xs text-slate-500">Contratação já realizada pelo Município.</p></div>
                 </div>
-                <button onclick="app.closeModal('modal-new-purchase')" class="text-slate-400 hover:text-slate-600"><i data-lucide="x" class="w-5 h-5"></i></button>
+                <button onclick="app.closeModal('modal-new-purchase')" class="text-slate-400 hover:text-slate-600" aria-label="Fechar janela"><i data-lucide="x" class="w-5 h-5"></i></button>
             </div>
             <div class="flex-grow overflow-y-auto p-6 space-y-4">
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -2948,7 +2948,7 @@
                     <div class="w-10 h-10 rounded-lg bg-slate-200 text-slate-600 flex items-center justify-center"><i data-lucide="receipt" class="w-5 h-5"></i></div>
                     <div><h3 class="font-bold text-slate-900 text-lg leading-tight" id="pd-process">Processo</h3><p class="text-xs font-semibold text-slate-500 uppercase" id="pd-department">Secretaria</p></div>
                 </div>
-                <button onclick="app.closeModal('modal-purchase-details')" class="text-slate-400 hover:text-slate-600 bg-white p-1 rounded-full shadow-sm"><i data-lucide="x" class="w-5 h-5"></i></button>
+                <button onclick="app.closeModal('modal-purchase-details')" class="text-slate-400 hover:text-slate-600 bg-white p-1 rounded-full shadow-sm" aria-label="Fechar janela"><i data-lucide="x" class="w-5 h-5"></i></button>
             </div>
             <div class="flex-grow overflow-y-auto p-6 space-y-6">
                 <div>
@@ -2989,7 +2989,7 @@
         <div class="bg-white w-full max-w-lg rounded-2xl shadow-2xl flex flex-col overflow-hidden max-h-[90vh] transform scale-95 transition-transform duration-200" id="modal-new-demand-content">
             <div class="px-6 py-4 border-b border-slate-100 flex justify-between bg-slate-50">
                 <h3 class="font-bold text-slate-900 flex items-center gap-2"><i data-lucide="clipboard-plus" class="w-5 h-5 text-brand-600"></i> Cadastrar Demanda</h3>
-                <button onclick="app.closeModal('modal-new-demand')" class="text-slate-400 hover:text-slate-600"><i data-lucide="x" class="w-5 h-5"></i></button>
+                <button onclick="app.closeModal('modal-new-demand')" class="text-slate-400 hover:text-slate-600" aria-label="Fechar janela"><i data-lucide="x" class="w-5 h-5"></i></button>
             </div>
             <div class="flex-grow overflow-y-auto p-6 space-y-4">
                 <div><label class="block text-xs font-bold text-slate-700 mb-1">Título da Demanda <span class="text-red-500">*</span></label><input type="text" id="dem-title" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm outline-none"></div>
@@ -3023,7 +3023,7 @@
     <div id="modal-login" class="modal-overlay">
         <div class="bg-white w-full max-w-md rounded-2xl shadow-2xl flex flex-col overflow-hidden max-h-[90vh] transform scale-95 transition-transform duration-200" id="modal-login-content">
             <div class="px-6 py-5 border-b border-slate-100 bg-slate-900 text-white relative flex-shrink-0">
-                <button onclick="app.closeModal('modal-login')" class="absolute top-4 right-4 text-slate-400 hover:text-white"><i data-lucide="x" class="w-5 h-5"></i></button>
+                <button onclick="app.closeModal('modal-login')" class="absolute top-4 right-4 text-slate-400 hover:text-white" aria-label="Fechar janela"><i data-lucide="x" class="w-5 h-5"></i></button>
                 <div class="flex items-center gap-3">
                     <div class="w-10 h-10 bg-white/15 rounded-xl flex items-center justify-center backdrop-blur"><i data-lucide="log-in" class="w-5 h-5"></i></div>
                     <div>
@@ -3080,7 +3080,7 @@
         <div class="bg-white w-full max-w-lg rounded-2xl shadow-2xl flex flex-col overflow-hidden transform scale-95 transition-transform duration-200" id="modal-how-it-works-content">
             <div class="px-6 py-4 border-b border-slate-100 flex justify-between items-center bg-slate-50">
                 <h3 class="font-bold text-slate-900 flex items-center gap-2"><i data-lucide="info" class="w-5 h-5 text-brand-600"></i> Como funciona a Vitryx?</h3>
-                <button onclick="app.closeModal('modal-how-it-works')" class="text-slate-400 hover:text-slate-600"><i data-lucide="x" class="w-5 h-5"></i></button>
+                <button onclick="app.closeModal('modal-how-it-works')" class="text-slate-400 hover:text-slate-600" aria-label="Fechar janela"><i data-lucide="x" class="w-5 h-5"></i></button>
             </div>
             <div class="p-6 space-y-5">
                 <div class="flex gap-4">
@@ -3107,7 +3107,7 @@
         <div class="bg-white w-full max-w-lg rounded-2xl shadow-2xl flex flex-col overflow-hidden transform scale-95 transition-transform duration-200" id="modal-gap-analysis-content">
             <div class="px-6 py-4 border-b border-slate-100 flex items-center justify-between bg-slate-50">
                 <h3 class="font-bold text-slate-900 flex items-center gap-2"><i data-lucide="bar-chart" class="w-5 h-5 text-accent-500"></i> Análise de Lacuna</h3>
-                <button onclick="app.closeModal('modal-gap-analysis')" class="text-slate-400 hover:text-slate-600"><i data-lucide="x" class="w-5 h-5"></i></button>
+                <button onclick="app.closeModal('modal-gap-analysis')" class="text-slate-400 hover:text-slate-600" aria-label="Fechar janela"><i data-lucide="x" class="w-5 h-5"></i></button>
             </div>
             <div class="p-6 space-y-5 overflow-y-auto max-h-[70vh]">
                 <div>
@@ -3163,7 +3163,7 @@
         <div class="bg-white w-full max-w-3xl rounded-2xl shadow-2xl flex flex-col overflow-hidden max-h-[90vh] transform scale-95 transition-transform duration-200" id="modal-executive-report-content">
             <div class="px-6 py-4 border-b border-slate-200 flex justify-between items-center bg-slate-900 text-white">
                 <div class="flex items-center gap-3"><i data-lucide="file-text" class="w-5 h-5 text-brand-400"></i><h3 class="font-bold text-lg">Relatório Executivo (Prévia)</h3></div>
-                <button onclick="app.closeModal('modal-executive-report')" class="text-slate-400 hover:text-white transition"><i data-lucide="x" class="w-5 h-5"></i></button>
+                <button onclick="app.closeModal('modal-executive-report')" class="text-slate-400 hover:text-white transition" aria-label="Fechar janela"><i data-lucide="x" class="w-5 h-5"></i></button>
             </div>
             <div class="flex-grow overflow-y-auto p-8 bg-slate-50">
                 <div class="bg-white border border-slate-200 p-8 rounded shadow-sm max-w-2xl mx-auto font-serif">
@@ -3208,14 +3208,14 @@
 
     <div id="vitoria-chat" class="hidden-chat fixed bottom-24 right-4 md:right-6 w-[calc(100%-2rem)] max-w-[360px] h-[500px] max-h-[75vh] bg-white rounded-2xl shadow-[0_15px_40px_rgba(0,0,0,0.15)] z-[9950] border border-slate-200 flex flex-col overflow-hidden">
         <div class="bg-gradient-to-r from-brand-600 to-brand-500 px-4 py-3 flex items-center justify-between text-white shadow-sm flex-shrink-0">
-            <div class="flex items-center gap-3"><div class="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center backdrop-blur-sm"><i data-lucide="bot" class="w-5 h-5"></i></div><div><h4 class="font-bold text-sm leading-tight">Vitória</h4><p class="text-[10px] text-brand-100">Inteligência VITRYX</p></div></div>
-            <button onclick="vitoriaAssistant.close()" class="p-1 hover:bg-white/20 rounded-lg transition"><i data-lucide="x" class="w-5 h-5"></i></button>
+            <div class="flex items-center gap-3"><div class="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center backdrop-blur-sm"><i data-lucide="bot" class="w-5 h-5"></i></div><div><h4 class="font-bold text-sm leading-tight">Vitória</h4><p class="text-xs text-brand-100">Inteligência VITRYX</p></div></div>
+            <button onclick="vitoriaAssistant.close()" aria-label="Fechar assistente" class="p-1 hover:bg-white/20 rounded-lg transition"><i data-lucide="x" class="w-5 h-5"></i></button>
         </div>
         <div id="vitoria-messages" class="flex-grow p-4 overflow-y-auto space-y-4 bg-slate-50 flex flex-col"></div>
         <div id="vitoria-quick-replies" class="px-3 py-2.5 flex gap-2 overflow-x-auto hide-scroll bg-white border-t border-slate-100 flex-shrink-0"></div>
         <div class="p-3 bg-white border-t border-slate-200 flex gap-2 items-center flex-shrink-0">
             <input type="text" id="vitoria-input" class="flex-grow px-3 py-2 bg-slate-100 border-transparent rounded-xl text-sm outline-none focus:bg-white focus:ring-2 focus:ring-brand-200 focus:border-brand-400 transition" placeholder="Digite sua pergunta..." onkeypress="if(event.key === 'Enter') vitoriaAssistant.sendUserMessage()">
-            <button onclick="vitoriaAssistant.sendUserMessage()" class="w-10 h-10 bg-brand-600 text-white rounded-xl flex items-center justify-center flex-shrink-0 hover:bg-brand-700 transition shadow-sm"><i data-lucide="send" class="w-4 h-4 ml-0.5"></i></button>
+            <button onclick="vitoriaAssistant.sendUserMessage()" aria-label="Enviar mensagem" class="w-10 h-10 bg-brand-600 text-white rounded-xl flex items-center justify-center flex-shrink-0 hover:bg-brand-700 transition shadow-sm"><i data-lucide="send" class="w-4 h-4 ml-0.5"></i></button>
         </div>
     </div>
 
@@ -3608,14 +3608,14 @@
         // ---------------------------------------------------------------------
         const seedPurchases = [
             { processNumber: '2026/0412', purchaseDate: '2026-08-12', object: 'Reparo de 40 carteiras e mesas escolares', category: 'Serviços',     department: 'Sec. Educação',        supplierName: 'Marcenaria Medianeira',        supplierDocument: '44555666000181', supplierBusinessId: 6,    isLocalSupplier: true,  value: 18400.00, demandId: 1,    source: 'Registro manual' },
-            { processNumber: '2026/0398', purchaseDate: '2026-08-05', object: 'Hortaliças e legumes para merenda escolar (PNAE)', category: 'Alimentação', department: 'Sec. Educação',   supplierName: 'Sítio Águas Claras',           supplierDocument: '98765432000155', supplierBusinessId: 4,    isLocalSupplier: true,  value: 12750.50, demandId: 2,    source: 'Registro manual' },
-            { processNumber: '2026/0387', purchaseDate: '2026-07-28', object: 'Manutenção elétrica preditiva em prédios públicos', category: 'Serviços', department: 'Sec. Administração', supplierName: 'EletroRápido Manutenção',      supplierDocument: '11222333000144', supplierBusinessId: 5,    isLocalSupplier: true,  value: 9600.00,  demandId: null, source: 'Registro manual' },
-            { processNumber: '2026/0361', purchaseDate: '2026-07-15', object: 'Uniformes escolares para rede municipal',     category: 'Comércio',    department: 'Sec. Educação',        supplierName: 'Malharia Ponto Certo',         supplierDocument: '44555666000177', supplierBusinessId: 10,   isLocalSupplier: true,  value: 34200.00, demandId: null, source: 'Registro manual' },
-            { processNumber: '2026/0344', purchaseDate: '2026-07-03', object: 'Pães e lanches para eventos institucionais',  category: 'Alimentação', department: 'Sec. Cultura',         supplierName: 'Padaria Pão Nosso',            supplierDocument: '77888999000122', supplierBusinessId: 7,    isLocalSupplier: true,  value: 4380.00,  demandId: null, source: 'Registro manual' },
-            { processNumber: '2026/0330', purchaseDate: '2026-06-24', object: 'Revisão da frota leve da Secretaria de Saúde', category: 'Automotivo', department: 'Sec. Saúde',           supplierName: 'Mecânica São José',            supplierDocument: '33444555000188', supplierBusinessId: 3,    isLocalSupplier: true,  value: 15900.00, demandId: null, source: 'Registro manual' },
+            { processNumber: '2026/0398', purchaseDate: '2026-08-05', object: 'Hortaliças e legumes para merenda escolar (PNAE)', category: 'Alimentação', department: 'Sec. Educação',   supplierName: 'Sítio Águas Claras',           supplierDocument: '32165498791', supplierBusinessId: 4,    isLocalSupplier: true,  value: 12750.50, demandId: 2,    source: 'Registro manual' },
+            { processNumber: '2026/0387', purchaseDate: '2026-07-28', object: 'Manutenção elétrica preditiva em prédios públicos', category: 'Serviços', department: 'Sec. Administração', supplierName: 'EletroRápido Manutenção',      supplierDocument: '90000005000107', supplierBusinessId: 5,    isLocalSupplier: true,  value: 9600.00,  demandId: null, source: 'Registro manual' },
+            { processNumber: '2026/0361', purchaseDate: '2026-07-15', object: 'Uniformes escolares para rede municipal',     category: 'Comércio',    department: 'Sec. Educação',        supplierName: 'Malharia Ponto Certo',         supplierDocument: '22333444000181', supplierBusinessId: 10,   isLocalSupplier: true,  value: 34200.00, demandId: null, source: 'Registro manual' },
+            { processNumber: '2026/0344', purchaseDate: '2026-07-03', object: 'Pães e lanches para eventos institucionais',  category: 'Alimentação', department: 'Sec. Cultura',         supplierName: 'Padaria Pão Nosso',            supplierDocument: '77888999000181', supplierBusinessId: 7,    isLocalSupplier: true,  value: 4380.00,  demandId: null, source: 'Registro manual' },
+            { processNumber: '2026/0330', purchaseDate: '2026-06-24', object: 'Revisão da frota leve da Secretaria de Saúde', category: 'Automotivo', department: 'Sec. Saúde',           supplierName: 'Mecânica São José',            supplierDocument: '11222333000181', supplierBusinessId: 3,    isLocalSupplier: true,  value: 15900.00, demandId: null, source: 'Registro manual' },
             { processNumber: '2026/0309', purchaseDate: '2026-06-10', object: 'Instalação e manutenção de ar-condicionado em escolas', category: 'Serviços', department: 'Sec. Educação', supplierName: 'ClimaTec Refrigeração (Cascavel/PR)', supplierDocument: '55666777000133', supplierBusinessId: null, isLocalSupplier: false, value: 47800.00, demandId: null, source: 'Registro manual' },
             { processNumber: '2026/0288', purchaseDate: '2026-05-27', object: 'Aquisição de mobiliário administrativo',      category: 'Comércio',    department: 'Sec. Administração',   supplierName: 'MoveiCorp Distribuidora (Curitiba/PR)', supplierDocument: '22333444000166', supplierBusinessId: null, isLocalSupplier: false, value: 62300.00, demandId: null, source: 'Registro manual' },
-            { processNumber: '2026/0271', purchaseDate: '2026-05-14', object: 'Assistência técnica em equipamentos de informática', category: 'Tecnologia', department: 'Sec. Administração', supplierName: 'TecnoFix Assistência',    supplierDocument: '66777888000111', supplierBusinessId: 8,    isLocalSupplier: true,  value: 7250.00,  demandId: null, source: 'Registro manual' },
+            { processNumber: '2026/0271', purchaseDate: '2026-05-14', object: 'Assistência técnica em equipamentos de informática', category: 'Tecnologia', department: 'Sec. Administração', supplierName: 'TecnoFix Assistência',    supplierDocument: '90000008000140', supplierBusinessId: 8,    isLocalSupplier: true,  value: 7250.00,  demandId: null, source: 'Registro manual' },
             { processNumber: '2026/0255', purchaseDate: '2026-04-30', object: 'Serviço de limpeza predial complementar',     category: 'Casa e Manutenção', department: 'Sec. Saúde',     supplierName: 'HigienePro Serviços (Foz do Iguaçu/PR)', supplierDocument: '88999000000155', supplierBusinessId: null, isLocalSupplier: false, value: 28900.00, demandId: null, source: 'Registro manual' }
         ];
 
@@ -3661,7 +3661,7 @@
 
         // Versão do MODELO de dados. Diferente de SEED_VERSION: subir esta constante
         // acrescenta campos e coleções sem apagar nada do que o usuário já criou.
-        const DATA_MODEL_VERSION = 6;
+        const DATA_MODEL_VERSION = 7;
 
         // ---------------------------------------------------------------------
         // USUÁRIOS DEMONSTRATIVOS
@@ -3838,21 +3838,21 @@
         // passar na validação de dígito verificador. Nenhum pertence a pessoa real.
         // ---------------------------------------------------------------------
         const seedLegalPorNegocio = {
-            1:  { tipoPessoa: 'PF', documento: '12345678909', responsavelNome: 'Isabela Nunes',        responsavelCpf: '12345678909', email: 'contato@bellanails.demo',        telefone: '(45) 99912-0001', naturezaJuridica: 'Microempreendedor Individual (MEI)', origemCadastro: 'Cadastro do Empreendedor' },
+            1:  { tipoPessoa: 'PJ', documento: '90000001000129', responsavelNome: 'Isabela Nunes',      responsavelCpf: '12345678909', email: 'contato@bellanails.demo',        telefone: '(45) 99912-0001', naturezaJuridica: 'Microempreendedor Individual (MEI)', origemCadastro: 'Cadastro do Empreendedor' },
             2:  { tipoPessoa: 'PF', documento: '98765432100', responsavelNome: 'Ana Paula Ribeiro',   responsavelCpf: '98765432100', email: 'anaclean@servicos.demo',          telefone: '(45) 99884-0002', naturezaJuridica: 'Profissional Autônomo (pessoa física)', origemCadastro: 'Cadastro do Empreendedor' },
             3:  { tipoPessoa: 'PJ', documento: '11222333000181', responsavelNome: 'José Almeida',     responsavelCpf: '45678912364', email: 'contato@mecanicasaojose.demo',    telefone: '(45) 3264-0003',  naturezaJuridica: 'Sociedade Empresária Limitada', origemCadastro: 'Cadastro do Empreendedor' },
             4:  { tipoPessoa: 'PF', documento: '32165498791', responsavelNome: 'Valdir Kunzler',      responsavelCpf: '32165498791', email: 'sitioaguasclaras@rural.demo',     telefone: '(45) 99947-0004', naturezaJuridica: 'Produtor Rural (pessoa física)', origemCadastro: 'Sincronizado' },
-            5:  { tipoPessoa: 'PF', documento: '15975348625', responsavelNome: 'Rafael Constantino',  responsavelCpf: '15975348625', email: 'eletrorapido@servicos.demo',      telefone: '(45) 99771-0005', naturezaJuridica: 'Microempreendedor Individual (MEI)', origemCadastro: 'Cadastro do Empreendedor' },
+            5:  { tipoPessoa: 'PJ', documento: '90000005000107', responsavelNome: 'Rafael Constantino', responsavelCpf: '15975348625', email: 'eletrorapido@servicos.demo',      telefone: '(45) 99771-0005', naturezaJuridica: 'Microempreendedor Individual (MEI)', origemCadastro: 'Cadastro do Empreendedor' },
             6:  { tipoPessoa: 'PJ', documento: '44555666000181', responsavelNome: 'Maria Aparecida',  responsavelCpf: '75315985237', email: 'maria@marcenariamedianeira.com.br', telefone: '(45) 99823-0006', naturezaJuridica: 'Microempresa (ME)', origemCadastro: 'Cadastro do Empreendedor' },
-            7:  { tipoPessoa: 'PJ', documento: '77888999000181', responsavelNome: 'Sérgio Baldissera',responsavelCpf: '25814736909', email: 'padaria@paonosso.demo',           telefone: '(45) 3264-0007',  naturezaJuridica: 'Microempresa (ME)', origemCadastro: 'Cadastro do Empreendedor' },
-            8:  { tipoPessoa: 'PF', documento: '86429753182', responsavelNome: 'Diego Fontana',       responsavelCpf: '86429753182', email: 'tecnofix@assistencia.demo',       telefone: '(45) 99936-0008', naturezaJuridica: 'Microempreendedor Individual (MEI)', origemCadastro: 'Cadastro do Empreendedor' },
+            7:  { tipoPessoa: 'PJ', documento: '77888999000181', responsavelNome: 'Sérgio Baldissera',responsavelCpf: '90000000760', email: 'padaria@paonosso.demo',           telefone: '(45) 3264-0007',  naturezaJuridica: 'Microempresa (ME)', origemCadastro: 'Cadastro do Empreendedor' },
+            8:  { tipoPessoa: 'PJ', documento: '90000008000140', responsavelNome: 'Diego Fontana',      responsavelCpf: '86429753182', email: 'tecnofix@assistencia.demo',       telefone: '(45) 99936-0008', naturezaJuridica: 'Microempreendedor Individual (MEI)', origemCadastro: 'Cadastro do Empreendedor' },
             9:  { tipoPessoa: 'PF', documento: '25814736909', responsavelNome: 'Ilda Schneider',      responsavelCpf: '25814736909', email: 'agrosabor@colonia.demo',          telefone: '(45) 99958-0009', naturezaJuridica: 'Produtor Rural (pessoa física)', origemCadastro: 'Sincronizado' },
-            10: { tipoPessoa: 'PJ', documento: '22333444000181', responsavelNome: 'Rosane Klein',     responsavelCpf: '75315985237', email: 'malharia@pontocerto.demo',        telefone: '(45) 99815-0010', naturezaJuridica: 'Empresa de Pequeno Porte (EPP)', origemCadastro: 'Cadastro do Empreendedor' },
-            11: { tipoPessoa: 'PF', documento: '75315985237', responsavelNome: 'Luana Bertoldi',      responsavelCpf: '75315985237', email: 'studioluz@fotografia.demo',       telefone: '(45) 99902-0011', naturezaJuridica: 'Microempreendedor Individual (MEI)', origemCadastro: 'Cadastro do Empreendedor' },
+            10: { tipoPessoa: 'PJ', documento: '22333444000181', responsavelNome: 'Rosane Klein',     responsavelCpf: '90000001066', email: 'malharia@pontocerto.demo',        telefone: '(45) 99815-0010', naturezaJuridica: 'Empresa de Pequeno Porte (EPP)', origemCadastro: 'Cadastro do Empreendedor' },
+            11: { tipoPessoa: 'PJ', documento: '90000011000164', responsavelNome: 'Luana Bertoldi',    responsavelCpf: '90000001147', email: 'studioluz@fotografia.demo',       telefone: '(45) 99902-0011', naturezaJuridica: 'Microempreendedor Individual (MEI)', origemCadastro: 'Cadastro do Empreendedor' },
             12: { tipoPessoa: 'PJ', documento: '55666777000181', responsavelNome: '',                 email: '', telefone: '', naturezaJuridica: 'Empresa de Pequeno Porte (EPP)', origemCadastro: 'Base Importada' },
             13: { tipoPessoa: 'PJ', documento: '88999000000198', responsavelNome: '',                 email: '', telefone: '', naturezaJuridica: 'Sociedade Empresária Limitada', origemCadastro: 'Base Importada' },
-            14: { tipoPessoa: 'PJ', documento: '11222333000181', responsavelNome: '',                 email: '', telefone: '', naturezaJuridica: 'Microempresa (ME)', origemCadastro: 'Base Importada' },
-            15: { tipoPessoa: 'PJ', documento: '44555666000181', responsavelNome: '',                 email: '', telefone: '', naturezaJuridica: 'Empresa de Pequeno Porte (EPP)', origemCadastro: 'Base Importada' }
+            14: { tipoPessoa: 'PJ', documento: '90000014000106', responsavelNome: '',                 email: '', telefone: '', naturezaJuridica: 'Microempresa (ME)', origemCadastro: 'Base Importada' },
+            15: { tipoPessoa: 'PJ', documento: '90000015000142', responsavelNome: '',                 email: '', telefone: '', naturezaJuridica: 'Empresa de Pequeno Porte (EPP)', origemCadastro: 'Base Importada' }
         };
 
         // Evidências demonstrativas: só metadados, com nomes fictícios. Nenhum
@@ -4045,6 +4045,76 @@
             return u;
         }
 
+        /**
+         * v7 — Correção da identificação legal dos cadastros demonstrativos.
+         *
+         * Três defeitos vinham dos seeds: MEI classificado como pessoa física com
+         * CPF (MEI é PJ e tem CNPJ), dois CNPJs repetidos entre negócios diferentes,
+         * e CPF de responsável compartilhado por pessoas distintas.
+         *
+         * A correção é CIRÚRGICA: só age quando o registro ainda carrega exatamente
+         * o valor antigo conhecido. Documento que o usuário informou depois — ou
+         * qualquer valor diferente — é preservado, porque aí não é o defeito do seed.
+         */
+        const CORRECOES_LEGAIS_V7 = {
+            1:  { de: '12345678909',   para: '90000001000129', tipoPessoa: 'PJ' },
+            5:  { de: '15975348625',   para: '90000005000107', tipoPessoa: 'PJ' },
+            8:  { de: '86429753182',   para: '90000008000140', tipoPessoa: 'PJ' },
+            11: { de: '75315985237',   para: '90000011000164', tipoPessoa: 'PJ', responsavelDe: '75315985237', responsavelPara: '90000001147' },
+            14: { de: '11222333000181', para: '90000014000106', tipoPessoa: 'PJ' },
+            15: { de: '44555666000181', para: '90000015000142', tipoPessoa: 'PJ' },
+            10: { responsavelDe: '75315985237', responsavelPara: '90000001066' },
+            7:  { responsavelDe: '25814736909', responsavelPara: '90000000760' }
+        };
+
+        function aplicarCorrecoesLegaisV7() {
+            let cadastros = 0, compras = 0;
+
+            (appData.businesses || []).forEach(b => {
+                const c = CORRECOES_LEGAIS_V7[b.id];
+                if (!c || !b.legal) return;
+                let mudou = false;
+
+                if (c.de && docUtils.somenteDigitos(b.legal.documento) === c.de) {
+                    b.legal.documento = c.para;
+                    b.legal.documentoMascarado = docUtils.mascarar(c.para);
+                    b.legal.tipoDocumento = docUtils.tipoDocumento(c.para);
+                    if (c.tipoPessoa) b.legal.tipoPessoa = c.tipoPessoa;
+                    mudou = true;
+                }
+                if (c.responsavelDe && docUtils.somenteDigitos(b.legal.responsavelCpf) === c.responsavelDe) {
+                    b.legal.responsavelCpf = c.responsavelPara;
+                    mudou = true;
+                }
+                if (mudou) { b.legal.atualizadoEm = new Date().toISOString(); cadastros++; }
+            });
+
+            // Compra local segue o cadastro: o documento do fornecedor é o do negócio.
+            // Compra externa (sem vínculo) nunca é tocada.
+            (appData.purchases || []).forEach(cp => {
+                if (!cp.isLocalSupplier || cp.supplierBusinessId == null) return;
+                const b = (appData.businesses || []).find(x => Number(x.id) === Number(cp.supplierBusinessId));
+                const doc = b && b.legal ? docUtils.somenteDigitos(b.legal.documento) : '';
+                if (!doc || docUtils.somenteDigitos(cp.supplierDocument) === doc) return;
+                cp.supplierDocument = doc;
+                cp.supplierDocumentMasked = docUtils.mascarar(doc);
+                cp.updatedAt = new Date().toISOString();
+                compras++;
+            });
+
+            // Auditoria só quando houve correção, e apenas com as contagens:
+            // nenhum documento completo entra na trilha.
+            if (cadastros > 0 || compras > 0) {
+                registrarAuditoria({
+                    acao: 'Correção de identificação legal', modulo: 'Sistema',
+                    entidade: 'appData', entidadeId: null,
+                    descricao: `Migração v7: ${cadastros} cadastro(s) e ${compras} compra(s) local(is) tiveram a identificação legal corrigida.`,
+                    dadosPosteriores: { cadastros: cadastros, compras: compras }
+                });
+            }
+            return { cadastros: cadastros, compras: compras };
+        }
+
         function ensureDataModelVersion() {
             const versaoGravada = Number(localStorage.getItem('vitryx_data_model_version') || 0);
 
@@ -4096,6 +4166,12 @@
             // recarregar a página nunca duplica.
             if (versaoGravada < 5 && appData.usageEvents.length === 0) {
                 appData.usageEvents = gerarEventosDemonstrativos();
+            }
+
+            // v7 — corrige a identificação legal dos seeds conhecidos. Idempotente:
+            // depois de aplicada, nenhum registro carrega mais o valor antigo.
+            if (versaoGravada < 7) {
+                aplicarCorrecoesLegaisV7();
             }
 
             // Consistência de documento em compras locais (patch da Etapa 4).
@@ -4224,7 +4300,7 @@
             reset() {
                 appData.businesses = JSON.parse(JSON.stringify(seedBusinesses));
                 appData.validations = [];
-                appData.gaps = [ { term: "instalador de ar condicionado", count: 14, status: "Nenhuma" }, { term: "conserto de projetor", count: 9, status: "Nenhuma" }, { term: "manutenção de elevador", count: 6, status: "Nenhuma" } ];
+                appData.gaps = [ { term: "instalador de ar-condicionado", count: 14, status: "Nenhuma" }, { term: "conserto de projetor", count: 9, status: "Nenhuma" }, { term: "manutenção de elevador", count: 6, status: "Nenhuma" } ];
                 appData.metrics = JSON.parse(JSON.stringify(seedMetrics));
                 appData.history = [ { date: new Date().toISOString(), user: 'Sistema', action: 'Importação Inicial', detail: 'Base carregada com sucesso.' } ];
                 appData.demands = JSON.parse(JSON.stringify(initialDemands));
@@ -4546,6 +4622,10 @@
             currentPersona: 'citizen', currentLayout: 'public', currentView: 'landing', currentSearchTerm: '', radarFilter: 'all',
             // Contexto da última vitrine aberta: define se a ação conta como uso público.
             perfilContexto: 'portal_publico',
+            // Resultados da busca corrente: { termo, ids }. Só enquanto o cidadão
+            // está nos resultados dela. É o que permite atribuir uma abertura ao
+            // termo certo — e não ao último termo digitado em qualquer momento.
+            buscaAtual: null,
             mobileMapVisible: false, leafletMap: null, mapMarkers: [], mgrLeafletMap: null,
             // Sem sessão e sem negócio vinculado até alguém entrar ou concluir o cadastro.
             sessao: null, loggedInBusinessId: null, usuarioAtual: null, sessaoIniciadaEm: null,
@@ -4594,7 +4674,7 @@
                         <div class="w-11 h-11 ${c.cor} rounded-xl flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform"><i data-lucide="${c.icone}" class="w-5 h-5"></i></div>
                         <div class="min-w-0">
                             <h3 class="font-bold text-slate-900 text-sm leading-tight truncate">${c.rotulo}</h3>
-                            <p class="text-[11px] text-slate-500 truncate">${c.desc}</p>
+                            <p class="text-xs text-slate-500 truncate">${c.desc}</p>
                         </div>
                     </button>
                 `).join('');
@@ -4617,6 +4697,11 @@
                 }
                 // Usado só por CSS (posição do widget de acessibilidade).
                 document.body.dataset.layout = layoutId;
+
+                // Saiu dos resultados: a busca deixa de responder por aberturas.
+                // Sem isto, abrir uma vitrine por categoria ou pelo mapa herdava
+                // o termo da última busca feita.
+                if (!(layoutId === 'public' && viewId === 'radar')) this.buscaAtual = null;
                 this.closeSidebars();
                 document.querySelectorAll(`#layout-${layoutId} .app-view`).forEach(el => el.classList.remove('active', 'flex-active'));
                 
@@ -4980,10 +5065,24 @@
                     this.guia.respostas.nome = negocio;
                     this.guia.respostas.porte = document.getElementById('ap-porte').value;
 
-                    // CNPJ é opcional: quem é MEI/autônomo pode seguir só com o CPF.
+                    // MEI e Empresa são pessoa jurídica: o CNPJ é obrigatório.
+                    // Autônomo segue no CPF; produtor rural pode usar qualquer um.
+                    const porte = this.guia.respostas.porte;
+                    const exigeCnpj = porte === 'MEI' || porte === 'Empresa (ME/EPP/LTDA)';
                     const cnpj = document.getElementById('ap-cnpj');
                     const cnpjDigitos = docUtils.somenteDigitos(cnpj.value);
-                    if(cnpjDigitos && !docUtils.validarCNPJ(cnpjDigitos)) return this.showToast('O CNPJ informado é inválido. Deixe em branco se não tiver.', 'error');
+
+                    if(exigeCnpj && !cnpjDigitos) {
+                        cnpj.classList.add('input-error');
+                        return this.showToast(porte === 'MEI'
+                            ? 'O MEI é pessoa jurídica e tem CNPJ. Informe o CNPJ para continuar.'
+                            : 'Empresas têm CNPJ. Informe o CNPJ para continuar.', 'error');
+                    }
+                    if(cnpjDigitos && !docUtils.validarCNPJ(cnpjDigitos)) {
+                        cnpj.classList.add('input-error');
+                        return this.showToast('O CNPJ informado é inválido.' + (exigeCnpj ? '' : ' Deixe em branco se não tiver.'), 'error');
+                    }
+                    cnpj.classList.remove('input-error');
                     this.guia.respostas.cnpj = cnpjDigitos;
                     this.guia.respostas.naturezaJuridica = naturezaPorPorte(this.guia.respostas.porte);
                     // O e-mail é do empreendedor: nada é sugerido automaticamente.
@@ -5010,6 +5109,21 @@
                     this.showToast('Acesso criado. Agora vamos montar sua vitrine!', 'success');
                     return this.iniciarConversaGuiada();
                 }
+            },
+
+            // O campo de CNPJ muda de exigência conforme o porte declarado.
+            atualizarRotuloCnpj() {
+                const porte = (document.getElementById('ap-porte') || {}).value || '';
+                const hint = document.getElementById('ap-cnpj-hint');
+                const ajuda = document.getElementById('ap-cnpj-ajuda');
+                if(!hint || !ajuda) return;
+                const exige = porte === 'MEI' || porte === 'Empresa (ME/EPP/LTDA)';
+                hint.innerText = exige ? '(obrigatório)' : '(se tiver)';
+                ajuda.innerText = exige
+                    ? (porte === 'MEI' ? 'MEI é pessoa jurídica e possui CNPJ.' : 'Empresas possuem CNPJ.')
+                    : (porte === 'Produtor Rural'
+                        ? 'Produtor rural pode usar CPF ou CNPJ. Sem CNPJ, o cadastro segue no seu CPF.'
+                        : 'Sem CNPJ? Deixe em branco — o cadastro segue no seu CPF.');
             },
 
             assistidoVoltar(etapa) {
@@ -5497,7 +5611,7 @@
                             <div class="w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0 ${ativo ? 'bg-brand-600 text-white' : 'bg-slate-100 text-slate-500'}"><i data-lucide="${p.icone}" class="w-5 h-5"></i></div>
                             <div class="min-w-0 flex-grow">
                                 <h4 class="font-bold text-sm text-slate-900">${p.titulo}</h4>
-                                <p class="text-[11px] text-slate-500 leading-snug">${p.desc}</p>
+                                <p class="text-xs text-slate-500 leading-snug">${p.desc}</p>
                             </div>
                             ${ativo ? '<i data-lucide="check-circle-2" class="w-5 h-5 text-brand-600 flex-shrink-0"></i>' : ''}
                         </button>`;
@@ -5738,6 +5852,7 @@
                         type: 'search', term: term, resultCount: results.length,
                         category: results.length ? results[0].category : null
                     });
+                    this.buscaAtual = { termo: term, ids: results.map(r => r.id) };
                     storage.save();
                 }
                 if(term && results.length === 0) {
@@ -5994,7 +6109,7 @@
                 results.forEach(b => {
                     let iconName = b.type === 'urban' ? 'store' : (b.type === 'rural' ? 'tractor' : 'user');
                     const statusColor = b.status === 'aberto' ? 'bg-emerald-500' : 'bg-slate-300';
-                    const whyBadge = this.currentSearchTerm && b.matchReason ? `<div class="mt-2.5 inline-flex items-center gap-1 px-2 py-1 bg-orange-50 border border-orange-100 rounded text-[10px] font-semibold text-orange-700"><i data-lucide="sparkles" class="w-3 h-3"></i> ${b.matchReason}</div>` : '';
+                    const whyBadge = this.currentSearchTerm && b.matchReason ? `<div class="mt-2.5 inline-flex items-center gap-1 px-2 py-1 bg-orange-50 border border-orange-100 rounded text-xs font-semibold text-orange-700"><i data-lucide="sparkles" class="w-3 h-3"></i> ${b.matchReason}</div>` : '';
 
                     resultsContainer.insertAdjacentHTML('beforeend', `
                         <div onclick="app.panToAndOpen(${b.id})" class="bg-white border border-slate-200 rounded-2xl p-4 cursor-pointer hover:border-brand-400 hover:shadow-md transition-all flex flex-col group">
@@ -6002,7 +6117,7 @@
                                 <div class="w-14 h-14 rounded-xl ${b.color} flex items-center justify-center text-white flex-shrink-0 font-bold text-xl shadow-sm"><i data-lucide="${iconName}" class="w-6 h-6"></i></div>
                                 <div class="flex-grow min-w-0">
                                     <div class="flex justify-between items-start">
-                                        <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wide truncate">${b.category}</p>
+                                        <p class="text-xs font-bold text-slate-400 uppercase tracking-wide truncate">${b.category}</p>
                                         <div class="w-2 h-2 rounded-full ${statusColor}"></div>
                                     </div>
                                     <h3 class="font-bold text-slate-900 text-base truncate group-hover:text-brand-600 transition-colors">${b.name}</h3>
@@ -6069,12 +6184,12 @@
             createPopupHTML(b) {
                 const statusColor = b.status === 'aberto' ? 'text-emerald-700 bg-emerald-50' : 'text-slate-500 bg-slate-100';
                 const statusText = b.status === 'aberto' ? `Aberto` : 'Fechado';
-                const locNote = b.protectedLocation ? `<div class="text-[9px] text-amber-700 bg-amber-50 rounded px-1 mt-1 font-bold">Localização Aproximada</div>` : '';
+                const locNote = b.protectedLocation ? `<div class="text-xs text-amber-700 bg-amber-50 rounded px-1 mt-1 font-bold">Localização Aproximada</div>` : '';
                 return `
                     <div class="p-4 bg-white">
-                        <p class="text-[10px] font-bold text-slate-400 uppercase mb-1">${b.category}</p>
+                        <p class="text-xs font-bold text-slate-400 uppercase mb-1">${b.category}</p>
                         <h3 class="font-bold text-slate-900 text-base leading-tight mb-2">${b.name}</h3>
-                        <div class="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-bold ${statusColor} mb-3 border border-slate-100">
+                        <div class="inline-flex items-center gap-1 px-2 py-0.5 rounded text-xs font-bold ${statusColor} mb-3 border border-slate-100">
                             <div class="w-1.5 h-1.5 rounded-full ${b.status==='aberto'?'bg-emerald-500':'bg-slate-400'}"></div>${statusText}
                         </div>
                         ${locNote}
@@ -6169,9 +6284,12 @@
                 this.perfilContexto = contexto || 'portal_publico';
 
                 if(this.perfilContexto === 'portal_publico') {
+                    // Atribuição honesta: o termo só acompanha a abertura quando
+                    // este negócio estava nos resultados da busca corrente.
+                    const daBusca = this.buscaAtual && this.buscaAtual.ids.indexOf(b.id) !== -1;
                     registrarEventoUso({
                         type: 'storefront_open', businessId: b.id, category: b.category,
-                        term: this.currentSearchTerm || null
+                        term: daBusca ? this.buscaAtual.termo : null
                     });
                     storage.save();
                 }
@@ -7188,6 +7306,8 @@
             importacao: null,
 
             openImportModal() {
+                // Esconder o botão não basta: a função também precisa recusar.
+                if (!this.podeAdministrar()) return this.showToast('Importação restrita ao perfil Gestão Municipal.', 'error');
                 this.importacao = null;
                 const leg = document.getElementById('import-legend');
                 if(leg) leg.innerHTML = COLUNAS_IMPORTACAO.map(c => `
@@ -7414,6 +7534,7 @@
             },
 
             confirmarImportacao() {
+                if (!this.podeAdministrar()) return this.showToast('Importação restrita ao perfil Gestão Municipal.', 'error');
                 if(!this.importacao) return;
                 const registros = this.importacao.registros;
                 const aplicaveis = registros.filter(r => r.situacao !== 'rejeitado');
@@ -7767,6 +7888,7 @@
             },
 
             openNewBusiness() {
+                if (!this.podeAdministrar()) return this.showToast('Ação restrita ao perfil Gestão Municipal.', 'error');
                 ['nb-name','nb-cnae','nb-phone','nb-address','nb-doc'].forEach(id => {
                     const el = document.getElementById(id); if(el) el.value = '';
                 });
@@ -9812,7 +9934,7 @@
                                 <div class="w-10 h-10 rounded-lg ${bestMatch.color} text-white flex items-center justify-center"><i data-lucide="${iconName}" class="w-5 h-5"></i></div>
                                 <div>
                                     <h4 class="font-bold text-slate-900 leading-tight">${bestMatch.name}</h4>
-                                    <span class="text-[10px] text-slate-500 uppercase">${bestMatch.category}</span>
+                                    <span class="text-xs text-slate-500 uppercase">${bestMatch.category}</span>
                                 </div>
                             </div>
                             <button onclick="app.switchPersona('citizen'); app.openProfile(${bestMatch.id}); vitoriaAssistant.close()" class="w-full bg-brand-50 text-brand-700 hover:bg-brand-100 border border-brand-200 py-1.5 rounded-lg text-xs font-bold transition">Ver Vitrine</button>
