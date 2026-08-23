@@ -330,27 +330,6 @@
             display: inline-flex; align-items: center; justify-content: center;
         }
 
-        /* Com o drawer aberto, o widget de acessibilidade fica por cima do menu
-           e não é utilizável de qualquer forma: sai de cena até o drawer fechar. */
-        body.vx-drawer-open .vx-a11y { display: none; }
-
-        /* Calha à direita nos painéis: o widget de acessibilidade é fixo, então
-           o conteúdo precisa reservar o espaço dele em vez de passar por baixo. */
-        @media (min-width: 1024px) {
-            /* Classe dobrada para vencer o `lg:p-8` do Tailwind sem !important. */
-            .vx-panel-content.vx-panel-content { padding-right: 76px; }
-        }
-
-        @media (min-width: 1024px) {
-            /* Nos painéis a coluna esquerda é da sidebar e o conteúdo começa logo
-               depois; encostamos o widget na borda DIREITA, onde sobra margem e
-               não há colisão com o botão da Vitória (que fica no rodapé). */
-            body[data-layout="manager"] .vx-a11y,
-            body[data-layout="entrepreneur"] .vx-a11y {
-                left: auto; right: 0;
-                border-radius: 0.75rem 0 0 0.75rem;
-                border-right: 0; border-left: 1px solid var(--vx-border);
-            }
         }
 
         /* Rodapé público: bloco expansível */
@@ -382,28 +361,14 @@
 </head>
 <body class="bg-slate-50 text-slate-800 font-sans overflow-hidden transition-all duration-300" id="app-body">
 
-    <!-- Accessibility Widget -->
-    <div class="vx-a11y fixed left-0 top-1/2 -translate-y-1/2 z-[9000] flex flex-col gap-1 bg-white border border-slate-200 shadow-md rounded-r-xl p-1">
-        <button onclick="app.adjustFontSize(1)" class="w-8 h-8 flex items-center justify-center text-slate-600 hover:bg-slate-100 rounded-lg font-bold" title="Aumentar fonte">A+</button>
-        <span class="text-xs font-bold text-slate-400 text-center leading-none" id="a11y-font-level">100%</span>
-        <button onclick="app.adjustFontSize(-1)" class="w-8 h-8 flex items-center justify-center text-slate-600 hover:bg-slate-100 rounded-lg font-bold" title="Diminuir fonte">A-</button>
-        <button onclick="app.resetFontSize()" class="w-8 h-8 flex items-center justify-center text-slate-500 hover:bg-slate-100 rounded-lg" title="Voltar ao tamanho padrão" aria-label="Voltar ao tamanho de fonte padrão"><i data-lucide="rotate-ccw" class="w-3.5 h-3.5"></i></button>
-        <button onclick="app.toggleHighContrast()" class="w-8 h-8 flex items-center justify-center text-slate-600 hover:bg-slate-100 rounded-lg" title="Alto contraste" aria-label="Alternar alto contraste"><i data-lucide="contrast" class="w-4 h-4"></i></button>
-    </div>
-
     <!-- ================= LAYOUT 1: ÁREA PÚBLICA (CIDADÃO) ================= -->
     <div id="layout-public" class="app-layout active">
         <header class="bg-white border-b border-slate-200 flex-shrink-0 z-50 h-16 flex items-center justify-between px-4 sm:px-6 shadow-sm relative">
             <div class="flex items-center gap-4 sm:gap-6">
                 <!-- Marca -->
-                <div class="cursor-pointer flex items-center gap-2 group" onclick="app.navigate('public', 'landing')">
-                    <div class="w-9 h-9 rounded-xl bg-brand-600 flex items-center justify-center text-white shadow-sm group-hover:bg-brand-700 transition-colors">
-                        <i data-lucide="layers" class="w-5 h-5"></i>
-                    </div>
-                    <div class="flex flex-col leading-none">
-                        <span class="font-bold text-slate-900 text-[18px] tracking-tight">VITRYX</span>
-                        <span class="text-slate-500 font-semibold text-xs tracking-wide mt-0.5">Medianeira — PR</span>
-                    </div>
+                <div class="cursor-pointer flex items-baseline gap-2" onclick="app.navigate('public', 'landing')">
+                    <span class="font-extrabold text-slate-900 text-xl tracking-tight">VITRYX</span>
+                    <span class="text-slate-500 font-medium text-xs hidden sm:inline">Medianeira — PR</span>
                 </div>
                 <div class="h-5 w-px bg-slate-200 hidden md:block"></div>
                 <nav class="hidden md:flex items-center gap-1">
@@ -412,16 +377,39 @@
                 </nav>
             </div>
             <div class="flex items-center gap-2 sm:gap-3">
-                <span class="hidden sm:inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-slate-100 border border-slate-200 text-xs font-semibold text-slate-600">
-                    <span class="w-1.5 h-1.5 rounded-full bg-amber-500"></span> Demonstração
-                </span>
                 <button onclick="app.startOnboarding()" class="hidden lg:flex items-center gap-2 text-sm font-medium text-slate-600 hover:text-slate-900 transition-colors bg-white border border-slate-200 px-4 py-2 rounded-lg shadow-sm hover:bg-slate-50">
                     <i data-lucide="store" class="w-4 h-4"></i> Sou Empreendedor
                 </button>
 
-                <!-- Sessão integrada ao header (antes era uma faixa preta separada) -->
-                <div class="h-5 w-px bg-slate-200 hidden sm:block"></div>
-                <div id="session-info" class="hidden md:flex items-center gap-1.5 text-slate-600 max-w-[220px]">
+                <!-- Acessibilidade: um botão compacto abre o popover. A lógica é a
+                     mesma de antes; só o ponto de acesso mudou de lugar. -->
+                <div class="relative">
+                    <button onclick="app.toggleA11yMenu(event)" id="btn-a11y" aria-label="Opções de acessibilidade" aria-haspopup="true" aria-expanded="false" aria-controls="a11y-menu"
+                            class="inline-flex items-center justify-center w-10 h-10 rounded-lg text-slate-600 hover:bg-slate-100 transition-colors">
+                        <i data-lucide="accessibility" class="w-5 h-5"></i>
+                    </button>
+                    <div id="a11y-menu" role="menu" aria-labelledby="btn-a11y"
+                         class="hidden absolute right-0 top-full mt-2 w-60 bg-white border border-slate-200 rounded-xl shadow-lg p-2 z-[9000]">
+                        <p class="px-2 pt-1 pb-2 text-xs font-bold text-slate-500 uppercase tracking-wide">Acessibilidade</p>
+                        <div class="flex items-center justify-between gap-2 px-2 py-1.5">
+                            <span class="text-sm text-slate-700">Tamanho do texto</span>
+                            <span class="text-xs font-bold text-slate-500" id="a11y-font-level">100%</span>
+                        </div>
+                        <div class="grid grid-cols-3 gap-1.5 px-1 pb-2">
+                            <button role="menuitem" onclick="app.adjustFontSize(-1)" aria-label="Diminuir fonte" class="min-h-[40px] rounded-lg border border-slate-200 text-slate-700 font-bold hover:bg-slate-50 transition">A−</button>
+                            <button role="menuitem" onclick="app.resetFontSize()" aria-label="Tamanho padrão" class="min-h-[40px] rounded-lg border border-slate-200 text-slate-600 text-xs font-semibold hover:bg-slate-50 transition">Padrão</button>
+                            <button role="menuitem" onclick="app.adjustFontSize(1)" aria-label="Aumentar fonte" class="min-h-[40px] rounded-lg border border-slate-200 text-slate-700 font-bold hover:bg-slate-50 transition">A+</button>
+                        </div>
+                        <div class="border-t border-slate-100 pt-1.5">
+                            <button role="menuitem" onclick="app.toggleHighContrast()" class="w-full flex items-center gap-2.5 px-2 py-2.5 min-h-[44px] rounded-lg text-sm text-slate-700 hover:bg-slate-50 transition text-left"><i data-lucide="contrast" class="w-4 h-4 text-slate-400"></i> Alto contraste</button>
+                            <button role="menuitem" onclick="app.restaurarPreferencias()" class="w-full flex items-center gap-2.5 px-2 py-2.5 min-h-[44px] rounded-lg text-sm text-slate-700 hover:bg-slate-50 transition text-left"><i data-lucide="rotate-ccw" class="w-4 h-4 text-slate-400"></i> Restaurar preferências</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sessão: só aparece quando existe alguém autenticado. -->
+                <div id="session-divider" class="h-5 w-px bg-slate-200 hidden"></div>
+                <div id="session-info" class="hidden items-center gap-1.5 text-slate-600 max-w-[220px]">
                     <i data-lucide="user" class="w-4 h-4 text-slate-400 flex-shrink-0"></i>
                     <span id="session-label" class="text-xs font-semibold truncate">Visitante (acesso público)</span>
                 </div>
@@ -489,36 +477,33 @@
                     </div>
 
                     <footer class="mt-12 border-t border-slate-200 bg-white">
-                        <div class="max-w-5xl mx-auto px-4 py-8">
-                            <div class="grid grid-cols-1 md:grid-cols-[1.4fr_1fr_1fr_1fr] gap-6 mb-6">
-                                <div>
-                                    <div class="flex items-center gap-2 mb-2">
-                                        <div class="w-7 h-7 rounded-lg bg-brand-600 flex items-center justify-center text-white"><i data-lucide="layers" class="w-4 h-4"></i></div>
-                                        <span class="text-sm font-extrabold text-slate-900 tracking-tight">VITRYX CONECTA</span>
-                                    </div>
-                                    <p class="text-xs text-slate-500 leading-relaxed max-w-xs">Plataforma pública de inteligência econômica territorial do Município de Medianeira/PR. Conecta a demanda da população e do poder público à oferta de negócios locais.</p>
+                        <div class="max-w-5xl mx-auto px-4 py-6">
+                            <div class="grid grid-cols-2 md:grid-cols-4 gap-x-6 gap-y-5 mb-5">
+                                <div class="col-span-2 md:col-span-1">
+                                    <span class="block text-sm font-extrabold text-slate-900 tracking-tight mb-1.5">VITRYX CONECTA</span>
+                                    <p class="text-xs text-slate-500 leading-relaxed">Plataforma pública de inteligência econômica territorial de Medianeira/PR.</p>
                                 </div>
                                 <div>
-                                    <h4 class="text-xs font-bold text-slate-900 mb-2">Privacidade</h4>
-                                    <ul class="space-y-1.5 text-xs text-slate-500">
-                                        <li>Busca sem cadastro e sem login</li>
+                                    <h4 class="text-xs font-bold text-slate-900 mb-1.5">Privacidade</h4>
+                                    <ul class="space-y-1 text-xs text-slate-500 leading-snug">
+                                        <li>Busca sem cadastro</li>
                                         <li>Sem rastreamento individual</li>
-                                        <li>CPF/CNPJ nunca exibido publicamente</li>
-                                        <li>Endereço residencial e rural protegido</li>
+                                        <li>CPF/CNPJ nunca exibido</li>
+                                        <li>Endereço protegido</li>
                                     </ul>
                                 </div>
                                 <div>
-                                    <h4 class="text-xs font-bold text-slate-900 mb-2">Transparência dos dados</h4>
-                                    <ul class="space-y-1.5 text-xs text-slate-500">
-                                        <li>Origem de cada cadastro registrada</li>
-                                        <li>Validação municipal antes da publicação</li>
-                                        <li>Indicadores agregados e anônimos</li>
-                                        <li>Exportação em formato aberto</li>
+                                    <h4 class="text-xs font-bold text-slate-900 mb-1.5">Transparência dos dados</h4>
+                                    <ul class="space-y-1 text-xs text-slate-500 leading-snug">
+                                        <li>Origem de cada cadastro</li>
+                                        <li>Validação municipal</li>
+                                        <li>Indicadores anônimos</li>
+                                        <li>Exportação aberta</li>
                                     </ul>
                                 </div>
                                 <div>
-                                    <h4 class="text-xs font-bold text-slate-900 mb-2">Sobre a plataforma</h4>
-                                    <ul class="space-y-1.5 text-xs text-slate-500">
+                                    <h4 class="text-xs font-bold text-slate-900 mb-1.5">Sobre a plataforma</h4>
+                                    <ul class="space-y-1 text-xs text-slate-500 leading-snug">
                                         <li><button onclick="app.openModal('modal-how-it-works')" class="hover:text-brand-600 transition-colors text-left">Como funciona</button></li>
                                         <li><button onclick="app.navigate('public', 'radar')" class="hover:text-brand-600 transition-colors text-left">Mapa territorial</button></li>
                                         <li><button onclick="app.startOnboarding()" class="hover:text-brand-600 transition-colors text-left">Cadastrar meu negócio</button></li>
@@ -526,38 +511,38 @@
                                 </div>
                             </div>
 
-                            <!-- Bloco técnico recolhido: a informação continua toda aqui,
-                                 sem virar paredão na primeira dobra do rodapé. -->
-                            <details class="vx-disclosure border border-slate-200 rounded-xl bg-slate-50 mb-5">
-                                <summary class="flex items-center justify-between gap-3 px-4 py-3 min-h-[44px]">
+                            <!-- Todo o detalhe técnico vive aqui dentro: a informação
+                                 continua completa, sem ocupar a tela inteira. -->
+                            <details class="vx-disclosure border border-slate-200 rounded-lg bg-slate-50 mb-4">
+                                <summary class="flex items-center justify-between gap-3 px-3 py-2.5 min-h-[44px]">
                                     <span class="flex items-center gap-2 text-xs font-bold text-slate-700"><i data-lucide="shield-check" class="w-4 h-4 text-slate-400"></i> Segurança, dados e transparência</span>
                                     <i data-lucide="chevron-down" class="w-4 h-4 text-slate-400 vx-chevron"></i>
                                 </summary>
-                                <div class="px-4 pb-4 pt-1 border-t border-slate-200 space-y-4">
+                                <div class="px-3 pb-3 pt-2 border-t border-slate-200 grid grid-cols-1 sm:grid-cols-2 gap-4">
                                     <div>
-                                        <p class="text-xs font-bold text-slate-700 mb-2">Protótipo atual (demonstração)</p>
-                                        <ul class="space-y-1.5 text-xs text-slate-500 leading-relaxed">
-                                            <li>• Aplicação em página única, executada no navegador, sem servidor.</li>
-                                            <li>• Dados demonstrativos e fictícios, guardados no <code class="text-slate-600">localStorage</code> do próprio dispositivo.</li>
+                                        <p class="text-xs font-bold text-slate-700 mb-1.5">Protótipo atual (demonstração)</p>
+                                        <ul class="space-y-1 text-xs text-slate-500 leading-snug">
+                                            <li>• Página única executada no navegador, sem servidor.</li>
+                                            <li>• Dados fictícios guardados no <code class="text-slate-600">localStorage</code> do próprio dispositivo.</li>
                                             <li>• Exportação em CSV, JSON e GeoJSON já funcional, com minimização de dados pessoais.</li>
-                                            <li>• Nenhum dado sai do navegador: não há envio para servidores externos.</li>
+                                            <li>• Nada é enviado para fora do navegador.</li>
                                         </ul>
                                     </div>
                                     <div>
-                                        <p class="text-xs font-bold text-slate-700 mb-2">Arquitetura prevista para o piloto</p>
-                                        <ul class="space-y-1.5 text-xs text-slate-500 leading-relaxed">
-                                            <li>• Meta de disponibilidade de no mínimo 95%, com monitoramento contínuo.</li>
-                                            <li>• Tráfego protegido por HTTPS/TLS em todas as requisições.</li>
-                                            <li>• Política de backup e restauração dos dados municipais.</li>
-                                            <li>• Reversibilidade garantida: a base é do município e pode ser levada a qualquer momento.</li>
-                                            <li>• Autenticação, políticas de senha e controle de sessão executados no backend.</li>
+                                        <p class="text-xs font-bold text-slate-700 mb-1.5">Arquitetura prevista para o piloto</p>
+                                        <ul class="space-y-1 text-xs text-slate-500 leading-snug">
+                                            <li>• Disponibilidade mínima de 95%, com monitoramento.</li>
+                                            <li>• Tráfego protegido por HTTPS/TLS.</li>
+                                            <li>• Política de backup e restauração.</li>
+                                            <li>• Reversibilidade: a base é do município.</li>
+                                            <li>• Autenticação, senha e sessão executadas no backend.</li>
                                         </ul>
                                     </div>
-                                    <p class="text-xs text-slate-400 italic">Os itens de arquitetura descrevem o que será implantado no piloto. Não estão ativos nesta demonstração.</p>
+                                    <p class="sm:col-span-2 text-xs text-slate-400 italic">Os itens de arquitetura descrevem o piloto e não estão ativos nesta demonstração.</p>
                                 </div>
                             </details>
 
-                            <div class="pt-4 border-t border-slate-200 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+                            <div class="pt-3 border-t border-slate-200 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1.5">
                                 <p class="text-xs text-slate-500">Acesso público sem cadastro • Sem ranqueamento pago • A VITRYX não intermedeia contratações.</p>
                                 <p class="text-xs text-slate-400">Demonstração — dados fictícios</p>
                             </div>
@@ -1339,30 +1324,45 @@
                                     <div class="flex flex-wrap items-center gap-3">
                                         <span class="text-xs font-bold text-slate-600 flex items-center gap-1"><span class="w-3 h-3 bg-brand-600 rounded-full"></span> Urbano</span>
                                         <span class="text-xs font-bold text-slate-600 flex items-center gap-1"><span class="w-3 h-3 bg-emerald-600 rounded-full"></span> Rural/Autônomo</span>
-                                        <span class="text-sm font-bold text-slate-600 bg-slate-100 px-3 py-1.5 rounded-lg border border-slate-200"><span id="mgr-map-count">0</span> no mapa</span>
+                                        <span class="text-sm font-bold text-slate-600 bg-slate-100 px-3 py-1.5 rounded-lg border border-slate-200"><span id="mgr-map-count">0</span> no mapa <span class="font-medium text-slate-400">•</span> <span id="mgr-map-sem-coord">0</span> sem coordenadas</span>
+                                        <div class="inline-flex lg:hidden rounded-lg border border-slate-200 overflow-hidden" role="group" aria-label="Alternar entre lista e mapa">
+                                            <button id="mgr-map-tab-lista" onclick="app.alternarMapaMobile('lista')" aria-pressed="true" class="px-3 py-1.5 text-xs font-bold bg-brand-600 text-white transition">Lista</button>
+                                            <button id="mgr-map-tab-mapa" onclick="app.alternarMapaMobile('mapa')" aria-pressed="false" class="px-3 py-1.5 text-xs font-bold bg-white text-slate-600 transition">Mapa</button>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3 pt-3 border-t border-slate-100">
-                                    <div class="relative w-full lg:col-span-2">
+                                    <div class="relative w-full lg:col-span-2 min-w-0">
                                         <i data-lucide="search" class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400"></i>
                                         <input type="text" id="mgr-map-search" onkeyup="app.renderMgrMapMarkers()" class="w-full pl-9 pr-4 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm focus:bg-white focus:border-brand-500 outline-none transition-all" placeholder="Buscar por nome...">
                                     </div>
-                                    <select id="mgr-map-category" onchange="app.renderMgrMapMarkers()" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm focus:bg-white focus:border-brand-500 outline-none transition-all">
+                                    <select id="mgr-map-category" style="min-width:0" onchange="app.renderMgrMapMarkers()" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm focus:bg-white focus:border-brand-500 outline-none transition-all">
                                         <option value="">Todas as Categorias</option><option value="Beleza">Beleza</option><option value="Casa e Manutenção">Casa e Manutenção</option><option value="Serviços">Serviços</option><option value="Automotivo">Automotivo</option><option value="Tecnologia">Tecnologia</option><option value="Alimentação">Alimentação</option><option value="Comércio">Comércio</option><option value="Rural">Rural</option>
                                     </select>
-                                    <select id="mgr-map-type" onchange="app.renderMgrMapMarkers()" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm focus:bg-white focus:border-brand-500 outline-none transition-all">
+                                    <select id="mgr-map-type" style="min-width:0" onchange="app.renderMgrMapMarkers()" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm focus:bg-white focus:border-brand-500 outline-none transition-all">
                                         <option value="">Todos os Tipos/Zonas</option><option value="urban">Urbana (Empresas)</option><option value="professional">Autônomos (Domicílio)</option><option value="rural">Rural (Produtores)</option>
                                     </select>
-                                    <div class="flex gap-2">
-                                        <select id="mgr-map-origin" onchange="app.renderMgrMapMarkers()" class="flex-grow px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm focus:bg-white focus:border-brand-500 outline-none transition-all">
+                                    <div class="flex gap-2 min-w-0">
+                                        <select id="mgr-map-origin" style="min-width:0" onchange="app.renderMgrMapMarkers()" class="flex-grow px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm focus:bg-white focus:border-brand-500 outline-none transition-all">
                                             <option value="">Todas as Origens</option><option value="Cadastro do Empreendedor">Cadastro do Empreendedor</option><option value="Base Importada">Base Importada</option><option value="Sincronizado">Sincronizado</option>
                                         </select>
                                         <button onclick="app.limparFiltrosMapa()" class="px-3 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg text-xs font-bold transition flex items-center gap-1.5 flex-shrink-0" title="Limpar filtros" aria-label="Limpar filtros do mapa"><i data-lucide="rotate-ccw" class="w-3.5 h-3.5"></i></button>
                                     </div>
                                 </div>
                             </div>
-                            <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden flex-grow relative z-0">
-                                <div id="mgr-map" class="absolute inset-0 z-0"></div>
+                            <div class="flex-grow flex gap-4 min-h-0">
+                                <!-- Lista administrativa: rolagem própria, para o gestor
+                                     saber QUEM são os pontos sem poluir o mapa com rótulos. -->
+                                <div id="mgr-map-lista-wrap" class="w-full lg:w-[360px] lg:flex-shrink-0 bg-white rounded-2xl border border-slate-200 shadow-sm flex lg:flex flex-col min-h-0 overflow-hidden">
+                                    <div class="px-4 py-3 border-b border-slate-100 flex-shrink-0">
+                                        <h4 class="text-sm font-bold text-slate-900">Cadastros no recorte</h4>
+                                        <p class="text-xs text-slate-500 mt-0.5" id="mgr-map-lista-sub">-</p>
+                                    </div>
+                                    <div id="mgr-map-lista" class="flex-grow overflow-y-auto p-2 space-y-2" role="list"></div>
+                                </div>
+                                <div id="mgr-map-wrap" class="hidden lg:block flex-grow bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden relative z-0 min-h-0">
+                                    <div id="mgr-map" class="absolute inset-0 z-0"></div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -4769,8 +4769,16 @@
             
             // Escape fecha o drawer aberto e, se não houver, o modal do topo.
             registrarAtalhosTeclado() {
+                // Clique fora fecha o popover de acessibilidade.
+                document.addEventListener('click', (e) => {
+                    const menu = document.getElementById('a11y-menu');
+                    if (!menu || menu.classList.contains('hidden')) return;
+                    if (!menu.contains(e.target) && !e.target.closest('#btn-a11y')) this.fecharA11yMenu();
+                });
+
                 document.addEventListener('keydown', (e) => {
                     if(e.key !== 'Escape') return;
+                    if (this.fecharA11yMenu()) return;
                     const drawer = document.querySelector('.mobile-sidebar.open');
                     if(drawer) {
                         this.toggleSidebar(drawer.id.replace('-sidebar', ''));
@@ -5721,6 +5729,7 @@
                 const sair = document.getElementById('btn-session-logout');
                 if(!rotulo) return;
 
+                const divisor = document.getElementById('session-divider');
                 if(this.sessao) {
                     const perfil = this.perfisLogin.find(p => p.id === this.sessao);
                     let nome = perfil ? perfil.titulo : this.sessao;
@@ -5729,12 +5738,20 @@
                         if(b) nome += ` · ${b.name}`;
                     }
                     rotulo.innerText = nome;
+                    // `hidden` permanece e `md:flex` o revela do breakpoint md para
+                    // cima: no celular o rótulo some para não alargar o header.
+                    document.getElementById('session-info').classList.add('md:flex');
+                    if(divisor) divisor.classList.add('sm:block');
                     entrar.classList.add('hidden');
                     // `hidden` do Tailwind perde para `inline-flex`; alternamos as duas.
                     trocar.classList.remove('hidden'); trocar.classList.add('inline-flex');
                     sair.classList.remove('hidden'); sair.classList.add('inline-flex');
                 } else {
+                    // Sem sessão o bloco some por inteiro: "Visitante (acesso público)"
+                    // não é informação útil para quem só quer buscar um negócio.
                     rotulo.innerText = 'Visitante (acesso público)';
+                    document.getElementById('session-info').classList.remove('md:flex');
+                    if(divisor) divisor.classList.remove('sm:block');
                     entrar.classList.remove('hidden');
                     trocar.classList.add('hidden'); trocar.classList.remove('inline-flex');
                     sair.classList.add('hidden'); sair.classList.remove('inline-flex');
@@ -5771,6 +5788,40 @@
             // contra o <body>. Escalar o body (como antes) não mudava nada na tela.
             escalasFonte: [87.5, 100, 112.5, 125, 137.5],
             nivelFonte: 1,
+
+            // Popover de acessibilidade no header. Não reimplementa nada: apenas
+            // dá um ponto de acesso às funções que já existiam na barra lateral.
+            toggleA11yMenu(ev) {
+                if (ev) ev.stopPropagation();
+                const menu = document.getElementById('a11y-menu');
+                const btn = document.getElementById('btn-a11y');
+                if (!menu) return;
+                const abrindo = menu.classList.contains('hidden');
+                menu.classList.toggle('hidden', !abrindo);
+                if (btn) btn.setAttribute('aria-expanded', abrindo ? 'true' : 'false');
+                if (abrindo) {
+                    const primeiro = menu.querySelector('button');
+                    if (primeiro) primeiro.focus({ preventScroll: true });
+                }
+            },
+
+            fecharA11yMenu() {
+                const menu = document.getElementById('a11y-menu');
+                const btn = document.getElementById('btn-a11y');
+                if (!menu || menu.classList.contains('hidden')) return false;
+                menu.classList.add('hidden');
+                if (btn) btn.setAttribute('aria-expanded', 'false');
+                return true;
+            },
+
+            // Composição das funções existentes: fonte no padrão e contraste desligado.
+            restaurarPreferencias() {
+                this.nivelFonte = 1;
+                this.aplicarEscalaFonte();
+                const body = document.getElementById('app-body');
+                body.classList.remove('invert', 'hue-rotate-180');
+                this.showToast('Preferências de acessibilidade restauradas.', 'success');
+            },
 
             adjustFontSize(delta) {
                 const novo = this.nivelFonte + (delta > 0 ? 1 : -1);
@@ -6955,6 +7006,7 @@
                 if(view === 'gaps') this.renderGaps();
 
                 if(view === 'demands') this.renderDemands();
+                if(view === 'map') this.renderMgrMapLista();
                 if(view === 'purchases') this.renderPurchases();
                 if(view === 'validations') this.renderValidations();
                 if(view === 'history') this.renderAuditoria();
@@ -9504,6 +9556,7 @@
                 ['mgr-map-search','mgr-map-category','mgr-map-type','mgr-map-origin'].forEach(id => {
                     const el = document.getElementById(id); if(el) el.value = '';
                 });
+                this.mgrMapSelecionado = null;
                 this.renderMgrMapMarkers();
             },
 
@@ -9550,30 +9603,149 @@
 
             // Redesenha SOMENTE os pontos, a partir dos filtros do mapa. Chamada
             // ao entrar na tela, ao filtrar e depois de importar.
-            renderMgrMapMarkers() {
-                if(!this.mgrLeafletMap || !this.mgrMarkerLayer) return;
-                this.mgrMarkerLayer.clearLayers();
+            // Negócio selecionado no mapa/lista. Só estado de interface.
+            mgrMapSelecionado: null,
+            mgrMapMarcadores: {},
 
+            /**
+             * Recorte único do Mapa Territorial: os MESMOS filtros alimentam a
+             * lista, os marcadores e o contador. Registro sem coordenada entra na
+             * lista (é cadastro legítimo) mas não vira marcador.
+             */
+            filtrarMapaGestao() {
                 const valor = id => (document.getElementById(id) || {}).value || '';
                 const busca = this.normalize(valor('mgr-map-search'));
                 const cat = valor('mgr-map-category');
                 const tipo = valor('mgr-map-type');
                 const origem = valor('mgr-map-origin');
 
-                const lista = appData.businesses.filter(b => {
-                    if(b.lat == null || b.lng == null) return false;
+                const todos = appData.businesses.filter(b => {
                     if(cat && b.category !== cat) return false;
                     if(tipo && b.type !== tipo) return false;
                     if(origem && (b.origin || '') !== origem) return false;
                     if(busca && !this.normalize(b.name).includes(busca)) return false;
                     return true;
                 });
+                return {
+                    todos: todos,
+                    comCoordenada: todos.filter(b => b.lat != null && b.lng != null),
+                    semCoordenada: todos.filter(b => b.lat == null || b.lng == null)
+                };
+            },
+
+            rotuloZona(b) {
+                return b.type === 'urban' ? 'Urbano' : (b.type === 'rural' ? 'Rural' : 'Autônomo');
+            },
+
+            /**
+             * Lista administrativa. Mostra o que o gestor precisa para decidir —
+             * e nada do que é restrito: sem documento, CPF do responsável, e-mail
+             * administrativo, evidências ou endereço residencial protegido.
+             */
+            renderMgrMapLista() {
+                const wrap = document.getElementById('mgr-map-lista');
+                if(!wrap) return;
+                const r = this.filtrarMapaGestao();
+
+                const sub = document.getElementById('mgr-map-lista-sub');
+                if(sub) sub.innerText = `${r.todos.length} ${r.todos.length === 1 ? 'cadastro' : 'cadastros'} no recorte`;
+
+                const contador = document.getElementById('mgr-map-count');
+                if(contador) contador.innerText = r.comCoordenada.length;
+                const semCoord = document.getElementById('mgr-map-sem-coord');
+                if(semCoord) semCoord.innerText = r.semCoordenada.length;
+
+                wrap.innerHTML = r.todos.map(b => {
+                    const sit = this.situacaoVitrine(b);
+                    const selo = this.selosVitrine[sit];
+                    const pct = calcularCompletudeCadastro(b);
+                    const nivel = nivelCompletude(pct);
+                    const validado = b.validationStatus === 'validado';
+                    const semCoord = b.lat == null || b.lng == null;
+                    const sel = this.mgrMapSelecionado === b.id;
+
+                    return `
+                    <div role="listitem" data-map-card="${b.id}" ${sel ? 'aria-current="true"' : ''}
+                         onclick="app.selecionarNegocioMapa(${b.id})"
+                         class="rounded-xl border p-3 cursor-pointer transition-colors ${sel ? 'border-brand-400 bg-brand-50 ring-1 ring-brand-200' : 'border-slate-200 bg-white hover:bg-slate-50'}">
+                        <div class="flex items-start justify-between gap-2">
+                            <div class="min-w-0">
+                                <p class="text-sm font-bold text-slate-900 truncate">${this.escapeHtml(b.name)}</p>
+                                <p class="text-xs text-slate-500 truncate">${this.escapeHtml(b.category)} · ${this.rotuloZona(b)}</p>
+                            </div>
+                            <span class="text-xs font-bold ${nivel.classe} border rounded px-1.5 py-0.5 flex-shrink-0">${pct}%</span>
+                        </div>
+                        <div class="flex flex-wrap gap-1 mt-2">
+                            <span class="text-xs font-bold border rounded px-1.5 py-0.5 ${validado ? 'text-emerald-700 bg-emerald-50 border-emerald-100' : 'text-amber-700 bg-amber-50 border-amber-100'}">${validado ? 'Validado' : 'Pendente'}</span>
+                            <span class="text-xs font-bold border rounded px-1.5 py-0.5 ${selo.classe}">${selo.rotulo}</span>
+                            <span class="text-xs font-medium text-slate-500 bg-slate-100 border border-slate-200 rounded px-1.5 py-0.5">${this.escapeHtml(b.origin || '—')}</span>
+                        </div>
+                        ${semCoord ? '<p class="text-xs text-amber-700 mt-2 flex items-center gap-1"><i data-lucide="map-pin-off" class="w-3.5 h-3.5"></i> Geolocalização pendente</p>' : ''}
+                        <div class="flex gap-2 mt-2.5">
+                            <button onclick="event.stopPropagation(); app.openBaseDetails(${b.id})" class="flex-1 min-h-[36px] text-xs font-bold text-brand-700 bg-brand-50 hover:bg-brand-100 rounded-lg transition">Ver cadastro</button>
+                            ${sit === 'sem' ? '' : `<button onclick="event.stopPropagation(); app.viewProfileFromManager(${b.id})" class="flex-1 min-h-[36px] text-xs font-bold text-slate-700 bg-white border border-slate-200 hover:bg-slate-50 rounded-lg transition">Ver vitrine</button>`}
+                        </div>
+                    </div>`;
+                }).join('') || `
+                    <div class="px-3 py-10 text-center">
+                        <div class="w-12 h-12 bg-slate-100 rounded-full flex items-center justify-center mx-auto mb-3 text-slate-400"><i data-lucide="search-x" class="w-6 h-6"></i></div>
+                        <p class="text-sm font-bold text-slate-700">Nenhum cadastro no recorte</p>
+                        <p class="text-xs text-slate-500 mt-1">Ajuste a busca ou os filtros.</p>
+                    </div>`;
+                if(typeof lucide !== 'undefined') lucide.createIcons();
+            },
+
+            /** Card e marcador falam a mesma língua: selecionar em um destaca o outro. */
+            selecionarNegocioMapa(id) {
+                this.mgrMapSelecionado = id;
+                this.renderMgrMapLista();
+
+                const card = document.querySelector(`[data-map-card="${id}"]`);
+                if(card) card.scrollIntoView({ block: 'nearest' });
+
+                const b = appData.businesses.find(x => x.id === id);
+                const marcador = this.mgrMapMarcadores[id];
+                if(b && marcador && this.mgrLeafletMap) {
+                    // No mobile a lista cobre o mapa: traz o mapa à frente antes de centralizar.
+                    if(window.innerWidth < 1024) this.alternarMapaMobile('mapa');
+                    // Sem animação: a centralização é imediata e determinística,
+                    // o que também evita espera na gravação do vídeo.
+                    this.mgrLeafletMap.setView([b.lat, b.lng], Math.max(this.mgrLeafletMap.getZoom(), 15), { animate: false });
+                    marcador.openPopup();
+                }
+            },
+
+            alternarMapaMobile(alvo) {
+                const lista = document.getElementById('mgr-map-lista-wrap');
+                const mapa = document.getElementById('mgr-map-wrap');
+                const tl = document.getElementById('mgr-map-tab-lista');
+                const tm = document.getElementById('mgr-map-tab-mapa');
+                if(!lista || !mapa) return;
+                const verMapa = alvo === 'mapa';
+                // As classes lg: mantêm as duas colunas no desktop; isto só vale abaixo de lg.
+                lista.classList.toggle('hidden', verMapa);
+                mapa.classList.toggle('hidden', !verMapa);
+                if(tl) { tl.setAttribute('aria-pressed', String(!verMapa)); tl.className = `px-3 py-1.5 text-xs font-bold transition ${!verMapa ? 'bg-brand-600 text-white' : 'bg-white text-slate-600'}`; }
+                if(tm) { tm.setAttribute('aria-pressed', String(verMapa)); tm.className = `px-3 py-1.5 text-xs font-bold transition ${verMapa ? 'bg-brand-600 text-white' : 'bg-white text-slate-600'}`; }
+                if(verMapa && this.mgrLeafletMap) setTimeout(() => this.mgrLeafletMap.invalidateSize(), 60);
+            },
+
+            renderMgrMapMarkers() {
+                // A lista acompanha os marcadores em toda mudança de filtro.
+                this.renderMgrMapLista();
+                if(!this.mgrLeafletMap || !this.mgrMarkerLayer) return;
+                this.mgrMarkerLayer.clearLayers();
+                this.mgrMapMarcadores = {};
+
+                const r = this.filtrarMapaGestao();
+                const lista = r.comCoordenada;
 
                 lista.forEach(b => {
                     const popup = this.popupMapa(b);
+                    let camada;
                     if(b.protectedLocation) {
                         // Localização protegida continua representada por área, não por ponto.
-                        L.circle([b.lat, b.lng], { color: '#10b981', fillColor: '#10b981', fillOpacity: 0.2, radius: 200, weight: 2 })
+                        camada = L.circle([b.lat, b.lng], { color: '#10b981', fillColor: '#10b981', fillOpacity: 0.2, radius: 200, weight: 2 })
                             .bindPopup(popup).addTo(this.mgrMarkerLayer);
                     } else {
                         const iconName = b.type === 'urban' ? 'store' : (b.type === 'rural' ? 'tractor' : 'user');
@@ -9582,12 +9754,19 @@
                             html: `<div class="w-8 h-8 ${b.color || 'bg-slate-500'} rounded-full flex items-center justify-center text-white shadow-md border-2 border-white"><i data-lucide="${iconName}" class="w-4 h-4"></i></div>`,
                             iconSize: [32, 32], iconAnchor: [16, 32], popupAnchor: [0, -32]
                         });
-                        L.marker([b.lat, b.lng], { icon: icone }).bindPopup(popup).addTo(this.mgrMarkerLayer);
+                        camada = L.marker([b.lat, b.lng], { icon: icone }).bindPopup(popup).addTo(this.mgrMarkerLayer);
                     }
+                    // Guarda a referência para o clique no card achar o marcador,
+                    // e o clique no marcador achar o card.
+                    this.mgrMapMarcadores[b.id] = camada;
+                    camada.on('click', () => {
+                        this.mgrMapSelecionado = b.id;
+                        this.renderMgrMapLista();
+                        const card = document.querySelector(`[data-map-card="${b.id}"]`);
+                        if(card) card.scrollIntoView({ block: 'nearest' });
+                    });
                 });
 
-                const contador = document.getElementById('mgr-map-count');
-                if(contador) contador.innerText = lista.length;
 
                 // Ícones do Lucide dentro do popup só existem depois de ele abrir.
                 this.mgrLeafletMap.off('popupopen').on('popupopen', () => {
