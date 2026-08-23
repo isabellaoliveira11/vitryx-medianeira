@@ -381,31 +381,23 @@
                     <i data-lucide="store" class="w-4 h-4"></i> Sou Empreendedor
                 </button>
 
-                <!-- Acessibilidade: um botão compacto abre o popover. A lógica é a
-                     mesma de antes; só o ponto de acesso mudou de lugar. -->
-                <div class="relative">
-                    <button onclick="app.toggleA11yMenu(event)" id="btn-a11y" aria-label="Opções de acessibilidade" aria-haspopup="true" aria-expanded="false" aria-controls="a11y-menu"
-                            class="inline-flex items-center justify-center w-10 h-10 rounded-lg text-slate-600 hover:bg-slate-100 transition-colors">
-                        <i data-lucide="accessibility" class="w-5 h-5"></i>
-                    </button>
-                    <div id="a11y-menu" role="menu" aria-labelledby="btn-a11y"
-                         class="hidden absolute right-0 top-full mt-2 w-60 bg-white border border-slate-200 rounded-xl shadow-lg p-2 z-[9000]">
-                        <p class="px-2 pt-1 pb-2 text-xs font-bold text-slate-500 uppercase tracking-wide">Acessibilidade</p>
-                        <div class="flex items-center justify-between gap-2 px-2 py-1.5">
-                            <span class="text-sm text-slate-700">Tamanho do texto</span>
-                            <span class="text-xs font-bold text-slate-500" id="a11y-font-level">100%</span>
-                        </div>
-                        <div class="grid grid-cols-3 gap-1.5 px-1 pb-2">
-                            <button role="menuitem" onclick="app.adjustFontSize(-1)" aria-label="Diminuir fonte" class="min-h-[40px] rounded-lg border border-slate-200 text-slate-700 font-bold hover:bg-slate-50 transition">A−</button>
-                            <button role="menuitem" onclick="app.resetFontSize()" aria-label="Tamanho padrão" class="min-h-[40px] rounded-lg border border-slate-200 text-slate-600 text-xs font-semibold hover:bg-slate-50 transition">Padrão</button>
-                            <button role="menuitem" onclick="app.adjustFontSize(1)" aria-label="Aumentar fonte" class="min-h-[40px] rounded-lg border border-slate-200 text-slate-700 font-bold hover:bg-slate-50 transition">A+</button>
-                        </div>
-                        <div class="border-t border-slate-100 pt-1.5">
-                            <button role="menuitem" onclick="app.toggleHighContrast()" class="w-full flex items-center gap-2.5 px-2 py-2.5 min-h-[44px] rounded-lg text-sm text-slate-700 hover:bg-slate-50 transition text-left"><i data-lucide="contrast" class="w-4 h-4 text-slate-400"></i> Alto contraste</button>
-                            <button role="menuitem" onclick="app.restaurarPreferencias()" class="w-full flex items-center gap-2.5 px-2 py-2.5 min-h-[44px] rounded-lg text-sm text-slate-700 hover:bg-slate-50 transition text-left"><i data-lucide="rotate-ccw" class="w-4 h-4 text-slate-400"></i> Restaurar preferências</button>
-                        </div>
-                    </div>
+                <!-- Acessibilidade sempre à vista: A− / A+ / contraste. Os controles
+                     são wrappers finos sobre as funções que já existiam — nada da
+                     lógica de fonte ou contraste foi reescrito aqui. -->
+                <div class="flex items-center rounded-lg border border-slate-200 bg-white divide-x divide-slate-200 overflow-hidden" role="group" aria-label="Acessibilidade">
+                    <button onclick="app.a11yFonte(-1)" aria-label="Diminuir tamanho do texto" title="Diminuir texto"
+                            class="min-w-[44px] min-h-[44px] inline-flex items-center justify-center text-sm font-bold text-slate-600 hover:bg-slate-50 transition-colors">A−</button>
+                    <button onclick="app.a11yFonte(1)" aria-label="Aumentar tamanho do texto" title="Aumentar texto"
+                            class="min-w-[44px] min-h-[44px] inline-flex items-center justify-center text-sm font-bold text-slate-600 hover:bg-slate-50 transition-colors">A+</button>
+                    <button id="btn-contraste" onclick="app.a11yContraste()" aria-label="Alto contraste" aria-pressed="false" title="Alto contraste"
+                            class="min-w-[44px] min-h-[44px] inline-flex items-center justify-center text-slate-600 hover:bg-slate-50 transition-colors"><i data-lucide="contrast" class="w-4 h-4"></i></button>
                 </div>
+                <!-- Só aparece quando há algo para restaurar. -->
+                <button id="btn-a11y-reset" onclick="app.a11yRestaurar()" aria-label="Restaurar acessibilidade" title="Restaurar acessibilidade"
+                        class="hidden min-w-[44px] min-h-[44px] items-center justify-center rounded-lg text-slate-500 hover:bg-slate-100 transition-colors"><i data-lucide="rotate-ccw" class="w-4 h-4"></i></button>
+                <!-- Mantido para o leitor de tela anunciar a mudança; aplicarEscalaFonte
+                     continua escrevendo aqui, sem alteração. -->
+                <span id="a11y-font-level" class="sr-only" aria-live="polite">100%</span>
 
                 <!-- Sessão: só aparece quando existe alguém autenticado. -->
                 <div id="session-divider" class="h-5 w-px bg-slate-200 hidden"></div>
@@ -4769,16 +4761,8 @@
             
             // Escape fecha o drawer aberto e, se não houver, o modal do topo.
             registrarAtalhosTeclado() {
-                // Clique fora fecha o popover de acessibilidade.
-                document.addEventListener('click', (e) => {
-                    const menu = document.getElementById('a11y-menu');
-                    if (!menu || menu.classList.contains('hidden')) return;
-                    if (!menu.contains(e.target) && !e.target.closest('#btn-a11y')) this.fecharA11yMenu();
-                });
-
                 document.addEventListener('keydown', (e) => {
                     if(e.key !== 'Escape') return;
-                    if (this.fecharA11yMenu()) return;
                     const drawer = document.querySelector('.mobile-sidebar.open');
                     if(drawer) {
                         this.toggleSidebar(drawer.id.replace('-sidebar', ''));
@@ -5789,29 +5773,35 @@
             escalasFonte: [87.5, 100, 112.5, 125, 137.5],
             nivelFonte: 1,
 
-            // Popover de acessibilidade no header. Não reimplementa nada: apenas
-            // dá um ponto de acesso às funções que já existiam na barra lateral.
-            toggleA11yMenu(ev) {
-                if (ev) ev.stopPropagation();
-                const menu = document.getElementById('a11y-menu');
-                const btn = document.getElementById('btn-a11y');
-                if (!menu) return;
-                const abrindo = menu.classList.contains('hidden');
-                menu.classList.toggle('hidden', !abrindo);
-                if (btn) btn.setAttribute('aria-expanded', abrindo ? 'true' : 'false');
-                if (abrindo) {
-                    const primeiro = menu.querySelector('button');
-                    if (primeiro) primeiro.focus({ preventScroll: true });
-                }
-            },
+            /**
+             * Wrappers finos dos controles de acessibilidade.
+             *
+             * `adjustFontSize`, `toggleHighContrast` e `restaurarPreferencias`
+             * seguem intactas: aqui só chamamos e depois sincronizamos o estado
+             * visual (aria-pressed do contraste e visibilidade do restaurar).
+             */
+            a11yFonte(delta) { this.adjustFontSize(delta); this.sincronizarAcessibilidade(); },
+            a11yContraste() { this.toggleHighContrast(); this.sincronizarAcessibilidade(); },
+            a11yRestaurar() { this.restaurarPreferencias(); this.sincronizarAcessibilidade(); },
 
-            fecharA11yMenu() {
-                const menu = document.getElementById('a11y-menu');
-                const btn = document.getElementById('btn-a11y');
-                if (!menu || menu.classList.contains('hidden')) return false;
-                menu.classList.add('hidden');
-                if (btn) btn.setAttribute('aria-expanded', 'false');
-                return true;
+            sincronizarAcessibilidade() {
+                const contraste = document.getElementById('app-body').classList.contains('invert');
+                const btn = document.getElementById('btn-contraste');
+                if (btn) {
+                    btn.setAttribute('aria-pressed', contraste ? 'true' : 'false');
+                    btn.classList.toggle('bg-slate-900', contraste);
+                    btn.classList.toggle('text-white', contraste);
+                    btn.classList.toggle('text-slate-600', !contraste);
+                }
+                // O restaurar só existe quando há o que restaurar.
+                const alterado = contraste || this.nivelFonte !== 1;
+                const reset = document.getElementById('btn-a11y-reset');
+                if (reset) { reset.classList.toggle('hidden', !alterado); reset.classList.toggle('inline-flex', alterado); }
+
+                // Espelha o mesmo estado no bloco do menu do radar (mobile).
+                const btnM = document.getElementById('btn-contraste-mobile');
+                if (btnM) btnM.setAttribute('aria-pressed', contraste ? 'true' : 'false');
+                if (typeof lucide !== 'undefined') lucide.createIcons();
             },
 
             // Composição das funções existentes: fonte no padrão e contraste desligado.
